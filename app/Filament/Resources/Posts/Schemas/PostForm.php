@@ -1,0 +1,68 @@
+<?php
+
+namespace App\Filament\Resources\Posts\Schemas;
+
+use App\Enums\CategoryStatus;
+use App\Enums\ContentStatus;
+use App\Filament\Resources\Blogs\Schemas\BlogForm;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Schema;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
+
+class PostForm
+{
+    public static function configure(Schema $schema): Schema
+    {
+        return $schema
+            ->components([
+                TextInput::make('title')
+                    ->label(__('filament.forms.fields.title'))
+                    ->maxLength(255)
+                    ->required()
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(function (Set $set, $state) {
+                        $set('slug', Str::slug($state));
+                    }),
+                TextInput::make('slug')
+                    ->label(__('filament.forms.fields.slug'))
+                    ->required()
+                    ->maxLength(255)
+                    ->rules(function ($livewire, $record) {
+                        $locale = $livewire->activeLocale ?? app()->getLocale();
+
+                        return [
+                            Rule::unique('posts', "slug")->ignore($record?->id),
+                            // Rule::unique('posts', "slug->$locale")
+                            //     ->ignore($record?->id),
+                        ];
+                    }),
+                TextInput::make('description')
+                    ->label(__('filament.forms.fields.description'))
+                    ->maxLength(255)->columnSpan('full'),
+                RichEditor::make('content')
+                    ->label(__('filament.forms.fields.content'))
+                    ->columnSpan('full')
+                    ->extraInputAttributes(['style' => 'min-height: 20rem;']),
+                FileUpload::make('images')
+                    ->label(__('filament.forms.fields.images'))
+                    ->disk('public')->directory('posts')
+                    ->multiple(),
+                Select::make('categories')
+                    ->label(__('filament.forms.fields.categories'))
+                    ->relationship('categories', 'title')
+                    ->multiple()
+                    ->searchable()
+                    ->preload()
+                    ->required(),
+                Select::make('status')
+                    ->label(__('filament.forms.fields.status'))
+                    ->options(ContentStatus::class)
+                    ->default(ContentStatus::Published),
+            ]);
+    }
+}

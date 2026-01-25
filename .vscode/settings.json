@@ -1,0 +1,8 @@
+{
+    "commentTranslate.source": "Google",
+    "commentTranslate.targetLanguage": "en",
+    "postman.settings.dotenv-detection-notification-visibility": false,
+    "i18n-ally.localesPaths": [
+        "lang"
+    ],
+}
