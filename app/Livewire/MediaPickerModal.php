@@ -13,13 +13,17 @@ class MediaPickerModal extends Component
 
 	public bool $isOpen = false;
 
+	public string $currentModal = 'browse'; // 'browse', 'create-folder', 'upload'
+
+	public ?string $previousModal = null; // Lưu modal trước đó để xử lý click outside
+
 	public bool $multiple = false;
 
 	public array $selected = [];
 
 	public ?string $collection = null;
 
-	public string $view = 'browse'; // 'browse', 'upload', 'create-folder'
+	public string $view = 'browse'; // 'browse', 'selected' (chỉ cho browse modal)
 
 	public string $search = '';
 
@@ -47,6 +51,7 @@ class MediaPickerModal extends Component
 	public function open(array $selectedIds = []): void
 	{
 		$this->isOpen = true;
+		$this->currentModal = 'browse';
 		$this->selected = $selectedIds;
 		$this->view = 'browse';
 	}
@@ -54,6 +59,8 @@ class MediaPickerModal extends Component
 	public function close(): void
 	{
 		$this->isOpen = false;
+		$this->currentModal = 'browse';
+		$this->previousModal = null;
 		$this->reset(['selected', 'search', 'uploadedFiles', 'view', 'mode', 'newFolderName', 'currentFolder']);
 	}
 
@@ -61,15 +68,58 @@ class MediaPickerModal extends Component
 	{
 		$this->isOpen = true;
 		$this->mode = 'manager';
-		$this->view = 'create-folder';
+		$this->previousModal = null; // Mở trực tiếp, không có modal trước
+		$this->currentModal = 'create-folder';
+	}
+
+	public function openCreateFolderModal(): void
+	{
+		$this->previousModal = $this->currentModal; // Lưu modal hiện tại
+		$this->currentModal = 'create-folder';
+	}
+
+	public function closeCreateFolderModal(): void
+	{
+		$this->currentModal = 'browse';
+		$this->previousModal = null;
+		$this->newFolderName = '';
 	}
 
 	public function openUploadAsset(?string $folder = null): void
 	{
 		$this->isOpen = true;
 		$this->mode = 'manager';
-		$this->view = 'upload';
+		$this->previousModal = null; // Mở trực tiếp, không có modal trước
+		$this->currentModal = 'upload';
 		$this->currentFolder = $folder;
+	}
+
+	public function openUploadModal(): void
+	{
+		$this->previousModal = $this->currentModal; // Lưu modal hiện tại
+		$this->currentModal = 'upload';
+	}
+
+	public function closeUploadModal(): void
+	{
+		$this->currentModal = 'browse';
+		$this->previousModal = null;
+		$this->uploadedFiles = [];
+	}
+
+	public function handleClickOutside(): void
+	{
+		// Nếu có modal trước đó, quay về modal đó
+		if ($this->previousModal) {
+			$this->currentModal = $this->previousModal;
+			$this->previousModal = null;
+			// Clear data của modal đang đóng
+			$this->newFolderName = '';
+			$this->uploadedFiles = [];
+		} else {
+			// Nếu không có modal trước, đóng hẳn
+			$this->close();
+		}
 	}
 
 	public function switchView(string $view): void
@@ -99,7 +149,8 @@ class MediaPickerModal extends Component
 
 		session()->flash('message', 'Folder created successfully!');
 		$this->dispatch('folderCreated');
-		$this->close();
+		$this->currentModal = 'browse';
+		$this->newFolderName = '';
 	}
 
 	public function toggleSelect(int $mediaId): void
@@ -156,15 +207,10 @@ class MediaPickerModal extends Component
 		}
 
 		$this->uploadedFiles = [];
-
-		if ($this->mode === 'manager') {
-			session()->flash('message', 'Files uploaded successfully!');
-			$this->dispatch('assetUploaded');
-			$this->close();
-		} else {
-			$this->view = 'browse';
-			session()->flash('message', 'Files uploaded successfully!');
-		}
+		session()->flash('message', 'Files uploaded successfully!');
+		$this->dispatch('assetUploaded');
+		$this->currentModal = 'browse';
+		$this->view = 'browse';
 	}
 
 	public function deleteMedia(int $mediaId): void
