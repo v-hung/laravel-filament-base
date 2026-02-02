@@ -8,32 +8,34 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Translatable\HasTranslations;
 
-class Product extends Model
+class Product extends Model implements HasMedia
 {
-    use HasTranslations;
+    use HasTranslations, InteractsWithMedia;
 
     public array $translatable = [
         'name',
         'slug',
         'description',
-        'content'
+        'content',
     ];
 
     protected $casts = [
-        'images' => 'array',
         'price' => 'decimal:2',
         'compare_at_price' => 'decimal:2',
     ];
 
     protected $guarded = [];
 
-    protected $appends = ['is_discounted', 'discount_percent'];
+    protected $appends = ['is_discounted', 'discount_percent', 'images'];
 
     public function collections(): BelongsToMany
     {
-        return $this->belongsToMany(Collection::class, "product_collection");
+        return $this->belongsToMany(Collection::class, 'product_collection');
     }
 
     public function options(): HasMany
@@ -56,11 +58,42 @@ class Product extends Model
     protected function discountPercent(): Attribute
     {
         return Attribute::get(function () {
-            if ($this->compare_at_price <= $this->price) return 0;
+            if ($this->compare_at_price <= $this->price) {
+                return 0;
+            }
 
             return round(
                 (($this->compare_at_price - $this->price) / $this->compare_at_price) * 100
             );
         });
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('gallery')
+            ->acceptsMimeTypes(['image/*']);
+    }
+
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this
+            ->addMediaConversion('thumb')
+            ->width(200)
+            ->height(200)
+            ->sharpen(10)
+            ->nonQueued();
+    }
+
+    public function getImagesAttribute()
+    {
+        if (! $this->relationLoaded('media')) {
+            return [];
+        }
+
+        return $this->getMedia('gallery')->map(fn ($media) => [
+            'id' => $media->id,
+            'url' => $media->getUrl(),
+            'thumb' => $media->getUrl('thumb'),
+        ]);
     }
 }

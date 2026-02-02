@@ -10,7 +10,6 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class ProductRepository
 {
-
     private const RELATIONS_WITH_OPTIONS_AND_VARIANTS = [
         // Options và các values
         'options:id,product_id,name,position',
@@ -18,7 +17,7 @@ class ProductRepository
 
         // Variants và các values của nó
         'variants:id,product_id,image,sku,price,stock',
-        'variants.values:id,product_option_id,label'
+        'variants.values:id,product_option_id,label',
     ];
 
     /**
@@ -51,7 +50,7 @@ class ProductRepository
     /**
      * Get the price range (min, max) of the product
      *
-     * @param string|null $status
+     * @param  string|null  $status
      * @return array ['min' => float, 'max' => float]
      */
     public function getPriceRange(): array
@@ -70,7 +69,7 @@ class ProductRepository
     {
         $query = Product::query();
 
-        $query->where('status', ProductStatus::Active);
+        $query->with('media')->where('status', ProductStatus::Active);
 
         if ($params->search) {
             $query->where('name', 'like', "%{$params->search}%");
@@ -84,27 +83,22 @@ class ProductRepository
             $query->where('price', '<=', $params->price_max);
         }
 
-        if (!empty($excludeIds)) {
+        if (! empty($excludeIds)) {
             $query->whereNotIn('id', $excludeIds);
         }
 
         if ($params->order_type) {
             match ($params->order_type) {
-                ProductOrderType::FEATURED =>
-                $query->orderBy('is_featured', 'desc')
+                ProductOrderType::FEATURED => $query->orderBy('is_featured', 'desc')
                     ->orderBy('featured_position', 'asc'),
 
-                ProductOrderType::BEST_SELLING =>
-                $query->orderBy('sales_count', 'desc'),
+                ProductOrderType::BEST_SELLING => $query->orderBy('sales_count', 'desc'),
 
-                ProductOrderType::LATEST =>
-                $query->orderBy('created_at', 'desc'),
+                ProductOrderType::LATEST => $query->orderBy('created_at', 'desc'),
 
-                ProductOrderType::PRICE_DESC =>
-                $query->orderBy('price', 'desc'),
+                ProductOrderType::PRICE_DESC => $query->orderBy('price', 'desc'),
 
-                ProductOrderType::PRICE_ASC =>
-                $query->orderBy('price', 'asc'),
+                ProductOrderType::PRICE_ASC => $query->orderBy('price', 'asc'),
             };
         } else {
             $query->orderBy($params->sortBy, $params->sortDirection);
@@ -150,24 +144,24 @@ class ProductRepository
     {
         $sortedOptions = $product->options->sortBy('position');
 
-        $product->setAttribute('options_raw', $sortedOptions->map(fn($opt) => [
+        $product->setAttribute('options_raw', $sortedOptions->map(fn ($opt) => [
             'id' => $opt->id,
             'name' => $opt->name,
             'values' => $opt->values
                 ->sortBy('position')
-                ->map(fn($val) => [
+                ->map(fn ($val) => [
                     'id' => $val->id,
                     'label' => $val->label,
                 ])->toArray(),
         ])->toArray());
 
-        $product->setAttribute('variants_raw', $product->variants->map(fn($variant) => [
+        $product->setAttribute('variants_raw', $product->variants->map(fn ($variant) => [
             'id' => $variant->id,
             'image' => $variant->image,
             'sku' => $variant->sku,
             'price' => $variant->price,
             'stock' => $variant->stock,
-            'values' => $variant->values->map(fn($val) => [
+            'values' => $variant->values->map(fn ($val) => [
                 'id' => $val->id,
                 'label' => $val->label,
                 'option_id' => $val->product_option_id,

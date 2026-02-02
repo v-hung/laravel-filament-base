@@ -16,7 +16,6 @@ return new class extends Migration
             $table->json('title');
             $table->json('slug');
             $table->json('description')->nullable();
-            $table->string('image')->nullable();
             $table->string('status')->default('active')->comment('active, inactive, archived');
             $table->timestamps();
         });

@@ -3,31 +3,31 @@ import { login, register } from '@/routes';
 import { edit } from '@/routes/profile';
 
 export default function Home({
-    canRegister = true,
+	canRegister = true,
 }: {
-    canRegister?: boolean;
+	canRegister?: boolean;
 }) {
-    const { auth } = usePage().props;
+	const { auth } = usePage().props;
 
-    return (
-        <>
-            <Head title="Home"></Head>
-            <div>
-                <header>
-                    <nav>
-                        {auth.user ? (
-                            <Link href={edit()}>Profile</Link>
-                        ) : (
-                            <>
-                                <Link href={login()}>Log in</Link>
-                                {canRegister && (
-                                    <Link href={register()}>Register</Link>
-                                )}
-                            </>
-                        )}
-                    </nav>
-                </header>
-            </div>
-        </>
-    );
+	return (
+		<>
+			<Head title="Home"></Head>
+			<div>
+				<header>
+					<nav>
+						{auth.user ? (
+							<Link href={edit()}>Profile</Link>
+						) : (
+							<>
+								<Link href={login()}>Log in</Link>
+								{canRegister && (
+									<Link href={register()}>Register</Link>
+								)}
+							</>
+						)}
+					</nav>
+				</header>
+			</div>
+		</>
+	);
 }

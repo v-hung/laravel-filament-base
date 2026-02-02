@@ -1,48 +1,132 @@
-### docker
+# Development Guide
 
-docker compose exec app bash
-docker compose exec app composer install
+## Docker Setup (DDEV)
 
-docker compose exec -u root app bash
+### Initial Configuration
+```bash
+# Configure Laravel project
+ddev config --project-type=laravel --docroot=public 
+ddev config --php-version=8.3
+ddev config --database=mysql:8.0
+ddev config --nodejs-version=22
 
-### Setup
+# Add phpMyAdmin
+ddev add-on get ddev/ddev-phpmyadmin
 
-git clone ...
+# Start DDEV
+ddev start
+```
 
+### SSL Certificate Setup (Required for Vite, First Time Only)
+**Important:** This step is required for Vite dev server to work properly with HTTPS.
+
+```bash
+# Install mkcert and restart DDEV to enable HTTPS
+mkcert -install && ddev poweroff && ddev start
+```
+
+### Expose Vite Port
+Add this to `.ddev/config.yaml` to access Vite dev server:
+```yaml
+web_extra_exposed_ports:
+  - name: vite
+    container_port: 5173
+    http_port: 5172
+    https_port: 5173
+```
+Then restart: `ddev restart`
+
+### Common Commands
+```bash
+# Restart containers
+ddev restart
+
+# Show project info (URLs, ports, services)
+ddev describe
+
+# Install dependencies
+ddev composer install
+
+# Open in browser
+ddev launch
+```
+
+### Reconfigure (if needed)
+```bash
+# Remove old container and reconfigure
+ddev delete --omit-snapshot
+ddev config --php-version=8.3 --database=mysql:8.0
+```
+
+---
+
+## Project Setup
+
+### 1. Clone & Install Dependencies
+```bash
+git clone <repository-url>
 composer install
+npm install
+```
 
-copy .env.example -> .env (edit)
+### 2. Environment Configuration
+```bash
+# Copy and edit environment file
+cp .env.example .env
+# Edit .env with your database credentials and other settings
 
+# Generate application key
 php artisan key:generate
+
+# Create storage symlink
 php artisan storage:link
+```
 
-npm install & npm run build
-
-php artisan filament:assets
-
-<!-- php artisan shield:super-admin -->
-
+### 3. Database Setup
+```bash
+# Run migrations and seeders
 php artisan migrate --seed
 
+# Generate shield permissions
 php artisan shield:generate --all
+```
 
-https://jthemes.net/themes/html/organic/index.html
-https://jenka.info/
+### 4. Build Assets
+```bash
+# Build frontend assets
+npm run build
 
+# Optimize Filament assets
+php artisan filament:assets
+```
+
+### 5. Final Steps
+```bash
+# Regenerate autoload files
 composer dump-autoload
+```
 
-### develop (clear cache):
+---
 
-    - php artisan icons:clear
-    - php artisan filament:optimize-clear
-    - php artisan optimize:clear
+## Development Commands
 
-### production (optimize)
+### Clear Cache (Development)
+```bash
+php artisan icons:clear
+php artisan filament:optimize-clear
+php artisan optimize:clear
+```
 
-    - php artisan icons:cache
-    - php artisan filament:optimize
-    - php artisan optimize
+### Optimize (Production)
+```bash
+php artisan icons:cache
+php artisan filament:optimize
+php artisan optimize
+```
 
-### Permission
+---
 
-sudo chown -R hungnv:hungnv storage bootstrap/cache
+## Resources
+
+- [Organic Theme Reference](https://jthemes.net/themes/html/organic/index.html)
+- [Jenka Design Reference](https://jenka.info/)

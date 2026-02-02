@@ -7,77 +7,77 @@ import AuthLayout from '@/layouts/auth-layout';
 import { update } from '@/routes/password';
 
 type Props = {
-    token: string;
-    email: string;
+	token: string;
+	email: string;
 };
 
 export default function ResetPassword({ token, email }: Props) {
-    return (
-        <AuthLayout
-            title="Reset password"
-            description="Please enter your new password below"
-        >
-            <Head title="Reset password" />
+	return (
+		<AuthLayout
+			title="Reset password"
+			description="Please enter your new password below"
+		>
+			<Head title="Reset password" />
 
-            <Form
-                {...update.form()}
-                transform={(data) => ({ ...data, token, email })}
-                resetOnSuccess={['password', 'password_confirmation']}
-            >
-                {({ processing }) => (
-                    <div className="grid gap-6">
-                        <div className="grid gap-2">
-                            <Label htmlFor="email">Email</Label>
-                            <Input
-                                id="email"
-                                type="email"
-                                name="email"
-                                autoComplete="email"
-                                value={email}
-                                className="mt-1 block w-full"
-                                readOnly
-                            />
-                        </div>
+			<Form
+				{...update.form()}
+				transform={(data) => ({ ...data, token, email })}
+				resetOnSuccess={['password', 'password_confirmation']}
+			>
+				{({ processing }) => (
+					<div className="grid gap-6">
+						<div className="grid gap-2">
+							<Label htmlFor="email">Email</Label>
+							<Input
+								id="email"
+								type="email"
+								name="email"
+								autoComplete="email"
+								value={email}
+								className="mt-1 block w-full"
+								readOnly
+							/>
+						</div>
 
-                        <div className="grid gap-2">
-                            <Label htmlFor="password">Password</Label>
-                            <Input
-                                id="password"
-                                type="password"
-                                name="password"
-                                autoComplete="new-password"
-                                className="mt-1 block w-full"
-                                autoFocus
-                                placeholder="Password"
-                            />
-                        </div>
+						<div className="grid gap-2">
+							<Label htmlFor="password">Password</Label>
+							<Input
+								id="password"
+								type="password"
+								name="password"
+								autoComplete="new-password"
+								className="mt-1 block w-full"
+								autoFocus
+								placeholder="Password"
+							/>
+						</div>
 
-                        <div className="grid gap-2">
-                            <Label htmlFor="password_confirmation">
-                                Confirm password
-                            </Label>
-                            <Input
-                                id="password_confirmation"
-                                type="password"
-                                name="password_confirmation"
-                                autoComplete="new-password"
-                                className="mt-1 block w-full"
-                                placeholder="Confirm password"
-                            />
-                        </div>
+						<div className="grid gap-2">
+							<Label htmlFor="password_confirmation">
+								Confirm password
+							</Label>
+							<Input
+								id="password_confirmation"
+								type="password"
+								name="password_confirmation"
+								autoComplete="new-password"
+								className="mt-1 block w-full"
+								placeholder="Confirm password"
+							/>
+						</div>
 
-                        <Button
-                            type="submit"
-                            className="mt-4 w-full"
-                            disabled={processing}
-                            data-test="reset-password-button"
-                        >
-                            {processing && <Spinner />}
-                            Reset password
-                        </Button>
-                    </div>
-                )}
-            </Form>
-        </AuthLayout>
-    );
+						<Button
+							type="submit"
+							className="mt-4 w-full"
+							disabled={processing}
+							data-test="reset-password-button"
+						>
+							{processing && <Spinner />}
+							Reset password
+						</Button>
+					</div>
+				)}
+			</Form>
+		</AuthLayout>
+	);
 }

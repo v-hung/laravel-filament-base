@@ -6,7 +6,7 @@ return [
         'settings' => 'Cài đặt',
         'shop' => 'Cửa hàng',
     ],
-    "resources" => [
+    'resources' => [
         'user' => [
             'label' => 'Người dùng',
             'plural_label' => 'Danh sách Người dùng',
@@ -45,17 +45,20 @@ return [
         ],
     ],
 
-    "pages" => [
+    'pages' => [
         'shop_settings' => [
-            'label' => 'Cài đặt cửa hàng'
+            'label' => 'Cài đặt cửa hàng',
         ],
         'system_settings' => [
-            'label' => 'Cài đặt hệ thống'
+            'label' => 'Cài đặt hệ thống',
+        ],
+        'media_manager' => [
+            'label' => 'Quản lý phương tiện',
         ],
     ],
 
-    "settings" => [
-        "fields" => [
+    'settings' => [
+        'fields' => [
             'site_name' => 'Tên website',
             'site_logo' => 'Logo',
             'site_email' => 'Địa chỉ email',
@@ -67,8 +70,8 @@ return [
         ],
     ],
 
-    "forms" => [
-        "fields" => [
+    'forms' => [
+        'fields' => [
             'title' => 'Tiêu đề',
             'slug' => 'Đường dẫn',
             'description' => 'Mô tả',
@@ -103,8 +106,8 @@ return [
         ],
     ],
 
-    "tables" => [
-        "columns" => [
+    'tables' => [
+        'columns' => [
             'title' => 'Tiêu đề',
             'slug' => 'Đường dẫn',
             'name' => 'Tên',

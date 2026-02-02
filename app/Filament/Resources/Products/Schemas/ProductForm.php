@@ -3,17 +3,14 @@
 namespace App\Filament\Resources\Products\Schemas;
 
 use App\Enums\ProductStatus;
-use App\Filament\Forms\Components\ProductOptionVariant;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Hidden;
+use App\Filament\Forms\Components\MediaPicker;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Schemas\Components\Section;
-use Filament\Schemas\Schema;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Str;
 use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Schema;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class ProductForm
 {
@@ -49,9 +46,9 @@ class ProductForm
                     ->label(__('filament.forms.fields.content'))
                     ->columnSpan('full')
                     ->extraInputAttributes(['style' => 'min-height: 20rem;']),
-                FileUpload::make('images')
+                MediaPicker::make('images')
                     ->label(__('filament.forms.fields.images'))
-                    ->disk('public')->directory('products')
+                    ->collection('gallery')
                     ->multiple()->columnSpan('full'),
                 TextInput::make('compare_at_price')
                     ->label(__('filament.forms.fields.compare_at_price'))

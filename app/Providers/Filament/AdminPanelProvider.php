@@ -12,6 +12,7 @@ use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\View\PanelsRenderHook;
 use Filament\Widgets\AccountWidget;
 use Filament\Widgets\FilamentInfoWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -19,6 +20,7 @@ use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use LaraZeus\SpatieTranslatable\SpatieTranslatablePlugin;
 
@@ -61,7 +63,7 @@ class AdminPanelProvider extends PanelProvider
                     ->gridColumns([
                         'default' => 1,
                         'sm' => 2,
-                        'lg' => 3
+                        'lg' => 3,
                     ])
                     ->sectionColumnSpan(1)
                     ->checkboxListColumns([
@@ -77,11 +79,15 @@ class AdminPanelProvider extends PanelProvider
                     ->defaultLocales(['vi', 'en']),
             ])
             ->navigationGroups([
-                'shop' => NavigationGroup::make(fn() => __('filament.navigation.shop')),
-                'content' => NavigationGroup::make(fn() => __('filament.navigation.content')),
-                'user' => NavigationGroup::make(fn() => __('filament-shield::filament-shield.nav.group')),
-                'settings' => NavigationGroup::make(fn() => __('filament.navigation.settings')),
+                'shop' => NavigationGroup::make(fn () => __('filament.navigation.shop')),
+                'content' => NavigationGroup::make(fn () => __('filament.navigation.content')),
+                'user' => NavigationGroup::make(fn () => __('filament-shield::filament-shield.nav.group')),
+                'settings' => NavigationGroup::make(fn () => __('filament.navigation.settings')),
             ])
+            ->renderHook(
+                PanelsRenderHook::BODY_END,
+                fn () => Blade::render('@livewire(\'media-picker-modal\')')
+            )
             ->authMiddleware([
                 Authenticate::class,
             ]);

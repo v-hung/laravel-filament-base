@@ -2,15 +2,18 @@
 
 namespace App\Providers;
 
+use App\Livewire\MediaManager;
+use App\Livewire\MediaPickerModal;
 use App\Repositories\SettingRepository;
 use BezhanSalleh\LanguageSwitch\LanguageSwitch;
 use Carbon\CarbonImmutable;
+use Filament\Support\Assets\Js;
+use Filament\Support\Facades\FilamentAsset;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
-use Filament\Support\Assets\Js;
-use Filament\Support\Facades\FilamentAsset;
+use Livewire\Livewire;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,12 +32,16 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->configureDefaults();
 
+        // Register Livewire components
+        Livewire::component('media-picker-modal', MediaPickerModal::class);
+        Livewire::component('media-manager', MediaManager::class);
+
         // FilamentAsset::register([
         //     Js::make('apline-sort', __DIR__ . '/../../resources/js/alpine-plugin/alpine.sort.min.js'),
         //     // Js::make('apline-mask', __DIR__ . '/../../resources/js/alpine-plugin/alpine.mask.min.js'),
         // ]);
 
-        if (!$this->app->runningInConsole()) {
+        if (! $this->app->runningInConsole()) {
             // Gate::guessPolicyNamesUsing(function (string $modelClass) {
             //     return str_replace('Models', 'Policies', $modelClass) . 'Policy';
             // });
@@ -56,13 +63,13 @@ class AppServiceProvider extends ServiceProvider
         );
 
         Password::defaults(
-            fn(): ?Password => app()->isProduction()
+            fn (): ?Password => app()->isProduction()
                 ? Password::min(12)
-                ->mixedCase()
-                ->letters()
-                ->numbers()
-                ->symbols()
-                ->uncompromised()
+                    ->mixedCase()
+                    ->letters()
+                    ->numbers()
+                    ->symbols()
+                    ->uncompromised()
                 : null
         );
     }

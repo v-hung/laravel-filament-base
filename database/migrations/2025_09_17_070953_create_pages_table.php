@@ -17,7 +17,6 @@ return new class extends Migration
             $table->json('slug');
             $table->json('description')->nullable();
             $table->json('content')->nullable();
-            $table->text('images')->nullable();
             $table->string('status')->default('draft')->comment('draft, reviewing, published, rejected');
             $table->timestamps();
         });

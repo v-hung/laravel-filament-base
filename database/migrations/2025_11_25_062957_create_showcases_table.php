@@ -17,7 +17,6 @@ return new class extends Migration
             $table->json('title')->nullable();
             $table->json('description')->nullable();
             $table->json('content')->nullable();
-            $table->json('image')->nullable();
             $table->string('link')->nullable();
             $table->integer('order')->default(0);
             $table->string('status')->default('active')->comment('active, archived');

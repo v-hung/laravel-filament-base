@@ -17,7 +17,6 @@ return new class extends Migration
             $table->json('slug');
             $table->json('description')->nullable();
             $table->json('content')->nullable();
-            $table->text('images')->nullable();
             $table->decimal('price', 15, 2);
             $table->boolean('has_variant')->default(false);
             $table->decimal('compare_at_price', 15, 2)->nullable();

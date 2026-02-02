@@ -6,7 +6,7 @@ return [
         'settings' => 'Settings',
         'shop' => 'Shop',
     ],
-    "resources" => [
+    'resources' => [
         'user' => [
             'label' => 'User',
             'plural_label' => 'Users',
@@ -45,17 +45,20 @@ return [
         ],
     ],
 
-    "pages" => [
+    'pages' => [
         'shop_settings' => [
-            'label' => 'Shop Settings'
+            'label' => 'Shop Settings',
         ],
         'system_settings' => [
-            'label' => 'System Settings'
+            'label' => 'System Settings',
+        ],
+        'media_manager' => [
+            'label' => 'Media Manager',
         ],
     ],
 
-    "settings" => [
-        "fields" => [
+    'settings' => [
+        'fields' => [
             'site_name' => 'Site Name',
             'site_logo' => 'Logo',
             'site_email' => 'Email Address',
@@ -67,8 +70,8 @@ return [
         ],
     ],
 
-    "forms" => [
-        "fields" => [
+    'forms' => [
+        'fields' => [
             'title' => 'Title',
             'slug' => 'Slug',
             'description' => 'Description',
@@ -103,8 +106,8 @@ return [
         ],
     ],
 
-    "tables" => [
-        "columns" => [
+    'tables' => [
+        'columns' => [
             'title' => 'Title',
             'slug' => 'Slug',
             'name' => 'Name',
