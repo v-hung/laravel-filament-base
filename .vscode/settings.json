@@ -2,8 +2,6 @@
 	"i18n-ally.localesPaths": [
 		"lang"
 	],
-	"php.validate.executablePath": "ddev",
-	"php.validate.run": "onType",
 	"LaravelExtraIntellisense.phpCommand": "ddev php -r \"{code}\"",
 	"LaravelExtraIntellisense.basePathForCode": "/var/www/html",
 	"editor.defaultFormatter": "esbenp.prettier-vscode",

@@ -2,7 +2,7 @@
 <div class="mb-4 flex items-center justify-between">
   <div class="flex-1 max-w-lg">
     <input type="text" wire:model.live.debounce.300ms="search" placeholder="Search media..."
-      class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+      class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full px-4 py-2.5 sm:text-sm border-gray-300 rounded-md">
   </div>
   <div class="ml-4">
     <label class="inline-flex items-center">
