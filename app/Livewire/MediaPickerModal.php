@@ -2,6 +2,8 @@
 
 namespace App\Livewire;
 
+use App\Livewire\Concerns\InteractsWithMedia;
+use App\Models\MediaFolder;
 use App\Repositories\MediaRepository;
 use App\Services\MediaService;
 use Filament\Notifications\Notification;
@@ -12,7 +14,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class MediaPickerModal extends Component
 {
-	use WithFileUploads, WithPagination;
+	use InteractsWithMedia, WithFileUploads, WithPagination;
 
 	protected MediaRepository $mediaRepository;
 
@@ -40,7 +42,9 @@ class MediaPickerModal extends Component
 
 	public string $newFolderName = '';
 
-	public ?string $currentFolder = null;
+	public ?int $currentFolder = null;
+
+	public ?int $browsingFolderId = null; // Folder đang xem trong browse mode
 
 	// Detail modal properties
 	public ?int $detailMediaId = null;
@@ -88,35 +92,40 @@ class MediaPickerModal extends Component
 		$this->isOpen = false;
 		$this->currentModal = 'browse';
 		$this->previousModal = null;
-		$this->reset(['selected', 'search', 'uploadedFiles', 'view', 'mode', 'newFolderName', 'currentFolder', 'detailMediaId', 'detailFileName', 'detailAltText', 'detailCaption', 'detailLocation', 'replacementFile']);
+		$this->reset(['selected', 'search', 'uploadedFiles', 'view', 'mode', 'newFolderName', 'currentFolder', 'browsingFolderId', 'detailMediaId', 'detailFileName', 'detailAltText', 'detailCaption', 'detailLocation', 'replacementFile']);
 	}
 
-	public function openCreateFolder(): void
+	public function openCreateFolder(?int $folderId = null): void
 	{
 		$this->isOpen = true;
 		$this->mode = 'manager';
 		$this->previousModal = null; // Mở trực tiếp, không có modal trước
 		$this->currentModal = 'create-folder';
+		$this->currentFolder = $folderId;
+		$this->browsingFolderId = $folderId;
 	}
 
 	public function openCreateFolderModal(): void
 	{
 		$this->previousModal = $this->currentModal; // Lưu modal hiện tại
+		$this->currentFolder = $this->browsingFolderId; // Set folder context
+
 		$this->currentModal = 'create-folder';
 	}
 
-	public function openUploadAsset(?string $folder = null): void
+	public function openUploadAsset(?int $folderId = null): void
 	{
 		$this->isOpen = true;
 		$this->mode = 'manager';
 		$this->previousModal = null; // Mở trực tiếp, không có modal trước
 		$this->currentModal = 'upload';
-		$this->currentFolder = $folder;
+		$this->currentFolder = $folderId;
 	}
 
 	public function openUploadModal(): void
 	{
 		$this->previousModal = $this->currentModal; // Lưu modal hiện tại
+		$this->currentFolder = $this->browsingFolderId; // Set folder context
 		$this->currentModal = 'upload';
 	}
 
@@ -127,8 +136,7 @@ class MediaPickerModal extends Component
 			$this->currentModal = $this->previousModal;
 			$this->previousModal = null;
 			// Clear data của modal đang đóng
-			$this->newFolderName = '';
-			$this->uploadedFiles = [];
+			$this->reset(['newFolderName', 'uploadedFiles', 'replacementFile']);
 		} else {
 			// Nếu không có modal trước, đóng hẳn
 			$this->close();
@@ -143,31 +151,44 @@ class MediaPickerModal extends Component
 	public function createFolder(): void
 	{
 		$this->validate([
-			'newFolderName' => 'required|string|max:255',
+			'newFolderName' => [
+				'required',
+				'string',
+				'max:255',
+				'regex:/^[a-zA-Z0-9\s\-_]+$/',
+			],
+		], [
+			'newFolderName.regex' => 'Folder name can only contain letters, numbers, spaces, hyphens, and underscores.',
 		]);
 
-		// Tạo folder bằng cách tạo một media placeholder
-		$media = new Media;
-		$media->name = '.folder';
-		$media->file_name = '.folder';
-		$media->disk = 'public';
-		$media->size = 0;
-		$media->mime_type = 'folder';
-		$media->collection_name = $this->newFolderName;
-		$media->manipulations = [];
-		$media->custom_properties = ['is_folder' => true];
-		$media->generated_conversions = [];
-		$media->responsive_images = [];
-		$media->save();
+		// Kiểm tra tên folder trùng trong cùng parent
+		$exists = MediaFolder::where('name', $this->newFolderName)
+			->where('parent_id', $this->currentFolder)
+			->exists();
 
-		Notification::make()
-			->title('Folder created successfully')
-			->success()
-			->send();
+		if ($exists) {
+			$this->addError('newFolderName', 'A folder with this name already exists in this location.');
 
-		$this->dispatch('folderCreated');
-		$this->currentModal = 'browse';
-		$this->newFolderName = '';
+			return;
+		}
+
+		try {
+			$this->mediaRepository->createFolder($this->newFolderName, $this->currentFolder);
+
+			Notification::make()
+				->title('Folder created successfully')
+				->success()
+				->send();
+
+			$this->dispatch('folderCreated');
+			$this->closeModal();
+		} catch (\Exception $e) {
+			Notification::make()
+				->title('Failed to create folder')
+				->body($e->getMessage())
+				->danger()
+				->send();
+		}
 	}
 
 	public function toggleSelect(int $mediaId): void
@@ -188,6 +209,32 @@ class MediaPickerModal extends Component
 		return in_array($mediaId, $this->selected);
 	}
 
+	public function navigateToFolder(?int $folderId): void
+	{
+		$this->browsingFolderId = $folderId;
+		$this->resetPage(); // Reset pagination khi đổi folder
+	}
+
+	public function confirmDeleteFolder(int $folderId): void
+	{
+		$this->dispatch('open-confirm-modal', [
+			'title' => 'Delete Folder',
+			'message' => 'Delete this folder? Contents will be moved to parent folder.',
+			'callback' => 'deleteFolder',
+			'params' => ['folderId' => $folderId],
+		]);
+	}
+
+	public function confirmDeleteMedia(int $mediaId): void
+	{
+		$this->dispatch('open-confirm-modal', [
+			'title' => 'Delete Media',
+			'message' => 'Are you sure you want to delete this media? This action cannot be undone.',
+			'callback' => 'deleteMedia',
+			'params' => ['mediaId' => $mediaId],
+		]);
+	}
+
 	public function confirm(): void
 	{
 		$this->dispatch('mediaSelected', $this->selected);
@@ -200,50 +247,73 @@ class MediaPickerModal extends Component
 			'uploadedFiles.*' => 'required|file|max:10240',
 		]);
 
-		foreach ($this->uploadedFiles as $file) {
-			$media = $this->mediaService->createMediaFromUpload(
-				$file,
-				$this->currentFolder ?? $this->collection,
-			);
+		try {
+			foreach ($this->uploadedFiles as $file) {
+				$media = $this->mediaService->createMediaFromUpload(
+					$file,
+					$this->collection ?? 'default',
+					$this->currentFolder
+				);
 
-			if ($this->mode === 'picker') {
-				$this->selected[] = $media->id;
+				if ($this->mode === 'picker') {
+					$this->selected[] = $media->id;
+				}
 			}
+
+			Notification::make()
+				->title('Files uploaded successfully')
+				->success()
+				->send();
+
+			$this->dispatch('assetUploaded');
+			$this->closeModal();
+		} catch (\Exception $e) {
+			Notification::make()
+				->title('Failed to upload files')
+				->body($e->getMessage())
+				->danger()
+				->send();
+		} finally {
+			$this->uploadedFiles = [];
 		}
-
-		$this->uploadedFiles = [];
-
-		Notification::make()
-			->title('Files uploaded successfully')
-			->success()
-			->send();
-
-		$this->dispatch('assetUploaded');
-		$this->currentModal = 'browse';
-		$this->view = 'browse';
 	}
 
 	public function openMediaDetail(int $mediaId, ?string $source = null): void
 	{
 		$media = $this->mediaRepository->getMediaById($mediaId);
 
-		if ($media) {
-			if ($source === 'picker') {
-				$this->previousModal = $this->currentModal;
-				$this->isOpen = true;
-			} else {
-				$this->isOpen = true;
-				$this->mode = 'manager';
-				$this->previousModal = null;
-			}
+		if (! $media) {
+			Notification::make()
+				->title('Media not found')
+				->danger()
+				->send();
 
-			$this->detailMediaId = $mediaId;
-			$this->detailFileName = $media->name;
-			$this->detailAltText = $media->getCustomProperty('alt_text', '');
-			$this->detailCaption = $media->getCustomProperty('caption', '');
-			$this->detailLocation = $media->folder_id ? $media->folder->name : 'Root';
-			$this->currentModal = 'detail';
+			return;
 		}
+
+		if ($source === 'picker') {
+			$this->previousModal = $this->currentModal;
+			$this->isOpen = true;
+		} else {
+			$this->isOpen = true;
+			$this->mode = 'manager';
+			$this->previousModal = null;
+		}
+
+		$this->detailMediaId = $mediaId;
+		$this->detailFileName = $media->name;
+		$this->detailAltText = $media->getCustomProperty('alt_text', '');
+		$this->detailCaption = $media->getCustomProperty('caption', '');
+
+		// Get folder location
+		if ($media->folder_id) {
+			$folder = $this->mediaRepository->getFolder($media->folder_id);
+			$this->detailLocation = $folder?->name ?? 'Root';
+		} else {
+			$this->detailLocation = 'Root';
+		}
+
+		$this->currentModal = 'detail';
 	}
 
 	public function closeDetailModal(): void
@@ -255,30 +325,44 @@ class MediaPickerModal extends Component
 			$this->close();
 		}
 
-		$this->detailMediaId = null;
-		$this->detailFileName = '';
-		$this->detailAltText = '';
-		$this->detailCaption = '';
-		$this->detailLocation = '';
-		$this->replacementFile = null;
+		$this->reset([
+			'detailMediaId',
+			'detailFileName',
+			'detailAltText',
+			'detailCaption',
+			'detailLocation',
+			'replacementFile',
+		]);
 	}
 
 	public function saveMediaDetails(): void
 	{
+		$this->validate([
+			'detailFileName' => 'required|string|max:255',
+		]);
+
 		$media = $this->mediaRepository->getMediaById($this->detailMediaId);
 
 		if ($media) {
-			$media->name = $this->detailFileName;
-			$media->setCustomProperty('alt_text', $this->detailAltText);
-			$media->setCustomProperty('caption', $this->detailCaption);
-			$media->save();
+			try {
+				$media->name = $this->detailFileName;
+				$media->setCustomProperty('alt_text', $this->detailAltText);
+				$media->setCustomProperty('caption', $this->detailCaption);
+				$media->save();
 
-			Notification::make()
-				->title('Media details updated successfully')
-				->success()
-				->send();
+				Notification::make()
+					->title('Media details updated successfully')
+					->success()
+					->send();
 
-			$this->closeDetailModal();
+				$this->closeDetailModal();
+			} catch (\Exception $e) {
+				Notification::make()
+					->title('Failed to update media details')
+					->body($e->getMessage())
+					->danger()
+					->send();
+			}
 		}
 	}
 
@@ -327,16 +411,24 @@ class MediaPickerModal extends Component
 		$media = $this->mediaRepository->getMediaById($this->detailMediaId);
 
 		if ($media) {
-			$media->delete();
-			$this->selected = array_values(array_filter($this->selected, fn($id) => $id !== $this->detailMediaId));
+			try {
+				$this->mediaService->deleteMedia($media);
+				$this->selected = array_values(array_filter($this->selected, fn($id) => $id !== $this->detailMediaId));
 
-			Notification::make()
-				->title('Media deleted successfully')
-				->success()
-				->send();
+				Notification::make()
+					->title('Media deleted successfully')
+					->success()
+					->send();
 
-			$this->closeDetailModal();
-			$this->dispatch('assetUploaded');
+				$this->closeDetailModal();
+				$this->dispatch('assetUploaded');
+			} catch (\Exception $e) {
+				Notification::make()
+					->title('Failed to delete media')
+					->body($e->getMessage())
+					->danger()
+					->send();
+			}
 		}
 	}
 
@@ -357,14 +449,37 @@ class MediaPickerModal extends Component
 		$media = $this->mediaRepository->getMediaById($mediaId);
 
 		if ($media) {
-			$media->delete();
-			$this->selected = array_values(array_filter($this->selected, fn($id) => $id !== $mediaId));
+			try {
+				$this->mediaService->deleteMedia($media);
+				$this->selected = array_values(array_filter($this->selected, fn($id) => $id !== $mediaId));
+
+				Notification::make()
+					->title('Media deleted successfully')
+					->success()
+					->send();
+
+				$this->dispatch('assetUploaded');
+			} catch (\Exception $e) {
+				Notification::make()
+					->title('Failed to delete media')
+					->body($e->getMessage())
+					->danger()
+					->send();
+			}
 		}
 	}
 
 	public function render()
 	{
 		$mediaQuery = Media::query()
+			->when(
+				$this->browsingFolderId,
+				fn($query) => $query->where('folder_id', $this->browsingFolderId)
+			)
+			->when(
+				is_null($this->browsingFolderId),
+				fn($query) => $query->whereNull('folder_id')
+			)
 			->when(
 				$this->search,
 				fn($query) => $query->where('name', 'like', '%' . $this->search . '%')
@@ -376,8 +491,24 @@ class MediaPickerModal extends Component
 			)
 			->latest();
 
+		// Get folders in current browsing location
+		$folders = $this->mode === 'manager'
+			? $this->mediaRepository->getFolders($this->browsingFolderId)
+			: collect();
+
+		// Get breadcrumb path - use currentFolder for create/upload modals, browsingFolderId for browse
+		$folderId = in_array($this->currentModal, ['create-folder', 'upload'])
+			? $this->currentFolder
+			: $this->browsingFolderId;
+
+		$breadcrumbs = $folderId
+			? $this->mediaRepository->getFolderPath($folderId)
+			: [];
+
 		return view('livewire.media-picker-modal', [
 			'mediaItems' => $mediaQuery->paginate(12),
+			'folders' => $folders,
+			'breadcrumbs' => $breadcrumbs,
 		]);
 	}
 }

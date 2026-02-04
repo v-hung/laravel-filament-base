@@ -2,14 +2,15 @@
 
 namespace App\Livewire;
 
+use App\Livewire\Concerns\InteractsWithMedia;
 use App\Repositories\MediaRepository;
-use Filament\Notifications\Notification;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 
 class MediaManager extends Component
 {
+	use InteractsWithMedia;
 	use WithFileUploads;
 	use WithPagination;
 
@@ -65,12 +66,12 @@ class MediaManager extends Component
 
 	public function openFolderCreator(): void
 	{
-		$this->dispatch('openFolderCreator');
+		$this->dispatch('openFolderCreator', folderId: $this->currentFolderId);
 	}
 
 	public function openAssetUploader(): void
 	{
-		$this->dispatch('openAssetUploader', folder: $this->currentFolderId);
+		$this->dispatch('openAssetUploader', folderId: $this->currentFolderId);
 	}
 
 	public function updatedSearch(): void
@@ -78,14 +79,24 @@ class MediaManager extends Component
 		$this->resetPage();
 	}
 
-	public function deleteMedia(int $mediaId): void
+	public function confirmDeleteMedia(int $mediaId): void
 	{
-		if ($this->mediaRepository->deleteMedia($mediaId)) {
-			Notification::make()
-				->title('Media deleted successfully')
-				->success()
-				->send();
-		}
+		$this->dispatch('open-confirm-modal', [
+			'title' => 'Delete Media',
+			'message' => 'Are you sure you want to delete this media? This action cannot be undone.',
+			'callback' => 'deleteMedia',
+			'params' => ['mediaId' => $mediaId],
+		]);
+	}
+
+	public function confirmDeleteFolder(int $folderId): void
+	{
+		$this->dispatch('open-confirm-modal', [
+			'title' => 'Delete Folder',
+			'message' => 'Delete this folder? Contents will be moved to parent folder.',
+			'callback' => 'deleteFolder',
+			'params' => ['folderId' => $folderId],
+		]);
 	}
 
 	public function changeSorting(string $field): void
