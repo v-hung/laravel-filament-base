@@ -3,18 +3,13 @@
 namespace App\Filament\Resources\Blogs\Schemas;
 
 use App\Enums\CategoryStatus;
-use Closure;
-use Filament\Actions\Action;
-use Filament\Actions\ActionGroup;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Schemas\Components\Component;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
-use Illuminate\Contracts\Support\Htmlable;
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class BlogForm
 {
@@ -38,7 +33,7 @@ class BlogForm
                         $locale = $livewire->activeLocale ?? app()->getLocale();
 
                         return [
-                            Rule::unique('blogs', "slug")->ignore($record?->id),
+                            Rule::unique('blogs', 'slug')->ignore($record?->id),
                             // Rule::unique('blogs', "slug->$locale")
                             //     ->ignore($record?->id),
                         ];

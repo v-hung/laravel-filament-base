@@ -9,10 +9,9 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class PostRepository
 {
-
     public function search(?SearchParams $params = null): LengthAwarePaginator
     {
-        $params ??= new SearchParams();
+        $params ??= new SearchParams;
 
         return Post::query()
             ->where('status', ContentStatus::Published)

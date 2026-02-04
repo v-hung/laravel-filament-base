@@ -2,17 +2,15 @@
 
 namespace App\Filament\Resources\Posts\Schemas;
 
-use App\Enums\CategoryStatus;
 use App\Enums\ContentStatus;
-use App\Filament\Resources\Blogs\Schemas\BlogForm;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class PostForm
 {
@@ -36,7 +34,7 @@ class PostForm
                         $locale = $livewire->activeLocale ?? app()->getLocale();
 
                         return [
-                            Rule::unique('posts', "slug")->ignore($record?->id),
+                            Rule::unique('posts', 'slug')->ignore($record?->id),
                             // Rule::unique('posts', "slug->$locale")
                             //     ->ignore($record?->id),
                         ];

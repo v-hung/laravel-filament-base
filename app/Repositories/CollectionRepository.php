@@ -5,14 +5,14 @@ namespace App\Repositories;
 use App\Data\SearchParams;
 use App\Enums\CategoryStatus;
 use App\Models\Collection;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class CollectionRepository
 {
     public function search(?SearchParams $params = null): LengthAwarePaginator
     {
-        $params ??= new SearchParams();
+        $params ??= new SearchParams;
 
         return Collection::query()
             ->where('status', CategoryStatus::Active)

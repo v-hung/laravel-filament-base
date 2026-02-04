@@ -8,8 +8,8 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class CollectionForm
 {
@@ -33,7 +33,7 @@ class CollectionForm
                         $locale = $livewire->activeLocale ?? app()->getLocale();
 
                         return [
-                            Rule::unique('collections', "slug")->ignore($record?->id),
+                            Rule::unique('collections', 'slug')->ignore($record?->id),
                             // Rule::unique('collections', "slug->$locale")
                             //     ->ignore($record?->id),
                         ];

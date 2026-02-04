@@ -114,7 +114,7 @@ This project has domain-specific skills available. You MUST activate the relevan
 ## Constructors
 
 - Use PHP 8 constructor property promotion in `__construct()`.
-    - <code-snippet>public function __construct(public GitHub $github) { }</code-snippet>
+    - <code-snippet>public function \_\_construct(public GitHub $github) { }</code-snippet>
 - Do not allow empty `__construct()` methods with zero parameters unless the constructor is private.
 
 ## Type Declarations
@@ -295,4 +295,17 @@ Wayfinder generates TypeScript functions for Laravel routes. Import from `@/acti
 - Fortify is a headless authentication backend that provides authentication routes and controllers for Laravel applications.
 - IMPORTANT: Always use the `search-docs` tool for detailed Laravel Fortify patterns and documentation.
 - IMPORTANT: Activate `developing-with-fortify` skill when working with Fortify authentication features.
-</laravel-boost-guidelines>
+  </laravel-boost-guidelines>
+
+# Environment Rules
+
+- This project runs on **DDEV**.
+- **CRITICAL:** All terminal commands must be prefixed with `ddev`.
+- Use `ddev artisan` instead of `php artisan`.
+- Use `ddev composer` instead of `composer`.
+- Use `ddev php vendor/bin/pint` instead of `vendor/bin/pint`.
+- Use `ddev npx` or `ddev npm` for frontend tasks if run inside the container.
+
+# Integration with Laravel Boost
+
+- When following the rules in `<laravel-boost-guidelines>`, always swap the command execution to use the DDEV prefix.

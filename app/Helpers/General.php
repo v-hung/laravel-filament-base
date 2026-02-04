@@ -2,10 +2,10 @@
 
 use Illuminate\Support\Facades\Storage;
 
-if (!function_exists('setting')) {
+if (! function_exists('setting')) {
     function setting($key, $default = null)
     {
-        if (!app()->bound('settings')) {
+        if (! app()->bound('settings')) {
             // Nếu service 'settings' chưa tồn tại, trả về giá trị mặc định
             return $default ?? $key;
         }
@@ -16,11 +16,10 @@ if (!function_exists('setting')) {
     }
 }
 
-
-if (!function_exists('image_url')) {
+if (! function_exists('image_url')) {
     function image_url($image)
     {
-        if (!$image) {
+        if (! $image) {
             return null;
         }
 
@@ -33,10 +32,11 @@ if (!function_exists('image_url')) {
     }
 }
 
-if (!function_exists('format_currency')) {
+if (! function_exists('format_currency')) {
     function format_currency($amount, $currency = 'VND', $locale = 'vi_VN')
     {
         $fmt = new NumberFormatter($locale, NumberFormatter::CURRENCY);
+
         return $fmt->formatCurrency($amount, $currency);
     }
 }

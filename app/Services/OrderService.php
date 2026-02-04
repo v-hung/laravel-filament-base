@@ -2,12 +2,10 @@
 
 namespace App\Services;
 
-use App\Data\SearchParams;
 use App\Enums\OrderStatus;
 use App\Enums\PaymentStatus;
 use App\Models\Order;
 use App\Models\OrderItem;
-use App\Services\CartService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -65,7 +63,7 @@ class OrderService
     public function createOrderCode(): string
     {
         $todayOrdersCount = Order::whereDate('created_at', today())->count() + 1;
-        $orderCode = 'ORD-' . now()->format('Ymd') . '-' . str_pad($todayOrdersCount, 4, '0', STR_PAD_LEFT);
+        $orderCode = 'ORD-'.now()->format('Ymd').'-'.str_pad($todayOrdersCount, 4, '0', STR_PAD_LEFT);
 
         return $orderCode;
     }

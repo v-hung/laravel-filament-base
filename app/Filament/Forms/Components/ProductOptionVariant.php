@@ -24,7 +24,7 @@ class ProductOptionVariant extends Field
 
     private function validateStateRules(): \Closure
     {
-        return fn(): \Closure => function (string $attribute, $value, \Closure $fail) {
+        return fn (): \Closure => function (string $attribute, $value, \Closure $fail) {
             $validator = \Illuminate\Support\Facades\Validator::make($value, [
                 'options' => 'array',
                 'options.*.name' => 'required|string',
@@ -38,13 +38,13 @@ class ProductOptionVariant extends Field
                 'variants.*.stock' => 'numeric',
                 'variants.*.values' => 'array|min:1',
                 'variants.*.values.*.option_id' => 'required',
-                'variants.*.image_file' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:5120'
+                'variants.*.image_file' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:5120',
             ]);
 
             if ($validator->fails()) {
                 foreach ($validator->errors()->messages() as $key => $messages) {
                     foreach ($messages as $message) {
-                        $prefixedKey = 'data.' . $this->name . '.' . $key;
+                        $prefixedKey = 'data.'.$this->name.'.'.$key;
                         $fail($prefixedKey, $message);
                     }
                 }

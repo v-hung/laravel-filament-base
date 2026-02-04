@@ -11,7 +11,7 @@ class OrderRepository
 {
     public function search(?SearchParams $params = null): LengthAwarePaginator
     {
-        $params ??= new SearchParams();
+        $params ??= new SearchParams;
 
         return Order::query()->with(['items.product'])
             ->where('user_id', Auth::id())

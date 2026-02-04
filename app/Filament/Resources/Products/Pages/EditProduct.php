@@ -2,8 +2,6 @@
 
 namespace App\Filament\Resources\Products\Pages;
 
-use App\Filament\Core\Resources\EditTranslatable;
-use App\Filament\Forms\Components\HasProductOptionVariant;
 use App\Filament\Resources\Products\ProductResource;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ViewAction;
@@ -13,7 +11,6 @@ use LaraZeus\SpatieTranslatable\Resources\Pages\EditRecord\Concerns\Translatable
 
 class EditProduct extends EditRecord
 {
-
     use Translatable;
 
     protected static string $resource = ProductResource::class;

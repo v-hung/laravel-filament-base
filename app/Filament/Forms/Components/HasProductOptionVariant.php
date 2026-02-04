@@ -12,7 +12,6 @@ use Illuminate\Validation\ValidationException;
  */
 trait HasProductOptionVariant
 {
-
     public array $optionVariantCache = [];
 
     protected function afterFill(): void
@@ -36,7 +35,7 @@ trait HasProductOptionVariant
 
         $this->form->fill([
             ...$this->form->getRawState(),
-            'has_variant' => !empty($state['variants'] ?? [])
+            'has_variant' => ! empty($state['variants'] ?? []),
         ]);
 
         $this->optionVariantCache = $this->form->getRawState()['option_variant'] ?? [];
@@ -77,7 +76,7 @@ trait HasProductOptionVariant
 
             $this->form->fill([
                 ...$this->form->getRawState(),
-                'option_variant' => $this->optionVariantCache
+                'option_variant' => $this->optionVariantCache,
             ]);
 
             $this->optionVariantCache = [];

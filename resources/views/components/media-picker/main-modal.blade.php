@@ -1,7 +1,7 @@
 <div class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
   <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
     <!-- Background overlay -->
-    <div class="fixed inset-0 bg-gray-500 opacity-75 transition-opacity" wire:click="close"></div>
+    <div class="fixed inset-0 bg-gray-500/75 dark:bg-gray-900/80 transition-opacity" wire:click="closeModal"></div>
 
     <!-- Modal panel -->
     <div
@@ -13,15 +13,15 @@
       <div class="border-b border-gray-200 bg-white px-6">
         <nav class="-mb-px flex space-x-8" aria-label="Tabs">
           <button wire:click="switchView('browse')"
-            class="@if ($view === 'browse') border-indigo-500 text-indigo-600 @else border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 @endif whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm uppercase">
+            class="@if ($view === 'browse') border-primary-500 text-primary-600 @else border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 @endif whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm uppercase">
             Browse
           </button>
           <button wire:click="switchView('selected')"
-            class="@if ($view === 'selected') border-indigo-500 text-indigo-600 @else border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 @endif whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm uppercase">
+            class="@if ($view === 'selected') border-primary-500 text-primary-600 @else border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 @endif whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm uppercase">
             Selected Files
             @if (count($selected) > 0)
               <span
-                class="ml-2 bg-indigo-100 text-indigo-600 py-0.5 px-2 rounded-full text-xs">{{ count($selected) }}</span>
+                class="ml-2 bg-primary-100 text-primary-600 py-0.5 px-2 rounded-full text-xs">{{ count($selected) }}</span>
             @endif
           </button>
         </nav>
@@ -40,7 +40,7 @@
           </button>
         @endif
         <button wire:click="openUploadModal"
-          class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700">
+          class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700">
           <svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
           </svg>

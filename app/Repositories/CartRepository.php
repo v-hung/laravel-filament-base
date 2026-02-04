@@ -44,7 +44,7 @@ class CartRepository
     public function updateItem(Cart $cart, int $productId, int $quantity): ?CartItem
     {
         $cartItem = $cart->items()->where('product_id', $productId)->first();
-        if (!$cartItem) {
+        if (! $cartItem) {
             return null;
         }
 
@@ -60,7 +60,9 @@ class CartRepository
     public function removeItem(Cart $cart, int $productId): bool
     {
         $cartItem = $cart->items()->where('product_id', $productId)->first();
-        if (!$cartItem) return false;
+        if (! $cartItem) {
+            return false;
+        }
 
         return $cartItem->delete();
     }

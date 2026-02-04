@@ -21,7 +21,7 @@ class ShowcaseResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::CircleStack;
 
-    public static function getNavigationGroup(): string | UnitEnum | null
+    public static function getNavigationGroup(): string|UnitEnum|null
     {
         return __('filament.navigation.content');
     }

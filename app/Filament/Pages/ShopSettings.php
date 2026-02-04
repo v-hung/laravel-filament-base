@@ -3,18 +3,15 @@
 namespace App\Filament\Pages;
 
 use App\Filament\Core\Pages\PageSettingsTranslatable;
-use App\Helpers\Filament\FormHelper;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Contracts\Support\Htmlable;
-use Illuminate\Support\Facades\Artisan;
 use UnitEnum;
 
 class ShopSettings extends PageSettingsTranslatable
@@ -23,7 +20,7 @@ class ShopSettings extends PageSettingsTranslatable
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::Cog6Tooth;
 
-    public static function getNavigationGroup(): string | UnitEnum | null
+    public static function getNavigationGroup(): string|UnitEnum|null
     {
         return __('filament.navigation.settings');
     }
@@ -33,7 +30,7 @@ class ShopSettings extends PageSettingsTranslatable
         return __('filament.pages.shop_settings.label');
     }
 
-    public function getTitle(): string | Htmlable
+    public function getTitle(): string|Htmlable
     {
         return __('filament.pages.shop_settings.label');
     }
@@ -45,7 +42,7 @@ class ShopSettings extends PageSettingsTranslatable
         return [
             Action::make('save')
                 ->label(__('filament-panels::resources/pages/edit-record.form.actions.save.label'))
-                ->action('save')
+                ->action('save'),
         ];
     }
 

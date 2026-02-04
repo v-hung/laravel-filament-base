@@ -8,7 +8,7 @@ use Illuminate\Contracts\Support\Htmlable;
 
 class RevenueChart extends ChartWidget
 {
-    public function getHeading(): string | Htmlable | null
+    public function getHeading(): string|Htmlable|null
     {
         return __('widgets.revenue_chart.heading');
     }
@@ -16,7 +16,7 @@ class RevenueChart extends ChartWidget
     protected function getData(): array
     {
         $start = now()->subDays(29)->startOfDay();
-        $end   = now()->endOfDay();
+        $end = now()->endOfDay();
 
         $orders = Order::selectRaw('DATE(created_at) as date, SUM(total) as total')
             ->whereBetween('created_at', [$start, $end])
@@ -25,11 +25,11 @@ class RevenueChart extends ChartWidget
             ->pluck('total', 'date'); // key = date, value = total
 
         $days = collect(range(0, 29))
-            ->map(fn($i) => now()->subDays($i)->format('Y-m-d'))
+            ->map(fn ($i) => now()->subDays($i)->format('Y-m-d'))
             ->reverse()
             ->values();
 
-        $data = $days->map(fn($day) => $orders[$day] ?? 0);
+        $data = $days->map(fn ($day) => $orders[$day] ?? 0);
 
         return [
             'datasets' => [

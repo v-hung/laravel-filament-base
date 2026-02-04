@@ -8,6 +8,6 @@ class FormHelper
     {
         $displayLocale ??= app()->getLocale();
 
-        return fn($livewire) => $label . ' (' . locale_get_display_name($livewire->activeLocale, $displayLocale) . ')';
+        return fn ($livewire) => $label.' ('.locale_get_display_name($livewire->activeLocale, $displayLocale).')';
     }
 }

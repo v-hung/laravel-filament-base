@@ -6,7 +6,7 @@ use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasDescription;
 use Filament\Support\Contracts\HasLabel;
 
-enum PaymentStatus: string implements HasColor, HasLabel, HasDescription
+enum PaymentStatus: string implements HasColor, HasDescription, HasLabel
 {
     case Pending = 'pending';
     case Paid = 'paid';
@@ -24,7 +24,7 @@ enum PaymentStatus: string implements HasColor, HasLabel, HasDescription
         return __("shop.payment.status.{$this->value}.description");
     }
 
-    public function getColor(): string | array | null
+    public function getColor(): string|array|null
     {
         return match ($this) {
             self::Pending => 'gray',

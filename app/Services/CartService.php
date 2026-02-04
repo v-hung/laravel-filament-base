@@ -12,8 +12,8 @@ use Illuminate\Support\Facades\Session;
 
 class CartService
 {
-
     protected CartRepository $cartRepository;
+
     protected ProductRepository $productRepository;
 
     public function __construct(CartRepository $cartRepository, ProductRepository $productRepository)
@@ -31,6 +31,7 @@ class CartService
     {
         if (Auth::check()) {
             $cart = $this->cartRepository->getCartByUserId(Auth::id());
+
             return $cart ? $cart->items->toArray() : [];
         } else {
             $sessionCart = Session::get('cart', []);
@@ -57,9 +58,10 @@ class CartService
 
         if (Auth::check()) {
             $cart = $this->cartRepository->getCartByUserId(Auth::id());
-            if (!$cart) {
+            if (! $cart) {
                 $cart = $this->cartRepository->createCart(Auth::id());
             }
+
             return $this->cartRepository->addItem($cart, $productId, $quantity, $price);
         } else {
             $cart = Session::get('cart', []);
@@ -73,7 +75,7 @@ class CartService
                     break;
                 }
             }
-            if (!$found) {
+            if (! $found) {
                 $cart[] = [
                     'product_id' => $productId,
                     'quantity' => $quantity,
@@ -82,6 +84,7 @@ class CartService
             }
 
             Session::put('cart', $cart);
+
             return $cart;
         }
     }
@@ -97,7 +100,9 @@ class CartService
 
         if (Auth::check()) {
             $cart = $this->cartRepository->getCartByUserId(Auth::id());
-            if (!$cart) return null;
+            if (! $cart) {
+                return null;
+            }
 
             return $this->cartRepository->updateItem($cart, $productId, $quantity);
         } else {
@@ -109,6 +114,7 @@ class CartService
                 }
             }
             Session::put('cart', $cart);
+
             return $cart;
         }
     }
@@ -120,15 +126,18 @@ class CartService
     {
         if (Auth::check()) {
             $cart = $this->cartRepository->getCartByUserId(Auth::id());
-            if (!$cart) return null;
+            if (! $cart) {
+                return null;
+            }
 
             return $this->cartRepository->removeItem($cart, $productId);
         } else {
             $cart = Session::get('cart', []);
-            $cart = array_filter($cart, fn($item) => $item['product_id'] != $productId);
+            $cart = array_filter($cart, fn ($item) => $item['product_id'] != $productId);
             // Reindex array to avoid gaps in session
             $cart = array_values($cart);
             Session::put('cart', $cart);
+
             return $cart;
         }
     }
@@ -140,7 +149,7 @@ class CartService
     {
         $items = $cart ?? $this->getCart();
 
-        return collect($items)->sum(fn($item) => $item['price'] * $item['quantity']);
+        return collect($items)->sum(fn ($item) => $item['price'] * $item['quantity']);
     }
 
     /**
@@ -161,7 +170,9 @@ class CartService
     public function mergeSessionCart()
     {
         $sessionCart = Session::get('cart', []);
-        if (!Auth::check() || empty($sessionCart)) return;
+        if (! Auth::check() || empty($sessionCart)) {
+            return;
+        }
 
         $cart = $this->cartRepository->getCartByUserId(Auth::id()) ?? $this->cartRepository->createCart(Auth::id());
 

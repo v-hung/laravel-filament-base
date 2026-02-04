@@ -29,7 +29,7 @@ class SystemSettings extends Page implements HasForms
         return false;
     }
 
-    public static function getNavigationGroup(): string | UnitEnum | null
+    public static function getNavigationGroup(): string|UnitEnum|null
     {
         return __('filament.navigation.settings');
     }
@@ -39,7 +39,7 @@ class SystemSettings extends Page implements HasForms
         return __('filament.pages.system_settings.label');
     }
 
-    public function getTitle(): string | Htmlable
+    public function getTitle(): string|Htmlable
     {
         return __('filament.pages.system_settings.label');
     }
@@ -64,7 +64,6 @@ class SystemSettings extends Page implements HasForms
                                         ->success()
                                         ->send();
                                 }),
-
 
                         ]),
                     ]),

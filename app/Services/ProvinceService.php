@@ -10,12 +10,12 @@ use Illuminate\Support\Facades\Http;
 class ProvinceService
 {
     private const API_PROVINCES_URL = 'https://provinces.open-api.vn/api/v2';
+
     private const API_WARDS_URL = 'https://provinces.open-api.vn/api/v2/w';
 
     /**
      * Synchronize provinces and wards from external API to database.
      *
-     * @return array
      * @throws \Exception
      */
     public function syncAll(): array
@@ -91,7 +91,6 @@ class ProvinceService
     /**
      * Get wards by province.
      *
-     * @param int $provinceId
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getWardsByProvince(int $provinceId)

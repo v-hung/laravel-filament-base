@@ -7,10 +7,10 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Schemas\Schema;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Str;
 use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Schema;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class PageForm
 {
@@ -34,7 +34,7 @@ class PageForm
                         $locale = $livewire->activeLocale ?? app()->getLocale();
 
                         return [
-                            Rule::unique('pages', "slug")->ignore($record?->id),
+                            Rule::unique('pages', 'slug')->ignore($record?->id),
                             // Rule::unique('pages', "slug->$locale")
                             //     ->ignore($record?->id),
                         ];

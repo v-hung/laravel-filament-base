@@ -2,9 +2,6 @@
 
 namespace App\Livewire;
 
-use App\Repositories\MediaRepository;
-use App\Services\MediaService;
-use Filament\Notifications\Notification;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
@@ -13,10 +10,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 class MediaPickerModal extends Component
 {
 	use WithFileUploads, WithPagination;
-
-	protected MediaRepository $mediaRepository;
-
-	protected MediaService $mediaService;
 
 	public bool $isOpen = false;
 
@@ -63,12 +56,6 @@ class MediaPickerModal extends Component
 		'openAssetUploader' => 'openUploadAsset',
 	];
 
-	public function boot(MediaRepository $mediaRepository, MediaService $mediaService): void
-	{
-		$this->mediaRepository = $mediaRepository;
-		$this->mediaService = $mediaService;
-	}
-
 	public function mount(bool $multiple = false, ?string $collection = null): void
 	{
 		$this->multiple = $multiple;
@@ -105,6 +92,13 @@ class MediaPickerModal extends Component
 		$this->currentModal = 'create-folder';
 	}
 
+	public function closeCreateFolderModal(): void
+	{
+		$this->currentModal = 'browse';
+		$this->previousModal = null;
+		$this->newFolderName = '';
+	}
+
 	public function openUploadAsset(?string $folder = null): void
 	{
 		$this->isOpen = true;
@@ -120,7 +114,14 @@ class MediaPickerModal extends Component
 		$this->currentModal = 'upload';
 	}
 
-	public function closeModal(): void
+	public function closeUploadModal(): void
+	{
+		$this->currentModal = 'browse';
+		$this->previousModal = null;
+		$this->uploadedFiles = [];
+	}
+
+	public function handleClickOutside(): void
 	{
 		// Nếu có modal trước đó, quay về modal đó
 		if ($this->previousModal) {
@@ -160,11 +161,7 @@ class MediaPickerModal extends Component
 		$media->responsive_images = [];
 		$media->save();
 
-		Notification::make()
-			->title('Folder created successfully')
-			->success()
-			->send();
-
+		session()->flash('message', 'Folder created successfully!');
 		$this->dispatch('folderCreated');
 		$this->currentModal = 'browse';
 		$this->newFolderName = '';
@@ -201,10 +198,22 @@ class MediaPickerModal extends Component
 		]);
 
 		foreach ($this->uploadedFiles as $file) {
-			$media = $this->mediaService->createMediaFromUpload(
-				$file,
-				$this->currentFolder ?? $this->collection,
-			);
+			$media = new Media;
+			$media->name = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+			$media->file_name = $file->getClientOriginalName();
+			$media->disk = 'public';
+			$media->size = $file->getSize();
+			$media->mime_type = $file->getMimeType();
+			$media->collection_name = $this->currentFolder ?? $this->collection ?? 'default';
+			$media->manipulations = [];
+			$media->custom_properties = [];
+			$media->generated_conversions = [];
+			$media->responsive_images = [];
+
+			// Store file
+			$path = $file->store('media', 'public');
+			$media->file_name = basename($path);
+			$media->save();
 
 			if ($this->mode === 'picker') {
 				$this->selected[] = $media->id;
@@ -212,149 +221,15 @@ class MediaPickerModal extends Component
 		}
 
 		$this->uploadedFiles = [];
-
-		Notification::make()
-			->title('Files uploaded successfully')
-			->success()
-			->send();
-
+		session()->flash('message', 'Files uploaded successfully!');
 		$this->dispatch('assetUploaded');
 		$this->currentModal = 'browse';
 		$this->view = 'browse';
 	}
 
-	public function openMediaDetail(int $mediaId, ?string $source = null): void
-	{
-		$media = $this->mediaRepository->getMediaById($mediaId);
-
-		if ($media) {
-			if ($source === 'picker') {
-				$this->previousModal = $this->currentModal;
-				$this->isOpen = true;
-			} else {
-				$this->isOpen = true;
-				$this->mode = 'manager';
-				$this->previousModal = null;
-			}
-
-			$this->detailMediaId = $mediaId;
-			$this->detailFileName = $media->name;
-			$this->detailAltText = $media->getCustomProperty('alt_text', '');
-			$this->detailCaption = $media->getCustomProperty('caption', '');
-			$this->detailLocation = $media->folder_id ? $media->folder->name : 'Root';
-			$this->currentModal = 'detail';
-		}
-	}
-
-	public function closeDetailModal(): void
-	{
-		if ($this->previousModal) {
-			$this->currentModal = $this->previousModal;
-			$this->previousModal = null;
-		} else {
-			$this->close();
-		}
-
-		$this->detailMediaId = null;
-		$this->detailFileName = '';
-		$this->detailAltText = '';
-		$this->detailCaption = '';
-		$this->detailLocation = '';
-		$this->replacementFile = null;
-	}
-
-	public function saveMediaDetails(): void
-	{
-		$media = $this->mediaRepository->getMediaById($this->detailMediaId);
-
-		if ($media) {
-			$media->name = $this->detailFileName;
-			$media->setCustomProperty('alt_text', $this->detailAltText);
-			$media->setCustomProperty('caption', $this->detailCaption);
-			$media->save();
-
-			Notification::make()
-				->title('Media details updated successfully')
-				->success()
-				->send();
-
-			$this->closeDetailModal();
-		}
-	}
-
-	public function replaceMedia(): void
-	{
-		$this->validate([
-			'replacementFile' => 'required|file|max:10240',
-		]);
-
-		$media = $this->mediaRepository->getMediaById($this->detailMediaId);
-
-		if (! $media) {
-			return;
-		}
-
-		try {
-			$newMedia = $this->mediaService->replaceMedia(
-				$media,
-				$this->replacementFile,
-				$this->detailFileName,
-				[
-					'alt_text' => $this->detailAltText,
-					'caption' => $this->detailCaption,
-				]
-			);
-
-			$this->detailMediaId = $newMedia->id;
-
-			Notification::make()
-				->title('Media replaced successfully')
-				->success()
-				->send();
-
-			$this->closeDetailModal();
-		} catch (\Exception $e) {
-			Notification::make()
-				->title('Failed to replace media')
-				->body($e->getMessage())
-				->danger()
-				->send();
-		}
-	}
-
-	public function deleteDetailMedia(): void
-	{
-		$media = $this->mediaRepository->getMediaById($this->detailMediaId);
-
-		if ($media) {
-			$media->delete();
-			$this->selected = array_values(array_filter($this->selected, fn($id) => $id !== $this->detailMediaId));
-
-			Notification::make()
-				->title('Media deleted successfully')
-				->success()
-				->send();
-
-			$this->closeDetailModal();
-			$this->dispatch('assetUploaded');
-		}
-	}
-
-	public function getDetailMedia()
-	{
-		return $this->detailMediaId ? $this->mediaRepository->getMediaById($this->detailMediaId) : null;
-	}
-
-	public function getImageInfoProperty(): ?array
-	{
-		$media = $this->getDetailMedia();
-
-		return $media?->dimensions();
-	}
-
 	public function deleteMedia(int $mediaId): void
 	{
-		$media = $this->mediaRepository->getMediaById($mediaId);
+		$media = Media::find($mediaId);
 
 		if ($media) {
 			$media->delete();

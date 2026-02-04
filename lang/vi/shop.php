@@ -52,6 +52,6 @@ return [
                 'label' => 'Đã hủy',
                 'description' => 'Đơn hàng đã bị hủy.',
             ],
-        ]
+        ],
     ],
 ];

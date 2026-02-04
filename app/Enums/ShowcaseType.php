@@ -6,7 +6,7 @@ use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasDescription;
 use Filament\Support\Contracts\HasLabel;
 
-enum ShowcaseType: string implements HasColor, HasLabel, HasDescription
+enum ShowcaseType: string implements HasColor, HasDescription, HasLabel
 {
     case Testimonial = 'testimonial';
     case Partner = 'partner';
@@ -21,7 +21,7 @@ enum ShowcaseType: string implements HasColor, HasLabel, HasDescription
         return __("enums.showcase_type.{$this->value}.description");
     }
 
-    public function getColor(): string | array | null
+    public function getColor(): string|array|null
     {
         return match ($this) {
             self::Testimonial => 'secondary',

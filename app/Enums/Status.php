@@ -6,7 +6,7 @@ use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasDescription;
 use Filament\Support\Contracts\HasLabel;
 
-enum Status: string implements HasColor, HasLabel, HasDescription
+enum Status: string implements HasColor, HasDescription, HasLabel
 {
     case Active = 'active';
     case Archived = 'archived';
@@ -21,7 +21,7 @@ enum Status: string implements HasColor, HasLabel, HasDescription
         return __("enums.status.{$this->value}.description");
     }
 
-    public function getColor(): string | array | null
+    public function getColor(): string|array|null
     {
         return match ($this) {
             self::Active => 'success',

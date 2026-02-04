@@ -8,20 +8,20 @@ use UnitEnum;
 
 abstract class Controller
 {
-	protected ResponseFactory $inertia;
+    protected ResponseFactory $inertia;
 
-	public function __construct(ResponseFactory $inertia)
-	{
-		$this->inertia = $inertia;
-	}
+    public function __construct(ResponseFactory $inertia)
+    {
+        $this->inertia = $inertia;
+    }
 
-	protected function render(string $component, array $props = [])
-	{
-		return $this->inertia->render($component, $props);
-	}
+    protected function render(string $component, array $props = [])
+    {
+        return $this->inertia->render($component, $props);
+    }
 
-	protected function flash(BackedEnum|UnitEnum|string|array $key, mixed $value = null)
-	{
-		return $this->inertia->flash($key, $value);
-	}
+    protected function flash(BackedEnum|UnitEnum|string|array $key, mixed $value = null)
+    {
+        return $this->inertia->flash($key, $value);
+    }
 }

@@ -15,7 +15,9 @@ trait HasPageTranslatable
     public ?array $data = [];
 
     public string $activeLocale;
+
     public array $otherLocaleData = [];
+
     protected ?string $oldActiveLocale = null;
 
     public array $translatableAttributes = [];
@@ -110,7 +112,7 @@ trait HasPageTranslatable
             }
         }
 
-        Cache::forget("settings");
+        Cache::forget('settings');
 
         Notification::make()
             ->success()
@@ -134,7 +136,7 @@ trait HasPageTranslatable
         foreach ($locales as $locale) {
             $localeValue = $this->getLocaleValue($key, $locale);
 
-            if (!is_null($localeValue)) {
+            if (! is_null($localeValue)) {
                 $translations[$locale] = $localeValue;
             }
         }

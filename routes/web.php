@@ -7,8 +7,8 @@ use App\Http\Controllers\Shop\ProductController;
 use App\Http\Controllers\Site\AboutController;
 use App\Http\Controllers\Site\ContactController;
 use App\Http\Controllers\Site\HomeController;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Route;
 
 // home & pages
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -36,15 +36,15 @@ Route::post('/checkout', [PaymentController::class, 'process'])->name('checkout.
 
 // Common routes
 Route::get('/greeting/{locale}', function (string $locale) {
-	if (! in_array($locale, ['en', 'vi'])) {
-		abort(400, 'Unsupported locale');
-	}
+    if (! in_array($locale, ['en', 'vi'])) {
+        abort(400, 'Unsupported locale');
+    }
 
-	session(['locale' => $locale]);
+    session(['locale' => $locale]);
 
-	App::setLocale($locale);
+    App::setLocale($locale);
 
-	return redirect()->back();
+    return redirect()->back();
 })->name('lang.switch');
 
-require __DIR__ . '/settings.php';
+require __DIR__.'/settings.php';

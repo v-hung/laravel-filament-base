@@ -6,7 +6,6 @@ use Filament\Actions\SelectAction;
 
 class PageLocaleSwitcher extends SelectAction
 {
-
     public static function getDefaultName(): ?string
     {
         return 'activeLocale';

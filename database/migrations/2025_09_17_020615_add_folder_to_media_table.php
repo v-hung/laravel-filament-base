@@ -6,23 +6,23 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-	/**
-	 * Run the migrations.
-	 */
-	public function up(): void
-	{
-		Schema::table('media', function (Blueprint $table) {
-			$table->foreignId('folder_id')->nullable()->constrained('media_folders')->nullOnDelete();
-		});
-	}
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::table('media', function (Blueprint $table) {
+            $table->foreignId('folder_id')->nullable()->constrained('media_folders')->nullOnDelete();
+        });
+    }
 
-	/**
-	 * Reverse the migrations.
-	 */
-	public function down(): void
-	{
-		Schema::table('media', function (Blueprint $table) {
-			$table->dropConstrainedForeignId(['folder_id']);
-		});
-	}
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::table('media', function (Blueprint $table) {
+            $table->dropConstrainedForeignId(['folder_id']);
+        });
+    }
 };

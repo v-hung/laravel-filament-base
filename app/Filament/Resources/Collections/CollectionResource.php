@@ -5,7 +5,6 @@ namespace App\Filament\Resources\Collections;
 use App\Filament\Resources\Collections\Pages\CreateCollection;
 use App\Filament\Resources\Collections\Pages\EditCollection;
 use App\Filament\Resources\Collections\Pages\ListCollections;
-use App\Filament\Resources\Collections\Pages\ViewCollection;
 use App\Filament\Resources\Collections\Schemas\CollectionForm;
 use App\Filament\Resources\Collections\Schemas\CollectionInfolist;
 use App\Filament\Resources\Collections\Tables\CollectionsTable;
@@ -26,7 +25,7 @@ class CollectionResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::Squares2x2;
 
-    public static function getNavigationGroup(): string | UnitEnum | null
+    public static function getNavigationGroup(): string|UnitEnum|null
     {
         return __('filament.navigation.shop');
     }
