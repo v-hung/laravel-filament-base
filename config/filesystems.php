@@ -77,4 +77,15 @@ return [
 		public_path('storage') => storage_path('app/public'),
 	],
 
+	/*
+	|--------------------------------------------------------------------------
+	| Media Path
+	|--------------------------------------------------------------------------
+	|
+	| This is the directory where media files will be stored. It is relative
+	| to the root of the filesystem disk you are using.
+	|
+	*/
+	'media_path' => 'media',
+
 ];

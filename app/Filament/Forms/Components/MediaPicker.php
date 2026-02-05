@@ -2,109 +2,114 @@
 
 namespace App\Filament\Forms\Components;
 
+use App\Models\Media;
 use Filament\Forms\Components\Field;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class MediaPicker extends Field
 {
-    protected string $view = 'filament.forms.components.media-picker';
+	protected string $view = 'filament.forms.components.media-picker';
 
-    protected bool $multiple = false;
+	protected bool $multiple = false;
 
-    protected ?string $collection = null;
+	protected ?string $disk = config('filesystems.default', 'public');
 
-    protected ?string $disk = 'public';
+	protected array $acceptedFileTypes = ['image/*'];
 
-    protected array $acceptedFileTypes = ['image/*'];
+	protected int $maxFiles = 1;
 
-    protected int $maxFiles = 1;
+	protected array $conversions = [];
 
-    public function multiple(bool $condition = true): static
-    {
-        $this->multiple = $condition;
+	public function multiple(bool $condition = true): static
+	{
+		$this->multiple = $condition;
 
-        if ($condition) {
-            $this->maxFiles = 10;
-        }
+		if ($condition) {
+			$this->maxFiles = 10;
+		}
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function collection(?string $collection): static
-    {
-        $this->collection = $collection;
+	public function disk(?string $disk): static
+	{
+		$this->disk = $disk;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function disk(?string $disk): static
-    {
-        $this->disk = $disk;
+	public function acceptedFileTypes(array $types): static
+	{
+		$this->acceptedFileTypes = $types;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function acceptedFileTypes(array $types): static
-    {
-        $this->acceptedFileTypes = $types;
+	public function maxFiles(int $count): static
+	{
+		$this->maxFiles = $count;
+		$this->multiple = $count > 1;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function maxFiles(int $count): static
-    {
-        $this->maxFiles = $count;
-        $this->multiple = $count > 1;
+	public function conversions(array $conversions): static
+	{
+		$this->conversions = $conversions;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function isMultiple(): bool
-    {
-        return $this->multiple;
-    }
+	public function isMultiple(): bool
+	{
+		return $this->multiple;
+	}
 
-    public function getCollection(): ?string
-    {
-        return $this->collection;
-    }
+	public function getCollection(): ?string
+	{
+		return $this->name;
+	}
 
-    public function getDisk(): ?string
-    {
-        return $this->disk;
-    }
+	public function getDisk(): ?string
+	{
+		return $this->disk;
+	}
 
-    public function getAcceptedFileTypes(): array
-    {
-        return $this->acceptedFileTypes;
-    }
+	public function getAcceptedFileTypes(): array
+	{
+		return $this->acceptedFileTypes;
+	}
 
-    public function getMaxFiles(): int
-    {
-        return $this->maxFiles;
-    }
+	public function getMaxFiles(): int
+	{
+		return $this->maxFiles;
+	}
 
-    public function getMediaItems(): array
-    {
-        $state = $this->getState();
+	public function getConversions(): array
+	{
+		return $this->conversions;
+	}
 
-        if (empty($state)) {
-            return [];
-        }
+	public function getMediaItems(): array
+	{
+		$state = $this->getState();
 
-        $ids = $this->multiple ? (is_array($state) ? $state : [$state]) : [$state];
+		if (empty($state)) {
+			return [];
+		}
 
-        return Media::query()
-            ->whereIn('id', $ids)
-            ->get()
-            ->map(fn (Media $media) => [
-                'id' => $media->id,
-                'name' => $media->name,
-                'file_name' => $media->file_name,
-                'url' => $media->getUrl(),
-                'mime_type' => $media->mime_type,
-                'size' => $media->size,
-            ])
-            ->toArray();
-    }
+		$ids = $this->multiple ? (is_array($state) ? $state : [$state]) : [$state];
+
+		return Media::query()
+			->whereIn('id', $ids)
+			->get()
+			->map(fn(Media $media) => [
+				'id' => $media->id,
+				'name' => $media->name,
+				'file_name' => $media->file_name,
+				'url' => $media->getUrl(),
+				'mime_type' => $media->mime_type,
+				'size' => $media->size,
+			])
+			->toArray();
+	}
 }

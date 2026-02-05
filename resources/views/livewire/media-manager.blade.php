@@ -1,20 +1,6 @@
 <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-900">
     {{-- Confirmation Modal --}}
-    <x-confirm-modal name="confirm-modal"
-        x-on:open-confirm-modal.window="
-        const detail = $event.detail;
-        $dispatch('open-confirm-modal', {
-            title: detail.title,
-            message: detail.message,
-            callback: () => {
-                if (detail.callback === 'deleteMedia') {
-                    $wire.deleteMedia(detail.params.mediaId);
-                } else if (detail.callback === 'deleteFolder') {
-                    $wire.deleteFolder(detail.params.folderId);
-                }
-            }
-        });
-    " />
+    <x-confirm-modal name="confirm-modal" />
 
     <div class="space-y-6">
         {{-- Toolbar --}}

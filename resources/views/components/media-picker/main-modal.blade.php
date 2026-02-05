@@ -2,21 +2,7 @@
 
 <div class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
     {{-- Confirmation Modal --}}
-    <x-confirm-modal name="confirm-modal"
-        x-on:open-confirm-modal.window="
-        const detail = $event.detail;
-        $dispatch('open-confirm-modal', {
-            title: detail.title,
-            message: detail.message,
-            callback: () => {
-                if (detail.callback === 'deleteFolder') {
-                    $wire.deleteFolder(detail.params.folderId);
-                } else if (detail.callback === 'deleteMedia') {
-                    $wire.deleteMedia(detail.params.mediaId);
-                }
-            }
-        });
-    " />
+    <x-confirm-modal name="confirm-modal" />
 
     <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
         <!-- Background overlay -->

@@ -3,14 +3,14 @@
 namespace App\Livewire;
 
 use App\Livewire\Concerns\InteractsWithMedia;
-use App\Models\MediaFolder;
+use App\Models\Media;
+use App\Models\Media\MediaFolder;
 use App\Repositories\MediaRepository;
 use App\Services\MediaService;
 use Filament\Notifications\Notification;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class MediaPickerModal extends Component
 {
@@ -396,6 +396,7 @@ class MediaPickerModal extends Component
 				->success()
 				->send();
 
+			$this->dispatch('assetUploaded'); // Reload media browser
 			$this->closeDetailModal();
 		} catch (\Exception $e) {
 			Notification::make()
