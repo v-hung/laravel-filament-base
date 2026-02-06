@@ -22,7 +22,7 @@ class MediaPickerModal extends Component
 
 	public bool $isOpen = false;
 
-	public string $currentModal = 'browse'; // 'browse', 'detail', 'create-folder', 'upload'
+	public string $currentModal = 'browse'; // 'browse', 'detail', 'create-folder', 'upload', 'detail-folder'
 
 	public ?string $previousModal = null; // Lưu modal trước đó để xử lý click outside
 
@@ -59,10 +59,18 @@ class MediaPickerModal extends Component
 
 	public $replacementFile = null;
 
+	// Folder detail modal properties
+	public ?int $detailFolderId = null;
+
+	public string $detailFolderName = '';
+
+	public string $detailFolderLocation = '';
+
 	protected $listeners = [
 		'openMediaPicker' => 'open',
 		'closeMediaPicker' => 'close',
 		'openMediaDetail' => 'openMediaDetail',
+		'openFolderDetail' => 'openFolderDetail',
 		'openFolderCreator' => 'openCreateFolder',
 		'openAssetUploader' => 'openUploadAsset',
 	];
@@ -92,7 +100,7 @@ class MediaPickerModal extends Component
 		$this->isOpen = false;
 		$this->currentModal = 'browse';
 		$this->previousModal = null;
-		$this->reset(['selected', 'search', 'uploadedFiles', 'view', 'mode', 'newFolderName', 'currentFolder', 'browsingFolderId', 'detailMediaId', 'detailFileName', 'detailAltText', 'detailCaption', 'detailLocation', 'replacementFile']);
+		$this->reset(['selected', 'search', 'uploadedFiles', 'view', 'mode', 'newFolderName', 'currentFolder', 'browsingFolderId', 'detailMediaId', 'detailFileName', 'detailAltText', 'detailCaption', 'detailLocation', 'replacementFile', 'detailFolderId', 'detailFolderName', 'detailFolderLocation']);
 	}
 
 	public function openCreateFolder(?int $folderId = null): void
@@ -136,7 +144,7 @@ class MediaPickerModal extends Component
 			$this->currentModal = $this->previousModal;
 			$this->previousModal = null;
 			// Clear data của modal đang đóng
-			$this->reset(['newFolderName', 'uploadedFiles', 'replacementFile']);
+			$this->reset(['newFolderName', 'uploadedFiles', 'replacementFile', 'detailFolderId', 'detailFolderName', 'detailFolderLocation']);
 		} else {
 			// Nếu không có modal trước, đóng hẳn
 			$this->close();
@@ -232,6 +240,16 @@ class MediaPickerModal extends Component
 			'message' => 'Are you sure you want to delete this media? This action cannot be undone.',
 			'callback' => 'deleteMedia',
 			'params' => ['mediaId' => $mediaId],
+		]);
+	}
+
+	public function confirmDeleteDetailFolder(): void
+	{
+		$this->dispatch('open-confirm-modal', [
+			'title' => 'Delete Folder',
+			'message' => 'Delete this folder? Contents will be moved to parent folder.',
+			'callback' => 'deleteDetailFolder',
+			'params' => [],
 		]);
 	}
 
@@ -442,7 +460,7 @@ class MediaPickerModal extends Component
 	{
 		$media = $this->getDetailMedia();
 
-		return $media?->dimensions();
+		return $media?->dimensions;
 	}
 
 	public function deleteMedia(int $mediaId): void
@@ -468,6 +486,156 @@ class MediaPickerModal extends Component
 					->send();
 			}
 		}
+	}
+
+	public function openFolderDetail(int $folderId, ?string $source = null): void
+	{
+		$folder = $this->mediaRepository->getFolder($folderId);
+
+		if (! $folder) {
+			Notification::make()
+				->title('Folder not found')
+				->danger()
+				->send();
+
+			return;
+		}
+
+		// Auto-detect source: if currently in browse modal, save it as previousModal
+		if ($this->currentModal === 'browse' && $this->isOpen) {
+			$this->previousModal = $this->currentModal;
+		} else {
+			$this->previousModal = null;
+		}
+
+		$this->isOpen = true;
+		$this->detailFolderId = $folderId;
+		$this->detailFolderName = $folder->name;
+
+		// Get folder location
+		if ($folder->parent_id) {
+			$parent = $this->mediaRepository->getFolder($folder->parent_id);
+			$this->detailFolderLocation = $parent?->name ?? 'Root';
+		} else {
+			$this->detailFolderLocation = 'Root';
+		}
+
+		$this->currentModal = 'detail-folder';
+	}
+
+	public function saveFolderDetails(): void
+	{
+		$this->validate([
+			'detailFolderName' => [
+				'required',
+				'string',
+				'max:255',
+				'regex:/^[a-zA-Z0-9\s\-_]+$/',
+			],
+		], [
+			'detailFolderName.regex' => 'Folder name can only contain letters, numbers, spaces, hyphens, and underscores.',
+		]);
+
+		$folder = $this->mediaRepository->getFolder($this->detailFolderId);
+
+		if (! $folder) {
+			Notification::make()
+				->title('Folder not found')
+				->danger()
+				->send();
+
+			return;
+		}
+
+		// Check if name already exists in same parent
+		$exists = MediaFolder::where('name', $this->detailFolderName)
+			->where('parent_id', $folder->parent_id)
+			->where('id', '!=', $folder->id)
+			->exists();
+
+		if ($exists) {
+			$this->addError('detailFolderName', 'A folder with this name already exists in this location.');
+
+			return;
+		}
+
+		try {
+			$oldPath = $folder->path;
+			$folder->name = $this->detailFolderName;
+
+			// Update path
+			if ($folder->parent_id) {
+				$parent = $this->mediaRepository->getFolder($folder->parent_id);
+				$folder->path = $parent->path . '/' . $this->detailFolderName;
+			} else {
+				$folder->path = $this->detailFolderName;
+			}
+
+			$folder->save();
+
+			// Update paths of all descendant folders
+			$oldPathPattern = rtrim($oldPath, '/') . '/';
+			$descendants = MediaFolder::where('path', 'LIKE', $oldPathPattern . '%')->get();
+
+			foreach ($descendants as $descendant) {
+				$descendant->path = str_replace($oldPath, $folder->path, $descendant->path);
+				$descendant->save();
+			}
+
+			Notification::make()
+				->title('Folder updated successfully')
+				->success()
+				->send();
+
+			$this->dispatch('folderCreated'); // Reload folders
+			$this->closeModal();
+		} catch (\Exception $e) {
+			Notification::make()
+				->title('Failed to update folder')
+				->body($e->getMessage())
+				->danger()
+				->send();
+		}
+	}
+
+	public function deleteDetailFolder(): void
+	{
+		$folder = $this->mediaRepository->getFolder($this->detailFolderId);
+
+		if ($folder) {
+			try {
+				$this->mediaRepository->deleteFolder($this->detailFolderId, false);
+
+				Notification::make()
+					->title('Folder deleted successfully')
+					->success()
+					->send();
+
+				$this->closeModal();
+				$this->dispatch('folderCreated'); // Reload folders
+			} catch (\Exception $e) {
+				Notification::make()
+					->title('Failed to delete folder')
+					->body($e->getMessage())
+					->danger()
+					->send();
+			}
+		}
+	}
+
+	public function getDetailFolder()
+	{
+		return $this->detailFolderId ? $this->mediaRepository->getFolder($this->detailFolderId) : null;
+	}
+
+	public function getDetailFolderSubfoldersCountProperty(): int
+	{
+		return $this->detailFolderId ? $this->mediaRepository->getFolderCount($this->detailFolderId) : 0;
+	}
+
+	public function getDetailFolderMediaCountProperty(): int
+	{
+		return $this->detailFolderId ? $this->mediaRepository->getMediaCount($this->detailFolderId) : 0;
 	}
 
 	public function render()

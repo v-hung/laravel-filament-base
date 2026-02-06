@@ -15,10 +15,25 @@
         ][$maxWidth] ?? 'sm:max-w-2xl';
 @endphp
 
-<div class="fixed inset-0 z-40 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-        <!-- Background overlay -->
-        <div class="fixed inset-0 bg-gray-500/75 dark:bg-gray-900/80 transition-opacity" wire:click="closeModal"></div>
+<div class="fixed inset-0 z-40 overflow-y-auto bg-gray-500/75 dark:bg-gray-900/80 transition-opacity"
+    aria-labelledby="modal-title" role="dialog" aria-modal="true" x-data="{
+        init() {
+            document.body.classList.add('overflow-hidden');
+            const observer = new MutationObserver(() => {
+                if (!document.body.contains(this.$el)) {
+                    document.body.classList.remove('overflow-hidden');
+                    observer.disconnect();
+                }
+            });
+            observer.observe(document.body, { childList: true, subtree: true });
+        }
+    }">
+
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
+        wire:click.self="closeModal">
+
+        {{-- <!-- Background overlay -->
+        <div class="fixed inset-0 bg-gray-500/75 dark:bg-gray-900/80 transition-opacity -z-10"></div> --}}
 
         <!-- Modal panel -->
         <div

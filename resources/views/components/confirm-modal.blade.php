@@ -6,22 +6,17 @@
     message: '',
     callback: '',
     params: {}
-}" x-init="Livewire.on('open-{{ $name }}', (data) => {
-    console.log('Received event:', data);
-    // Livewire v3 sends array, get first element
-    const detail = Array.isArray(data) ? data[0] : data;
-    console.log('Detail object:', detail);
-    console.log('Setting title to:', detail.title);
-    // Set data BEFORE showing modal
-    title = detail.title || '';
-    message = detail.message || '';
-    callback = detail.callback || '';
-    params = detail.params || {};
-    // Show modal after setting data
-    show = true;
-    console.log('Show set to true');
-});" x-show="show" x-cloak class="fixed inset-0 z-50 overflow-y-auto"
-    aria-labelledby="modal-title" role="dialog" aria-modal="true">
+}"
+    @open-{{ $name }}.window="
+        const detail = Array.isArray($event.detail) ? $event.detail[0] : $event.detail;
+        title = detail.title || 'Missing Title';
+        message = detail.message || '';
+        callback = detail.callback || '';
+        params = detail.params || {};
+        show = true;
+    "
+    x-show="show" x-cloak style="display: none;" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title"
+    role="dialog" aria-modal="true">
     <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
         <!-- Background overlay -->
         <div x-show="show" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0"
@@ -38,7 +33,7 @@
             class="relative inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
             <div class="sm:flex sm:items-start">
                 <div
-                    class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 dark:bg-red-900/20 sm:mx-0 sm:h-10 sm:w-10">
+                    class="mx-auto shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 dark:bg-red-900/20 sm:mx-0 sm:h-10 sm:w-10">
                     <svg class="h-6 w-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

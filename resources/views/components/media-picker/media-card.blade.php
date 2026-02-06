@@ -42,7 +42,7 @@
 
     {{-- Image/Preview --}}
     <div @class([
-        'aspect-square flex items-center justify-center bg-gray-100 dark:bg-gray-800',
+        'aspect-4/3 flex items-center justify-center bg-gray-100 dark:bg-gray-800',
         'cursor-pointer' => $showDetail && $mode === 'manager',
     ])
         @if ($showDetail && $mode === 'manager') wire:click="$dispatch('openMediaDetail', { mediaId: {{ $media->id }} })" @endif>
@@ -68,9 +68,10 @@
         <div class="mt-1 flex items-center justify-between">
             <span class="text-xs text-gray-500 dark:text-gray-400">{{ number_format($media->size / 1024, 1) }}
                 KB</span>
-            @if ($mode === 'manager')
+            @if ($media->dimensions)
                 <span
-                    class="rounded bg-gray-100 px-1.5 py-0.5 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">{{ $media->collection_name }}</span>
+                    class="rounded bg-gray-100 px-1.5 py-0.5 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">{{ $media->dimensions[0] }}
+                    x {{ $media->dimensions[1] }}</span>
             @endif
         </div>
     </div>

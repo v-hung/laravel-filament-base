@@ -6,57 +6,57 @@ use Filament\Notifications\Notification;
 
 trait InteractsWithMedia
 {
-	public function deleteMedia(int $mediaId): void
-	{
-		if ($this->mediaRepository->deleteMedia($mediaId)) {
-			Notification::make()
-				->title('Media deleted successfully')
-				->success()
-				->send();
+    public function deleteMedia(int $mediaId): void
+    {
+        if ($this->mediaRepository->deleteMedia($mediaId)) {
+            Notification::make()
+                ->title('Media deleted successfully')
+                ->success()
+                ->send();
 
-			$this->dispatch('assetUploaded');
-		}
-	}
+            $this->dispatch('assetUploaded');
+        }
+    }
 
-	public function deleteFolder(int $folderId): void
-	{
-		try {
-			$folder = $this->mediaRepository->getFolder($folderId);
+    public function deleteFolder(int $folderId): void
+    {
+        try {
+            $folder = $this->mediaRepository->getFolder($folderId);
 
-			if (! $folder) {
-				Notification::make()
-					->title('Folder not found')
-					->danger()
-					->send();
+            if (! $folder) {
+                Notification::make()
+                    ->title('Folder not found')
+                    ->danger()
+                    ->send();
 
-				return;
-			}
+                return;
+            }
 
-			// Delete folder and move contents to parent
-			$this->mediaRepository->deleteFolder($folderId, false);
+            // Delete folder and its contents (including media files)
+            $this->mediaRepository->deleteFolder($folderId, true);
 
-			Notification::make()
-				->title('Folder deleted successfully')
-				->body('Contents moved to parent folder')
-				->success()
-				->send();
+            Notification::make()
+                ->title('Folder deleted successfully')
+                ->body('All contents deleted')
+                ->success()
+                ->send();
 
-			$this->dispatch('assetUploaded');
-		} catch (\Exception $e) {
-			Notification::make()
-				->title('Error deleting folder')
-				->body($e->getMessage())
-				->danger()
-				->send();
-		}
-	}
+            $this->dispatch('assetUploaded');
+        } catch (\Exception $e) {
+            Notification::make()
+                ->title('Error deleting folder')
+                ->body($e->getMessage())
+                ->danger()
+                ->send();
+        }
+    }
 
-	public function getFolderBreadcrumbs(?int $folderId): array
-	{
-		if (! $folderId) {
-			return [];
-		}
+    public function getFolderBreadcrumbs(?int $folderId): array
+    {
+        if (! $folderId) {
+            return [];
+        }
 
-		return $this->mediaRepository->getFolderPath($folderId);
-	}
+        return $this->mediaRepository->getFolderPath($folderId);
+    }
 }

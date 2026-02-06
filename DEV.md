@@ -3,9 +3,10 @@
 ## Docker Setup (DDEV)
 
 ### Initial Configuration
+
 ```bash
 # Configure Laravel project
-ddev config --project-type=laravel --docroot=public 
+ddev config --project-type=laravel --docroot=public
 ddev config --php-version=8.3
 ddev config --database=mysql:8.0
 ddev config --nodejs-version=22
@@ -18,6 +19,7 @@ ddev start
 ```
 
 ### SSL Certificate Setup (Required for Vite, First Time Only)
+
 **Important:** This step is required for Vite dev server to work properly with HTTPS.
 
 ```bash
@@ -26,17 +28,21 @@ mkcert -install && ddev poweroff && ddev start
 ```
 
 ### Expose Vite Port
+
 Add this to `.ddev/config.yaml` to access Vite dev server:
+
 ```yaml
 web_extra_exposed_ports:
-  - name: vite
-    container_port: 5173
-    http_port: 5172
-    https_port: 5173
+    - name: vite
+      container_port: 5173
+      http_port: 5172
+      https_port: 5173
 ```
+
 Then restart: `ddev restart`
 
 ### Common Commands
+
 ```bash
 # Restart containers
 ddev restart
@@ -51,7 +57,33 @@ ddev composer install
 ddev launch
 ```
 
+### Omit Containers (Optional)
+
+If you want to use external services instead of DDEV containers:
+
+```bash
+# Omit database container (use external DB)
+ddev config --omit-containers=db
+
+# Omit multiple containers
+ddev config --omit-containers=db,dba
+
+# Available containers to omit: db, dba, ddev-ssh-agent
+# Note: After changing omit-containers, run 'ddev restart'
+```
+
+After omitting containers, update your `.env` file to point to external services:
+
+```env
+DB_HOST=your-external-db-host
+DB_PORT=3306
+DB_DATABASE=your_database
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
+```
+
 ### Reconfigure (if needed)
+
 ```bash
 # Remove old container and reconfigure
 ddev delete --omit-snapshot
@@ -63,6 +95,7 @@ ddev config --php-version=8.3 --database=mysql:8.0
 ## Project Setup
 
 ### 1. Clone & Install Dependencies
+
 ```bash
 git clone <repository-url>
 composer install
@@ -70,6 +103,7 @@ npm install
 ```
 
 ### 2. Environment Configuration
+
 ```bash
 # Copy and edit environment file
 cp .env.example .env
@@ -83,6 +117,7 @@ php artisan storage:link
 ```
 
 ### 3. Database Setup
+
 ```bash
 # Run migrations and seeders
 php artisan migrate --seed
@@ -92,6 +127,7 @@ php artisan shield:generate --all
 ```
 
 ### 4. Build Assets
+
 ```bash
 # Build frontend assets
 npm run build
@@ -101,6 +137,7 @@ php artisan filament:assets
 ```
 
 ### 5. Final Steps
+
 ```bash
 # Regenerate autoload files
 composer dump-autoload
@@ -111,6 +148,7 @@ composer dump-autoload
 ## Development Commands
 
 ### Clear Cache (Development)
+
 ```bash
 php artisan icons:clear
 php artisan filament:optimize-clear
@@ -118,6 +156,7 @@ php artisan optimize:clear
 ```
 
 ### Optimize (Production)
+
 ```bash
 php artisan icons:cache
 php artisan filament:optimize

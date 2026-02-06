@@ -30,7 +30,7 @@ export default defineConfig({
 	},
 	server: {
 		// Respond to all network requests
-		host: "0.0.0.0",
+		host: '0.0.0.0',
 		port: 5173,
 		strictPort: true,
 		// Defines the origin of the generated asset URLs during development,

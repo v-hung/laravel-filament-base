@@ -45,6 +45,12 @@ class MediaManager extends Component
 		$this->resetPage();
 	}
 
+	public function navigateToFolder(?int $folderId): void
+	{
+		$this->currentFolderId = $folderId;
+		$this->resetPage();
+	}
+
 	public function goToParentFolder(): void
 	{
 		$folder = $this->mediaRepository->getFolder($this->currentFolderId);

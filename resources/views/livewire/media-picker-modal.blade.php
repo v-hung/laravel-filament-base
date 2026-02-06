@@ -9,6 +9,11 @@
             @if ($this->getDetailMedia())
                 <x-media-picker.detail-modal />
             @endif
+        @elseif($currentModal === 'detail-folder')
+            <!-- Folder Detail Modal -->
+            @if ($this->getDetailFolder())
+                <x-media-picker.folder-detail-modal />
+            @endif
         @elseif($currentModal === 'create-folder')
             <!-- Create Folder Modal -->
             <x-media-picker.create-folder-modal :newFolderName="$newFolderName" :breadcrumbs="$breadcrumbs" />

@@ -74,30 +74,44 @@
 
         {{-- Media Grid --}}
         <div>
-            <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-                {{-- Folders --}}
-                @foreach ($folders as $folder)
-                    <x-media-picker.folder-card :folder="$folder" />
-                @endforeach
-
-                {{-- Media Files --}}
-                @forelse($mediaItems as $media)
-                    <x-media-picker.media-card :media="$media" mode="manager" />
-                @empty
-                    @if (count($folders) === 0)
-                        <div
-                            class="col-span-full rounded-lg border border-dashed border-gray-300 bg-gray-50 py-16 text-center dark:border-gray-600 dark:bg-gray-800/50">
-                            <svg class="mx-auto h-16 w-16 text-gray-400" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                            </svg>
-                            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">No media found</p>
-                            <p class="text-xs text-gray-400 dark:text-gray-500">Upload some files to get started</p>
+            @if (count($folders) === 0 && $mediaItems->count() === 0)
+                {{-- Empty State --}}
+                <div
+                    class="rounded-lg border border-dashed border-gray-300 bg-gray-50 py-16 text-center dark:border-gray-600 dark:bg-gray-800/50">
+                    <svg class="mx-auto h-16 w-16 text-gray-400" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">No media found</p>
+                    <p class="text-xs text-gray-400 dark:text-gray-500">Upload some files to get started</p>
+                </div>
+            @else
+                {{-- Folders Section --}}
+                @if (count($folders) > 0)
+                    <div class="mb-6">
+                        <h3 class="mb-3 text-sm font-medium text-gray-700 dark:text-gray-300">Folders</h3>
+                        <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+                            @foreach ($folders as $folder)
+                                <x-media-picker.folder-card :folder="$folder" />
+                            @endforeach
                         </div>
-                    @endif
-                @endforelse
-            </div>
+                    </div>
+                @endif
+
+                {{-- Media Files Section --}}
+                @if ($mediaItems->count() > 0)
+                    <div
+                        @if (count($folders) > 0) class="border-t border-gray-200 pt-6 dark:border-gray-700" @endif>
+                        <h3 class="mb-3 text-sm font-medium text-gray-700 dark:text-gray-300">Files</h3>
+                        <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+                            @foreach ($mediaItems as $media)
+                                <x-media-picker.media-card :media="$media" mode="manager" />
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+            @endif
 
             {{-- Pagination --}}
             @if ($mediaItems->hasPages())
