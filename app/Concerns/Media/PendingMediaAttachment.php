@@ -9,75 +9,78 @@ use Illuminate\Http\UploadedFile;
 
 class PendingMediaAttachment
 {
-	protected string $collection = 'default';
-	protected array $customProperties = [];
-	protected int $sortOrder = 0;
+    protected string $collection = 'default';
 
-	public function __construct(
-		protected Model $model,
-		protected UploadedFile|string $file
-	) {}
+    protected array $customProperties = [];
 
-	public function toMediaCollection(string $collection = 'default'): Media
-	{
-		$this->collection = $collection;
+    protected int $sortOrder = 0;
 
-		// Create media using MediaService
-		$mediaService = app(MediaService::class);
+    public function __construct(
+        protected Model $model,
+        protected UploadedFile|string $file
+    ) {}
 
-		if ($this->file instanceof UploadedFile) {
-			$media = $mediaService->createMediaFromUpload(
-				file: $this->file,
-				collection: $this->collection,
-				customProperties: $this->customProperties
-			);
-		} else {
-			throw new \InvalidArgumentException('Only UploadedFile is supported');
-		}
+    public function toMediaCollection(string $collection = 'default'): Media
+    {
+        $this->collection = $collection;
 
-		// Attach media to model
-		$this->model->attachMedia($media, $this->collection, $this->sortOrder);
+        // Create media using MediaService
+        $mediaService = app(MediaService::class);
 
-		// Generate conversions if defined
-		$this->generateConversions($media);
+        if ($this->file instanceof UploadedFile) {
+            $media = $mediaService->createMediaFromUpload(
+                file: $this->file,
+                collection: $this->collection,
+                customProperties: $this->customProperties
+            );
+        } else {
+            throw new \InvalidArgumentException('Only UploadedFile is supported');
+        }
 
-		return $media;
-	}
+        // Attach media to model
+        $this->model->attachMedia($media, $this->collection, $this->sortOrder);
 
-	public function withCustomProperties(array $properties): static
-	{
-		$this->customProperties = $properties;
-		return $this;
-	}
+        // Generate conversions if defined
+        $this->generateConversions($media);
 
-	public function preservingOriginal(): static
-	{
-		// Implementation for preserving original
-		return $this;
-	}
+        return $media;
+    }
 
-	protected function generateConversions(Media $media): void
-	{
-		if (!method_exists($this->model, 'getRegisteredMediaConversions')) {
-			return;
-		}
+    public function withCustomProperties(array $properties): static
+    {
+        $this->customProperties = $properties;
 
-		$conversions = $this->model->getRegisteredMediaConversions($media->pivot->collection ?? 'default');
+        return $this;
+    }
 
-		if (empty($conversions)) {
-			return;
-		}
+    public function preservingOriginal(): static
+    {
+        // Implementation for preserving original
+        return $this;
+    }
 
-		$mediaService = app(MediaService::class);
-		$modelClass = get_class($this->model);
+    protected function generateConversions(Media $media): void
+    {
+        if (! method_exists($this->model, 'getRegisteredMediaConversions')) {
+            return;
+        }
 
-		foreach ($conversions as $conversion) {
-			$mediaService->generateConversion(
-				$media,
-				$conversion,
-				$modelClass,
-				$this->collection
-			);
-		}
-	}
+        $conversions = $this->model->getRegisteredMediaConversions($media->pivot->collection ?? 'default');
+
+        if (empty($conversions)) {
+            return;
+        }
+
+        $mediaService = app(MediaService::class);
+        $modelClass = get_class($this->model);
+
+        foreach ($conversions as $conversion) {
+            $mediaService->generateConversion(
+                $media,
+                $conversion,
+                $modelClass,
+                $this->collection
+            );
+        }
+    }
 }

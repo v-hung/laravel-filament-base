@@ -1,12 +1,14 @@
 {
     "agents": [
-        "copilot"
+        "copilot",
+        "claude_code"
     ],
     "guidelines": true,
     "herd_mcp": false,
     "mcp": true,
     "packages": [
-        "laravel/fortify"
+        "laravel/fortify",
+        "filament/filament"
     ],
     "sail": false,
     "skills": [

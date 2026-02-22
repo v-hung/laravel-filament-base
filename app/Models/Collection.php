@@ -11,29 +11,29 @@ use Spatie\Translatable\HasTranslations;
 
 class Collection extends Model
 {
-	use HasTranslations, HasMedia;
+    use HasMedia, HasTranslations;
 
-	public array $translatable = [
-		'title',
-		'slug',
-		'description',
-	];
+    public array $translatable = [
+        'title',
+        'slug',
+        'description',
+    ];
 
-	protected $guarded = [];
+    protected $guarded = [];
 
-	protected $casts = [
-		'status' => CategoryStatus::class,
-	];
+    protected $casts = [
+        'status' => CategoryStatus::class,
+    ];
 
-	protected $appends = ['image'];
+    protected $appends = ['image'];
 
-	public function posts(): BelongsToMany
-	{
-		return $this->belongsToMany(Product::class, 'product_collection');
-	}
+    public function posts(): BelongsToMany
+    {
+        return $this->belongsToMany(Product::class, 'product_collection');
+    }
 
-	public function image(): Attribute
-	{
-		return Attribute::get(fn() => $this->getFirstMedia('image'));
-	}
+    public function image(): Attribute
+    {
+        return Attribute::get(fn () => $this->getFirstMedia('image'));
+    }
 }

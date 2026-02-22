@@ -25,7 +25,8 @@ class MediaRepository
         ?string $search = null,
         string $sortBy = 'created_at',
         string $sortDirection = 'desc',
-        int $perPage = 24
+        int $perPage = 24,
+        ?string $collection = null,
     ): LengthAwarePaginator {
         return Media::query()
             ->when($folderId, fn ($query) => $query->where('folder_id', $folderId))
@@ -37,6 +38,7 @@ class MediaRepository
                         ->orWhere('file_name', 'like', '%'.$search.'%');
                 })
             )
+            ->when($collection, fn ($query) => $query->where('collection_name', $collection))
             ->orderBy($sortBy, $sortDirection)
             ->paginate($perPage);
     }

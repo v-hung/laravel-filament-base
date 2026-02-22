@@ -9,20 +9,20 @@ use Spatie\Translatable\HasTranslations;
 
 class Showcase extends Model
 {
-	use HasTranslations, HasMedia;
+    use HasMedia, HasTranslations;
 
-	public array $translatable = [
-		'title',
-		'slug',
-		'description',
-	];
+    public array $translatable = [
+        'title',
+        'slug',
+        'description',
+    ];
 
-	protected $guarded = [];
+    protected $guarded = [];
 
-	protected $appends = ['image'];
+    protected $appends = ['image'];
 
-	public function image(): Attribute
-	{
-		return Attribute::get(fn() => $this->getFirstMedia('image'));
-	}
+    public function image(): Attribute
+    {
+        return Attribute::get(fn () => $this->getFirstMedia('image'));
+    }
 }

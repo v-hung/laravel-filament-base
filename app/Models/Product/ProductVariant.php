@@ -11,33 +11,33 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class ProductVariant extends Model
 {
-	use HasMedia;
+    use HasMedia;
 
-	protected $guarded = [];
+    protected $guarded = [];
 
-	protected $casts = [
-		'price' => 'decimal:2',
-	];
+    protected $casts = [
+        'price' => 'decimal:2',
+    ];
 
-	protected $appends = ['image'];
+    protected $appends = ['image'];
 
-	public function product(): BelongsTo
-	{
-		return $this->belongsTo(Product::class);
-	}
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class);
+    }
 
-	public function values(): BelongsToMany
-	{
-		return $this->belongsToMany(
-			ProductOptionValue::class,
-			'product_variant_values',
-			'product_variant_id',
-			'product_option_value_id'
-		);
-	}
+    public function values(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            ProductOptionValue::class,
+            'product_variant_values',
+            'product_variant_id',
+            'product_option_value_id'
+        );
+    }
 
-	public function image(): Attribute
-	{
-		return Attribute::get(fn() => $this->getFirstMedia('image'));
-	}
+    public function image(): Attribute
+    {
+        return Attribute::get(fn () => $this->getFirstMedia('image'));
+    }
 }

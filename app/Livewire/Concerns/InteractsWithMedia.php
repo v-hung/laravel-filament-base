@@ -10,7 +10,7 @@ trait InteractsWithMedia
     {
         if ($this->mediaRepository->deleteMedia($mediaId)) {
             Notification::make()
-                ->title('Media deleted successfully')
+                ->title(__('media.notifications.media_deleted'))
                 ->success()
                 ->send();
 
@@ -25,7 +25,7 @@ trait InteractsWithMedia
 
             if (! $folder) {
                 Notification::make()
-                    ->title('Folder not found')
+                    ->title(__('media.notifications.folder_not_found'))
                     ->danger()
                     ->send();
 
@@ -36,15 +36,15 @@ trait InteractsWithMedia
             $this->mediaRepository->deleteFolder($folderId, true);
 
             Notification::make()
-                ->title('Folder deleted successfully')
-                ->body('All contents deleted')
+                ->title(__('media.notifications.folder_deleted'))
+                ->body(__('media.notifications.all_contents_deleted'))
                 ->success()
                 ->send();
 
             $this->dispatch('assetUploaded');
         } catch (\Exception $e) {
             Notification::make()
-                ->title('Error deleting folder')
+                ->title(__('media.notifications.error_deleting_folder'))
                 ->body($e->getMessage())
                 ->danger()
                 ->send();

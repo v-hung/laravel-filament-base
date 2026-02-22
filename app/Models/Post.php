@@ -11,31 +11,30 @@ use Spatie\Translatable\HasTranslations;
 
 class Post extends Model
 {
-	use HasTranslations, HasMedia;
+    use HasMedia, HasTranslations;
 
-	public array $translatable = [
-		'title',
-		'slug',
-		'description',
-		'content',
-	];
+    public array $translatable = [
+        'title',
+        'slug',
+        'description',
+        'content',
+    ];
 
-	protected $casts = [
-		'status' => ContentStatus::class,
-	];
+    protected $casts = [
+        'status' => ContentStatus::class,
+    ];
 
-	protected $guarded = [];
+    protected $guarded = [];
 
-	protected $appends = ['image'];
+    protected $appends = ['image'];
 
-	public function categories(): BelongsToMany
-	{
-		return $this->belongsToMany(Blog::class, 'post_blog');
-	}
+    public function categories(): BelongsToMany
+    {
+        return $this->belongsToMany(Blog::class, 'post_blog');
+    }
 
-
-	public function image(): Attribute
-	{
-		return Attribute::get(fn() => $this->getFirstMedia('image'));
-	}
+    public function image(): Attribute
+    {
+        return Attribute::get(fn () => $this->getFirstMedia('image'));
+    }
 }

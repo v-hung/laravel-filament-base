@@ -6,26 +6,26 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-	/**
-	 * Run the migrations.
-	 */
-	public function up(): void
-	{
-		Schema::create('mediables', function (Blueprint $table) {
-			$table->id();
-			$table->foreignId('media_id')->constrained()->cascadeOnDelete();
-			$table->morphs('model');
-			$table->string('collection')->nullable();
-			$table->unsignedInteger('sort_order')->default(0);
-			$table->timestamps();
-		});
-	}
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('mediables', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('media_id')->constrained()->cascadeOnDelete();
+            $table->morphs('model');
+            $table->string('collection')->nullable();
+            $table->unsignedInteger('sort_order')->default(0);
+            $table->timestamps();
+        });
+    }
 
-	/**
-	 * Reverse the migrations.
-	 */
-	public function down(): void
-	{
-		Schema::dropIfExists('mediables');
-	}
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('mediables');
+    }
 };
