@@ -52,82 +52,77 @@
     --color-duyang-white: var(--duyang-white);
 }
 
-@layer components {
-    /* --------------------------------------------------
-     * Typography — headings
-     * -------------------------------------------------- */
-
-    /* 56px Bold — hero / page title */
-    .text-display {
-        font-family: var(--duyang-font-primary);
-        font-size: var(--duyang-text-display);
-        font-weight: var(--duyang-weight-bold);
-        line-height: var(--duyang-leading-display);
-        color: var(--duyang-black);
+    /* --- HEADINGS (H) --- */
+    .text-h-80 {
+        @apply text-[80px] leading-[110%] font-bold;
+    }
+    .text-h-56-semibold {
+        @apply text-[56px] leading-[120%] font-semibold;
+    }
+    .text-h-56-bold {
+        @apply text-[56px] leading-[115%] font-bold;
+    }
+    .text-h-40 {
+        @apply text-[40px] leading-[120%] font-bold;
+    }
+    .text-h-32-bold {
+        @apply text-[32px] leading-[120%] font-bold;
+    }
+    .text-h-32-semibold {
+        @apply text-[32px] leading-[120%] font-semibold;
+    }
+    .text-h-24-bold {
+        @apply text-[24px] leading-[120%] font-bold;
+    }
+    .text-h-24-medium {
+        @apply text-[24px] leading-[120%] font-medium;
+    }
+    .text-h-22-bold {
+        @apply text-[22px] leading-[120%] font-bold;
+    }
+    .text-h-20-semibold {
+        @apply text-[20px] leading-[120%] font-semibold;
     }
 
-    /* 28px SemiBold — brand logotype */
-    .text-logo {
-        font-family: var(--duyang-font-primary);
-        font-size: var(--duyang-text-logo);
-        font-weight: var(--duyang-weight-semibold);
-        line-height: 0.98;
-        letter-spacing: var(--duyang-tracking-logo);
-        text-transform: uppercase;
-        color: var(--duyang-black);
+    /* --- PARAGRAPHS (P) --- */
+    .text-p-18-semibold {
+        @apply text-[18px] leading-[145%] font-semibold;
+    }
+    .text-p-18-medium {
+        @apply text-[18px] leading-[145%] font-medium;
+    }
+    .text-p-18-regular {
+        @apply text-[18px] leading-[145%] font-normal;
+    }
+    .text-p-16-bold {
+        @apply text-[16px] leading-[160%] font-bold;
+    }
+    .text-p-16-semibold {
+        @apply text-[16px] leading-[160%] font-semibold;
+    }
+    .text-p-16-regular {
+        @apply text-[16px] leading-[160%] font-normal;
+    }
+    .text-p-14-semibold {
+        @apply text-[14px] leading-[145%] font-semibold;
+    }
+    .text-p-14-medium {
+        @apply text-[14px] leading-[145%] font-medium;
+    }
+    .text-p-14-regular {
+        @apply text-[14px] leading-[145%] font-normal;
     }
 
-    /* 24px Bold — section labels */
-    .text-label {
-        font-family: var(--duyang-font-primary);
-        font-size: var(--duyang-text-h4);
-        font-weight: var(--duyang-weight-bold);
-        line-height: 1.25;
-        color: var(--duyang-black);
+    /* --- BUTTONS (Btn) --- */
+    .text-btn-16 {
+        @apply text-[16px] leading-[100%] font-medium tracking-[2%];
+    }
+    .text-btn-18 {
+        @apply text-[18px] leading-[100%] font-medium tracking-[2%];
     }
 
-    /* --------------------------------------------------
-     * Typography — body / UI
-     * Matches Figma P/* styles from node 1:470
-     * -------------------------------------------------- */
-
-    /* P/18-SemiBold */
-    .text-body-lg {
-        font-family: var(--duyang-font-primary);
-        font-size: var(--duyang-text-body-lg);
-        font-weight: var(--duyang-weight-semibold);
-        line-height: var(--duyang-leading-tight);
-        color: var(--duyang-black);
-    }
-
-    /* P/16-SemiBold */
-    .text-body-md {
-        font-family: var(--duyang-font-primary);
-        font-size: var(--duyang-text-body-md);
-        font-weight: var(--duyang-weight-semibold);
-        line-height: var(--duyang-leading-normal);
-        color: var(--duyang-black);
-    }
-
-    /* P/14-Medium */
-    .text-body-sm {
-        font-family: var(--duyang-font-primary);
-        font-size: var(--duyang-text-body-sm);
-        font-weight: var(--duyang-weight-medium);
-        line-height: var(--duyang-leading-tight);
-        color: var(--duyang-black);
-    }
-
-    /* 14px Regular — muted / metadata */
-    .text-muted {
-        font-family: var(--duyang-font-primary);
-        font-size: var(--duyang-text-body-sm);
-        font-weight: var(--duyang-weight-regular);
-        line-height: var(--duyang-leading-tight);
-        color: var(--duyang-grey);
-    }
-
+    /* --- SURFACES (Surface) --- */
     .surface-page {
         background-color: var(--duyang-cream);
     }
-}
+}\

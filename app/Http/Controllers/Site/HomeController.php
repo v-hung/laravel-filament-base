@@ -38,7 +38,7 @@ class HomeController extends Controller
             new ShowcaseSearchParams(['perPage' => 6, 'type' => ShowcaseType::Partner])
         );
 
-        return Inertia::render('home', [
+        return $this->render('home', [
             'products' => $products,
             'posts' => $posts,
             'testimonials' => $testimonials,

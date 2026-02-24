@@ -466,16 +466,13 @@ This project has a custom design system for the DUYANG WEBSITE.
 
 **Typography** — font is `Manrope` only, load via Google Fonts (`wght@400;500;600;700`):
 
-- `.text-display` — 56px Bold (hero / page title)
-- `.text-label` — 24px Bold (section headings)
-- `.text-body-lg` — 18px SemiBold
-- `.text-body-md` — 16px SemiBold
-- `.text-body-sm` — 14px Medium
-- `.text-muted` — 14px Regular (metadata)
+Headings (H): `.text-h-80` · `.text-h-56-semibold` · `.text-h-56-bold` · `.text-h-40` · `.text-h-32-bold` · `.text-h-32-semibold` · `.text-h-24-bold` · `.text-h-24-medium` · `.text-h-22` · `.text-h-20`
 
-**Surfaces & radii:**
+Paragraphs (P): `.text-p-18-semibold` · `.text-p-18-medium` · `.text-p-18-regular` · `.text-p-16-bold` · `.text-p-16-semibold` · `.text-p-16-regular` · `.text-p-14-semibold` · `.text-p-14-medium` · `.text-p-14-regular`
 
-- `.surface-page` — cream background
-- `.surface-card` — white + 24px radius
-- `rounded-duyang-card` — 24px (all cards/containers)
-- `rounded-duyang-sm` — 4px (small elements)
+Buttons (Btn): `.text-btn-16` · `.text-btn-18`
+
+**Surfaces:**
+
+- `.surface-page` — cream background (`var(--duyang-cream)`)
+- Use `bg-duyang-white` directly for white card surfaces

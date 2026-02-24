@@ -1,5 +1,7 @@
 import type { FC, HTMLAttributes } from 'react';
 
+import { Footer } from '@/components/shared/footer';
+
 export type AppLayoutProps = HTMLAttributes<HTMLDivElement>;
 
 const AppLayout: FC<AppLayoutProps> = (props) => {
@@ -8,6 +10,7 @@ const AppLayout: FC<AppLayoutProps> = (props) => {
     return (
         <div {...rest} className={`${className}`}>
             {children}
+            <Footer />
         </div>
     );
 };
