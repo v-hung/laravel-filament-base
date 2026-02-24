@@ -1,4 +1,5 @@
 import type { ProductStatus, CategoryStatus } from '../enums';
+import type { Media } from './media';
 
 export type Product = {
     id: number;
@@ -6,7 +7,7 @@ export type Product = {
     slug: string;
     description?: string | null;
     content?: string | null;
-    images?: string[] | null;
+    images?: Media[] | null;
     price: string | number;
     has_variant?: boolean;
     compare_at_price?: string | number | null;
@@ -50,7 +51,7 @@ export type ProductOptionValue = {
 export type ProductVariant = {
     id: number;
     product_id: number;
-    image?: string | null;
+    image?: Media | null;
     sku?: string | null;
     price?: string | number | null;
     stock?: number;
@@ -66,7 +67,7 @@ export type Collection = {
     title: string;
     slug: string;
     description?: string | null;
-    image?: string | null;
+    image?: Media | null;
     status?: CategoryStatus | null;
     created_at?: string;
     updated_at?: string;

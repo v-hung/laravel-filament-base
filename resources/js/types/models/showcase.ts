@@ -1,4 +1,5 @@
 import type { ShowcaseType, Status } from '../enums';
+import type { Media } from './media';
 
 export type Showcase = {
     id: number;
@@ -6,7 +7,7 @@ export type Showcase = {
     title?: string | null;
     description?: string | null;
     content?: string | null;
-    image?: string | null;
+    image?: Media | null;
     link?: string | null;
     order?: number;
     status?: Status | null;

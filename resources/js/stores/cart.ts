@@ -1,6 +1,7 @@
 import { router } from '@inertiajs/react';
 import { create } from 'zustand';
 import type { CartItem } from '@/types';
+import cart from '@/routes/cart';
 
 interface CartState {
     items: CartItem[];
@@ -28,7 +29,7 @@ export const useCartStore = create<CartState>((set) => ({
     // Thêm sản phẩm
     addItem: (productId, quantity = 1) => {
         router.post(
-            route('cart.store'),
+            cart.add(),
             { product_id: productId, quantity },
             {
                 preserveScroll: true,
@@ -42,8 +43,8 @@ export const useCartStore = create<CartState>((set) => ({
     updateQuantity: (itemId, quantity) => {
         if (quantity < 1) return;
         router.put(
-            route('cart.update', itemId),
-            { quantity },
+            cart.update(),
+            { items: [{ product_id: itemId, quantity }] },
             {
                 preserveScroll: true,
                 onBefore: () => set({ isLoading: true }),
@@ -54,7 +55,7 @@ export const useCartStore = create<CartState>((set) => ({
 
     // Xóa một item
     removeItem: (itemId) => {
-        router.delete(route('cart.destroy', itemId), {
+        router.delete(cart.remove(itemId), {
             preserveScroll: true,
             onBefore: () => set({ isLoading: true }),
             onFinish: () => set({ isLoading: false }),
@@ -63,7 +64,7 @@ export const useCartStore = create<CartState>((set) => ({
 
     // Xóa sạch giỏ hàng
     clearCart: () => {
-        router.delete(route('cart.clear'), {
+        router.delete(cart.clear(), {
             onBefore: () => set({ isLoading: true }),
             onFinish: () => set({ isLoading: false }),
         });

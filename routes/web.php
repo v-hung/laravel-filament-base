@@ -29,6 +29,7 @@ Route::get('/cart', [CartController::class, 'index'])->name('cart');
 Route::post('/cart/add', [CartController::class, 'store'])->name('cart.add');
 Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
 Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+Route::delete('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
 
 // payment
 Route::get('/checkout', [PaymentController::class, 'index'])->name('checkout');
@@ -36,15 +37,15 @@ Route::post('/checkout', [PaymentController::class, 'process'])->name('checkout.
 
 // Common routes
 Route::get('/greeting/{locale}', function (string $locale) {
-    if (! in_array($locale, ['en', 'vi'])) {
-        abort(400, 'Unsupported locale');
-    }
+	if (! in_array($locale, ['en', 'vi'])) {
+		abort(400, 'Unsupported locale');
+	}
 
-    session(['locale' => $locale]);
+	session(['locale' => $locale]);
 
-    App::setLocale($locale);
+	App::setLocale($locale);
 
-    return redirect()->back();
+	return redirect()->back();
 })->name('lang.switch');
 
-require __DIR__.'/settings.php';
+require __DIR__ . '/settings.php';

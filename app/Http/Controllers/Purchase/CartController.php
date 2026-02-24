@@ -45,13 +45,14 @@ class CartController extends Controller
      */
     public function update(Request $request)
     {
-        $request->validate([
-            'quantities' => 'required|array',
-            'quantities.*' => 'integer|min:1',
+        $validated = $request->validate([
+            'items' => ['required', 'array'],
+            'items.*.product_id' => ['required', 'integer', 'exists:products,id'],
+            'items.*.quantity' => ['required', 'integer', 'min:1'],
         ]);
 
-        foreach ($request->quantities as $productId => $qty) {
-            $this->cartService->updateItem((int) $productId, (int) $qty);
+        foreach ($validated['items'] as $item) {
+            $this->cartService->updateItem((int) $item['product_id'], (int) $item['quantity']);
         }
 
         return back();
@@ -63,6 +64,16 @@ class CartController extends Controller
     public function remove(string $id)
     {
         $this->cartService->removeItem((int) $id);
+
+        return back();
+    }
+
+    /**
+     * Clear the cart.
+     */
+    public function clear()
+    {
+        $this->cartService->clearCart();
 
         return back();
     }

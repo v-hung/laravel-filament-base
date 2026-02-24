@@ -1,4 +1,5 @@
 import type { ContentStatus, CategoryStatus } from '../enums';
+import type { Media } from './media';
 
 export type Post = {
     id: number;
@@ -6,7 +7,8 @@ export type Post = {
     slug: string;
     description?: string | null;
     content?: string | null;
-    images?: string[] | null;
+    images?: Media[] | null;
+    image?: Media | null;
     status?: ContentStatus | null;
     created_at?: string;
     updated_at?: string;
@@ -19,7 +21,7 @@ export type Blog = {
     title: string;
     slug: string;
     description?: string | null;
-    image?: string | null;
+    image?: Media | null;
     status?: CategoryStatus | null;
     created_at?: string;
     updated_at?: string;
@@ -33,7 +35,8 @@ export type Page = {
     slug: string;
     description?: string | null;
     content?: string | null;
-    images?: string[] | null;
+    images?: Media[] | null;
+    image?: Media | null;
     status?: ContentStatus | null;
     created_at?: string;
     updated_at?: string;

@@ -1,11 +1,15 @@
 {
-    "mcpServers": {
-        "laravel-boost": {
-            "command": "php",
-            "args": [
-                "artisan",
-                "boost:mcp"
-            ]
-        }
-    }
+	"mcpServers": {
+		"laravel-boost": {
+			"command": "ddev",
+			"args": [
+				"art",
+				"boost:mcp"
+			]
+		},
+		"figma": {
+			"url": "https://mcp.figma.com/mcp",
+			"type": "http"
+		}
+	}
 }

@@ -85,6 +85,6 @@ class Product extends Model
 
     public function images(): Attribute
     {
-        return Attribute::get(fn () => $this->getMedia('images'));
+        return Attribute::get(fn() => $this->getMedia('gallery'));
     }
 }

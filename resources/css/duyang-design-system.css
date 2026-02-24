@@ -1,0 +1,133 @@
+/**
+ * DUYANG WEBSITE — Design System
+ * ============================================================
+ * Source: Figma file R8FpBu39Qh3uuMFIV0OSnY
+ *
+ * Usage in app.css:
+ *   @import './duyang-design-system.css';
+ *
+ * ============================================================
+ */
+
+/* ============================================================
+ * GOOGLE FONTS — Manrope
+ * ============================================================
+ * Load from your layout blade or via npm (@fontsource/manrope).
+ *
+ * Option A — Blade layout <head>:
+ *   <link rel="preconnect" href="https://fonts.googleapis.com">
+ *   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ *   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+ *
+ * Option B — npm:
+ *   npm install @fontsource-variable/manrope
+ *   Then import "@fontsource-variable/manrope"; in app.js
+ * ============================================================ */
+
+:root {
+    --duyang-font-primary: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+
+    --duyang-black: #111111;
+    --duyang-grey: #565656;
+    --duyang-grey-mid: #7a7a7a;
+    --duyang-grey-light: #9e9e9e;
+    --duyang-cream: #f8f6f1;
+    --duyang-white: #ffffff;
+}
+
+/* ============================================================
+ * TAILWIND v4 — @theme Registration
+ * Exposes tokens as Tailwind utility classes:
+ *   bg-duyang-black  text-duyang-cream  rounded-duyang-card  etc.
+ * ============================================================ */
+
+@theme {
+    --font-sans: var(--duyang-font-primary);
+
+    --color-duyang-black: var(--duyang-black);
+    --color-duyang-grey: var(--duyang-grey);
+    --color-duyang-grey-mid: var(--duyang-grey-mid);
+    --color-duyang-grey-light: var(--duyang-grey-light);
+    --color-duyang-cream: var(--duyang-cream);
+    --color-duyang-white: var(--duyang-white);
+}
+
+@layer components {
+    /* --------------------------------------------------
+     * Typography — headings
+     * -------------------------------------------------- */
+
+    /* 56px Bold — hero / page title */
+    .text-display {
+        font-family: var(--duyang-font-primary);
+        font-size: var(--duyang-text-display);
+        font-weight: var(--duyang-weight-bold);
+        line-height: var(--duyang-leading-display);
+        color: var(--duyang-black);
+    }
+
+    /* 28px SemiBold — brand logotype */
+    .text-logo {
+        font-family: var(--duyang-font-primary);
+        font-size: var(--duyang-text-logo);
+        font-weight: var(--duyang-weight-semibold);
+        line-height: 0.98;
+        letter-spacing: var(--duyang-tracking-logo);
+        text-transform: uppercase;
+        color: var(--duyang-black);
+    }
+
+    /* 24px Bold — section labels */
+    .text-label {
+        font-family: var(--duyang-font-primary);
+        font-size: var(--duyang-text-h4);
+        font-weight: var(--duyang-weight-bold);
+        line-height: 1.25;
+        color: var(--duyang-black);
+    }
+
+    /* --------------------------------------------------
+     * Typography — body / UI
+     * Matches Figma P/* styles from node 1:470
+     * -------------------------------------------------- */
+
+    /* P/18-SemiBold */
+    .text-body-lg {
+        font-family: var(--duyang-font-primary);
+        font-size: var(--duyang-text-body-lg);
+        font-weight: var(--duyang-weight-semibold);
+        line-height: var(--duyang-leading-tight);
+        color: var(--duyang-black);
+    }
+
+    /* P/16-SemiBold */
+    .text-body-md {
+        font-family: var(--duyang-font-primary);
+        font-size: var(--duyang-text-body-md);
+        font-weight: var(--duyang-weight-semibold);
+        line-height: var(--duyang-leading-normal);
+        color: var(--duyang-black);
+    }
+
+    /* P/14-Medium */
+    .text-body-sm {
+        font-family: var(--duyang-font-primary);
+        font-size: var(--duyang-text-body-sm);
+        font-weight: var(--duyang-weight-medium);
+        line-height: var(--duyang-leading-tight);
+        color: var(--duyang-black);
+    }
+
+    /* 14px Regular — muted / metadata */
+    .text-muted {
+        font-family: var(--duyang-font-primary);
+        font-size: var(--duyang-text-body-sm);
+        font-weight: var(--duyang-weight-regular);
+        line-height: var(--duyang-leading-tight);
+        color: var(--duyang-grey);
+    }
+
+    .surface-page {
+        background-color: var(--duyang-cream);
+    }
+}

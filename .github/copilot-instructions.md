@@ -444,3 +444,38 @@ Authenticate before testing panel functionality. Filament uses Livewire, so use 
 # Integration with Laravel Boost
 
 - When following the rules in `<laravel-boost-guidelines>`, always swap the command execution to use the DDEV prefix.
+
+## Design System
+
+This project has a custom design system for the DUYANG WEBSITE.
+
+- **ALWAYS read `docs/DESIGN.md` before building any component or page.** It contains the full color palette, typography scale, spacing rules, component patterns, and do/don'ts.
+- **CSS tokens file:** `resources/css/duyang-design-system.css` — all `--duyang-*` custom properties and Tailwind `@theme` registrations.
+- Ensure `@import './duyang-design-system.css';` is present in `resources/css/app.css` before using any token.
+
+### Quick token reference
+
+**Colors** (6 only — never use arbitrary hex values):
+
+- `bg-duyang-cream` / `#F8F6F1` — page background
+- `bg-duyang-white` / `#FFFFFF` — card surface
+- `text-duyang-black` / `#111111` — primary text
+- `text-duyang-grey` / `#565656` — secondary text
+- `text-duyang-grey-mid` / `#7A7A7A` — muted / placeholder
+- `text-duyang-grey-light` / `#9E9E9E` — decorative labels
+
+**Typography** — font is `Manrope` only, load via Google Fonts (`wght@400;500;600;700`):
+
+- `.text-display` — 56px Bold (hero / page title)
+- `.text-label` — 24px Bold (section headings)
+- `.text-body-lg` — 18px SemiBold
+- `.text-body-md` — 16px SemiBold
+- `.text-body-sm` — 14px Medium
+- `.text-muted` — 14px Regular (metadata)
+
+**Surfaces & radii:**
+
+- `.surface-page` — cream background
+- `.surface-card` — white + 24px radius
+- `rounded-duyang-card` — 24px (all cards/containers)
+- `rounded-duyang-sm` — 4px (small elements)
