@@ -1,25 +1,31 @@
 {
-	"inputs": [],
-	"servers": {
-		"laravel-boost": {
-			"command": "ddev",
-			"args": [
-				"art",
-				"boost:mcp",
-				"--no-ansi",
-				"-q"
-			]
-		},
-		"figma": {
-			"url": "https://mcp.figma.com/mcp",
-			"type": "http"
-		},
-		// "laravel-boost": {
-		// 	"command": "php",
-		// 	"args": [
-		// 		"artisan",
-		// 		"boost:mcp"
-		// 	]
-		// }
-	}
+    "servers": {
+        "laravel-boost": {
+            "command": "ddev",
+            "args": [
+                "art",
+                "boost:mcp",
+                "--no-ansi",
+                "-q"
+            ]
+        },
+        "figma": {
+            "url": "https://mcp.figma.com/mcp",
+            "type": "http"
+        },
+        "shadcn": {
+            "command": "npx",
+            "args": [
+                "shadcn@latest",
+                "mcp"
+            ]
+        }
+        // "laravel-boost": {
+        // 	"command": "php",
+        // 	"args": [
+        // 		"artisan",
+        // 		"boost:mcp"
+        // 	]
+        // }
+    }
 }

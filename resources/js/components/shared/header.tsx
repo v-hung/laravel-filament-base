@@ -3,7 +3,21 @@ import type { FC } from 'react';
 import { useState } from 'react';
 
 import { cn } from '@/lib/utils/cn';
-import { about, home, posts, shop } from '@/routes';
+import { about, home, shop } from '@/routes';
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from '@/components/ui/dialog';
+import {
+    Sheet,
+    SheetContent,
+    SheetTitle,
+    SheetTrigger,
+} from '@/components/ui/sheet';
+import { Input } from '@/components/ui/input';
 
 import Container from './Container';
 import { Icons } from './Icons';
@@ -16,7 +30,7 @@ type NavItem = {
 
 const NAV_ITEMS: NavItem[] = [
     { label: 'Trang chủ', href: home().url },
-    { label: 'Đội Tác Tin Cậy', href: about().url },
+    { label: 'Đối Tác Tin Cậy', href: about().url },
     { label: 'Sản Phẩm', href: shop().url },
     { label: 'Về Chúng Tôi', href: about().url },
 ];
@@ -27,11 +41,12 @@ export type HeaderProps = {
 
 const Header: FC<HeaderProps> = ({ className }) => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [searchPopupOpen, setSearchPopupOpen] = useState(false);
 
     return (
         <header
             className={cn(
-                'bg-duyang-white border-duyang-grey-light border-b',
+                'border-b border-duyang-grey-light bg-duyang-white',
                 className,
             )}
         >
@@ -39,13 +54,51 @@ const Header: FC<HeaderProps> = ({ className }) => {
                 <div className="flex items-center justify-between py-4">
                     {/* Left: Menu Icon + Logo */}
                     <div className="flex items-center gap-4">
-                        <button
-                            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                            className="text-duyang-black hover:text-duyang-grey transition-colors lg:hidden"
-                            aria-label="Toggle menu"
+                        <Sheet
+                            open={mobileMenuOpen}
+                            onOpenChange={setMobileMenuOpen}
                         >
-                            <Icons.List size={24} />
-                        </button>
+                            <SheetTrigger asChild>
+                                <button
+                                    type="button"
+                                    className="text-duyang-black hover:text-duyang-grey motion-safe:transition-all motion-safe:duration-200 lg:hidden"
+                                    aria-label="Mở menu điều hướng"
+                                >
+                                    <Icons.List size={24} />
+                                </button>
+                            </SheetTrigger>
+
+                            <SheetContent
+                                side="left"
+                                className="w-[85%] max-w-xs border-r border-duyang-grey-light bg-duyang-white p-0 shadow-none"
+                            >
+                                <div className="p-6">
+                                    <SheetTitle className="text-h-20-semibold mb-6 text-duyang-black">
+                                        Menu
+                                    </SheetTitle>
+
+                                    <nav className="flex flex-col gap-4">
+                                        {NAV_ITEMS.map((item) => (
+                                            <Link
+                                                key={item.label}
+                                                href={item.href}
+                                                className={cn(
+                                                    'text-p-16-semibold border-duyang-grey-light py-2 transition-colors',
+                                                    item.active
+                                                        ? 'text-duyang-black'
+                                                        : 'text-duyang-grey hover:text-duyang-black',
+                                                )}
+                                                onClick={() =>
+                                                    setMobileMenuOpen(false)
+                                                }
+                                            >
+                                                {item.label}
+                                            </Link>
+                                        ))}
+                                    </nav>
+                                </div>
+                            </SheetContent>
+                        </Sheet>
 
                         <Link
                             href={home().url}
@@ -70,7 +123,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
                                 className={cn(
                                     'text-p-16-semibold transition-colors',
                                     item.active
-                                        ? 'text-duyang-black border-duyang-black border-b-2'
+                                        ? 'border-b-2 border-duyang-black text-duyang-black'
                                         : 'text-duyang-grey hover:text-duyang-black',
                                 )}
                             >
@@ -81,44 +134,53 @@ const Header: FC<HeaderProps> = ({ className }) => {
 
                     {/* Right: Search + Language */}
                     <div className="flex items-center gap-4">
-                        <button
-                            className="text-duyang-black hover:text-duyang-grey transition-colors"
-                            aria-label="Search"
+                        <Dialog
+                            open={searchPopupOpen}
+                            onOpenChange={setSearchPopupOpen}
                         >
-                            <Icons.MagnifyingGlass size={24} />
-                        </button>
+                            <DialogTrigger asChild>
+                                <button
+                                    type="button"
+                                    className="text-duyang-black hover:text-duyang-grey motion-safe:transition-all motion-safe:duration-200"
+                                    aria-label="Search"
+                                    onClick={() => setMobileMenuOpen(false)}
+                                >
+                                    <Icons.MagnifyingGlass size={24} />
+                                </button>
+                            </DialogTrigger>
+
+                            <DialogContent className="top-16! translate-y-0! rounded-none border border-duyang-grey-light bg-duyang-white p-6 shadow-none sm:top-20! sm:max-w-4xl">
+                                <DialogHeader className="mb-2">
+                                    <DialogTitle className="text-h-20-semibold text-left text-duyang-black">
+                                        Tìm kiếm
+                                    </DialogTitle>
+                                </DialogHeader>
+
+                                <div className="relative">
+                                    <Icons.MagnifyingGlass
+                                        size={20}
+                                        className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-duyang-grey-mid"
+                                    />
+
+                                    <Input
+                                        autoFocus
+                                        type="text"
+                                        placeholder="Nhập từ khóa sản phẩm..."
+                                        className="text-p-16-regular h-12 rounded-none border border-duyang-grey-light bg-transparent pl-10 text-duyang-black shadow-none placeholder:text-duyang-grey-mid focus-visible:border-duyang-grey focus-visible:ring-duyang-grey-light/50"
+                                    />
+                                </div>
+                            </DialogContent>
+                        </Dialog>
 
                         <button
-                            className="text-p-14-medium text-duyang-grey hover:text-duyang-black flex items-center gap-2 transition-colors"
+                            type="button"
+                            className="text-p-14-medium flex items-center gap-2 text-duyang-grey transition-colors hover:text-duyang-black"
                             aria-label="Change language"
                         >
                             🇻🇳
                         </button>
                     </div>
                 </div>
-
-                {/* Mobile Menu */}
-                {mobileMenuOpen && (
-                    <nav className="border-duyang-grey-light border-t py-4 lg:hidden">
-                        <div className="flex flex-col gap-4">
-                            {NAV_ITEMS.map((item) => (
-                                <Link
-                                    key={item.label}
-                                    href={item.href}
-                                    className={cn(
-                                        'text-p-16-semibold py-2 transition-colors',
-                                        item.active
-                                            ? 'text-duyang-black'
-                                            : 'text-duyang-grey hover:text-duyang-black',
-                                    )}
-                                    onClick={() => setMobileMenuOpen(false)}
-                                >
-                                    {item.label}
-                                </Link>
-                            ))}
-                        </div>
-                    </nav>
-                )}
             </Container>
         </header>
     );

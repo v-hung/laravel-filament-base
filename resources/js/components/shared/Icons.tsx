@@ -34,6 +34,9 @@ import StarFill from '@/assets/icons/StarFill.svg?react';
 import Truck from '@/assets/icons/Truck.svg?react';
 import UserFocus from '@/assets/icons/UserFocus.svg?react';
 import XLogo from '@/assets/icons/XLogo.svg?react';
+import Vi from '@/assets/icons/countries/vi.svg?react';
+import En from '@/assets/icons/countries/en.svg?react';
+import Jp from '@/assets/icons/countries/jp.svg?react';
 
 export const Icons = {
     ArrowDownRight: createIcon(ArrowDownRight),
@@ -70,6 +73,9 @@ export const Icons = {
     Truck: createIcon(Truck),
     UserFocus: createIcon(UserFocus),
     XLogo: createIcon(XLogo),
+    Vi: createIcon(Vi),
+    En: createIcon(En),
+    Jp: createIcon(Jp),
 };
 
 export function createIcon(Component: React.FC<SVGProps<SVGSVGElement>>) {

@@ -1,15 +1,22 @@
 {
-	"mcpServers": {
-		"laravel-boost": {
-			"command": "ddev",
-			"args": [
-				"art",
-				"boost:mcp"
-			]
-		},
-		"figma": {
-			"url": "https://mcp.figma.com/mcp",
-			"type": "http"
-		}
-	}
+  "mcpServers": {
+    "laravel-boost": {
+      "command": "ddev",
+      "args": [
+        "art",
+        "boost:mcp"
+      ]
+    },
+    "figma": {
+      "url": "https://mcp.figma.com/mcp",
+      "type": "http"
+    },
+    "shadcn": {
+      "command": "npx",
+      "args": [
+        "shadcn@latest",
+        "mcp"
+      ]
+    }
+  }
 }
