@@ -1,9 +1,9 @@
 {
-	"i18n-ally.localesPaths": [
-		"lang"
-	],
-	"LaravelExtraIntellisense.phpCommand": "ddev php -r \"{code}\"",
-	"LaravelExtraIntellisense.basePathForCode": "/var/www/html",
-	"editor.defaultFormatter": "esbenp.prettier-vscode",
-	"i18n-ally.keystyle": "nested"
+    "i18n-ally.localesPaths": [
+        "lang"
+    ],
+    "LaravelExtraIntellisense.phpCommand": "ddev php -r \"{code}\"",
+    "LaravelExtraIntellisense.basePathForCode": "/var/www/html",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "i18n-ally.keystyle": "nested",
 }

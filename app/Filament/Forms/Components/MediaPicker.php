@@ -2,7 +2,7 @@
 
 namespace App\Filament\Forms\Components;
 
-use App\Models\Media;
+use App\Repositories\MediaRepository;
 use Filament\Forms\Components\Field;
 
 class MediaPicker extends Field
@@ -99,10 +99,8 @@ class MediaPicker extends Field
 
         $ids = $this->multiple ? (is_array($state) ? $state : [$state]) : [$state];
 
-        return Media::query()
-            ->whereIn('id', $ids)
-            ->get()
-            ->map(fn (Media $media) => [
+        return app(MediaRepository::class)->getMediaByIds($ids)
+            ->map(fn ($media) => [
                 'id' => $media->id,
                 'name' => $media->name,
                 'file_name' => $media->file_name,

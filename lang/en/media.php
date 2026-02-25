@@ -121,6 +121,14 @@ return [
         'error_deleting_folder' => 'Error deleting folder',
     ],
 
+    // Picker field (form component)
+    'field' => [
+        'click_to_add' => 'Click to add an asset or drag and drop one in this area',
+        'replace' => 'Replace',
+        'view_file' => 'View file',
+        'remove' => 'Remove',
+    ],
+
     'validation' => [
         'folder_name_regex' => 'Folder name can only contain letters, numbers, spaces, hyphens, and underscores.',
         'folder_name_exists' => 'A folder with this name already exists in this location.',

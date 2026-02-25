@@ -1,26 +1,27 @@
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
+import { CheckIcon } from 'lucide-react';
 import type { FC } from 'react';
 import { useState } from 'react';
 
 import { cn } from '@/lib/utils/cn';
 import { about, home, shop } from '@/routes';
-import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import {
     Sheet,
     SheetContent,
     SheetTitle,
     SheetTrigger,
 } from '@/components/ui/sheet';
-import { Input } from '@/components/ui/input';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 import Container from './Container';
 import { Icons } from './Icons';
+import DuInput from './du-input';
 
 type NavItem = {
     label: string;
@@ -28,11 +29,23 @@ type NavItem = {
     active?: boolean;
 };
 
+type Language = {
+    value: 'vi' | 'en' | 'jp';
+    label: string;
+    icon: FC<{ size?: number; className?: string }>;
+};
+
 const NAV_ITEMS: NavItem[] = [
     { label: 'Trang chủ', href: home().url },
-    { label: 'Đối Tác Tin Cậy', href: about().url },
+    { label: 'Đối Tác Tin Cậy', href: 'asd' },
     { label: 'Sản Phẩm', href: shop().url },
     { label: 'Về Chúng Tôi', href: about().url },
+];
+
+const LANGUAGES: Language[] = [
+    { value: 'vi', label: 'VI', icon: Icons.Vi },
+    { value: 'en', label: 'EN', icon: Icons.En },
+    { value: 'jp', label: 'JP', icon: Icons.Jp },
 ];
 
 export type HeaderProps = {
@@ -42,14 +55,15 @@ export type HeaderProps = {
 const Header: FC<HeaderProps> = ({ className }) => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [searchPopupOpen, setSearchPopupOpen] = useState(false);
+    const [language, setLanguage] = useState<Language['value']>('vi');
+
+    const { url, component } = usePage();
+
+    const selectedLanguage =
+        LANGUAGES.find((item) => item.value === language) ?? LANGUAGES[0];
 
     return (
-        <header
-            className={cn(
-                'border-b border-duyang-grey-light bg-duyang-white',
-                className,
-            )}
-        >
+        <header className={cn('bg-duyang-white', className)}>
             <Container>
                 <div className="flex items-center justify-between py-4">
                     {/* Left: Menu Icon + Logo */}
@@ -84,8 +98,8 @@ const Header: FC<HeaderProps> = ({ className }) => {
                                                 href={item.href}
                                                 className={cn(
                                                     'text-p-16-semibold border-duyang-grey-light py-2 transition-colors',
-                                                    item.active
-                                                        ? 'text-duyang-black'
+                                                    url == item.href
+                                                        ? 'border-b text-duyang-black'
                                                         : 'text-duyang-grey hover:text-duyang-black',
                                                 )}
                                                 onClick={() =>
@@ -104,10 +118,6 @@ const Header: FC<HeaderProps> = ({ className }) => {
                             href={home().url}
                             className="flex items-center gap-2"
                         >
-                            <Icons.List
-                                size={24}
-                                className="text-duyang-black"
-                            />
                             <span className="text-h-20-semibold text-duyang-black">
                                 DUYANG VIETNAM
                             </span>
@@ -121,9 +131,9 @@ const Header: FC<HeaderProps> = ({ className }) => {
                                 key={item.label}
                                 href={item.href}
                                 className={cn(
-                                    'text-p-16-semibold transition-colors',
-                                    item.active
-                                        ? 'border-b-2 border-duyang-black text-duyang-black'
+                                    'text-btn-16 px-1.5 py-2.5',
+                                    url == item.href
+                                        ? 'border-b border-duyang-grey-light text-duyang-black'
                                         : 'text-duyang-grey hover:text-duyang-black',
                                 )}
                             >
@@ -150,35 +160,50 @@ const Header: FC<HeaderProps> = ({ className }) => {
                             </DialogTrigger>
 
                             <DialogContent className="top-16! translate-y-0! rounded-none border border-duyang-grey-light bg-duyang-white p-6 shadow-none sm:top-20! sm:max-w-4xl">
-                                <DialogHeader className="mb-2">
-                                    <DialogTitle className="text-h-20-semibold text-left text-duyang-black">
-                                        Tìm kiếm
-                                    </DialogTitle>
-                                </DialogHeader>
-
                                 <div className="relative">
-                                    <Icons.MagnifyingGlass
-                                        size={20}
-                                        className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-duyang-grey-mid"
-                                    />
-
-                                    <Input
+                                    <DuInput
                                         autoFocus
                                         type="text"
+                                        label="Tìm kiếm"
                                         placeholder="Nhập từ khóa sản phẩm..."
-                                        className="text-p-16-regular h-12 rounded-none border border-duyang-grey-light bg-transparent pl-10 text-duyang-black shadow-none placeholder:text-duyang-grey-mid focus-visible:border-duyang-grey focus-visible:ring-duyang-grey-light/50"
                                     />
                                 </div>
                             </DialogContent>
                         </Dialog>
 
-                        <button
-                            type="button"
-                            className="text-p-14-medium flex items-center gap-2 text-duyang-grey transition-colors hover:text-duyang-black"
-                            aria-label="Change language"
-                        >
-                            🇻🇳
-                        </button>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <button
+                                    type="button"
+                                    aria-label="Chọn ngôn ngữ"
+                                    className="rounded-none border-0 bg-transparent px-0 py-0 focus-visible:outline-none"
+                                >
+                                    <selectedLanguage.icon size={24} />
+                                </button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                                {LANGUAGES.map((item) => (
+                                    <DropdownMenuItem
+                                        key={item.value}
+                                        onClick={() => setLanguage(item.value)}
+                                        className="text-p-14-medium text-duyang-black focus:bg-duyang-cream focus:text-duyang-black"
+                                    >
+                                        <span className="flex w-full items-center justify-between gap-3">
+                                            <span className="flex items-center gap-2">
+                                                <item.icon size={20} />
+                                                <span>{item.label}</span>
+                                            </span>
+                                            {language === item.value && (
+                                                <CheckIcon
+                                                    className="size-4 text-duyang-black"
+                                                    aria-hidden="true"
+                                                />
+                                            )}
+                                        </span>
+                                    </DropdownMenuItem>
+                                ))}
+                            </DropdownMenuContent>
+                        </DropdownMenu>
                     </div>
                 </div>
             </Container>

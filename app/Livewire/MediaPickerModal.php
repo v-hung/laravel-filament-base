@@ -212,7 +212,7 @@ class MediaPickerModal extends Component
     {
         if ($this->multiple) {
             if (in_array($mediaId, $this->selected)) {
-                $this->selected = array_values(array_filter($this->selected, fn($id) => $id !== $mediaId));
+                $this->selected = array_values(array_filter($this->selected, fn ($id) => $id !== $mediaId));
             } else {
                 $this->selected[] = $mediaId;
             }
@@ -262,7 +262,19 @@ class MediaPickerModal extends Component
 
     public function confirm(): void
     {
-        $this->dispatch('mediaSelected', $this->selected);
+        $mediaItems = $this->mediaRepository->getMediaByIds($this->selected)
+            ->map(fn (\App\Models\Media $media) => [
+                'id' => $media->id,
+                'name' => $media->name,
+                'file_name' => $media->file_name,
+                'url' => $media->getUrl(),
+                'mime_type' => $media->mime_type,
+                'size' => $media->size,
+            ])
+            ->values()
+            ->toArray();
+
+        $this->dispatch('mediaSelected', $this->selected, $mediaItems);
         $this->close();
     }
 
@@ -444,7 +456,7 @@ class MediaPickerModal extends Component
         if ($media) {
             try {
                 $this->mediaService->deleteMedia($media);
-                $this->selected = array_values(array_filter($this->selected, fn($id) => $id !== $this->detailMediaId));
+                $this->selected = array_values(array_filter($this->selected, fn ($id) => $id !== $this->detailMediaId));
 
                 Notification::make()
                     ->title(__('media.notifications.media_deleted'))
@@ -482,7 +494,7 @@ class MediaPickerModal extends Component
         if ($media) {
             try {
                 $this->mediaService->deleteMedia($media);
-                $this->selected = array_values(array_filter($this->selected, fn($id) => $id !== $mediaId));
+                $this->selected = array_values(array_filter($this->selected, fn ($id) => $id !== $mediaId));
 
                 Notification::make()
                     ->title(__('media.notifications.media_deleted'))
@@ -578,7 +590,7 @@ class MediaPickerModal extends Component
             // Update path
             if ($folder->parent_id) {
                 $parent = $this->mediaRepository->getFolder($folder->parent_id);
-                $folder->path = $parent->path . '/' . $this->detailFolderName;
+                $folder->path = $parent->path.'/'.$this->detailFolderName;
             } else {
                 $folder->path = $this->detailFolderName;
             }
@@ -586,8 +598,8 @@ class MediaPickerModal extends Component
             $folder->save();
 
             // Update paths of all descendant folders
-            $oldPathPattern = rtrim($oldPath, '/') . '/';
-            $descendants = MediaFolder::where('path', 'LIKE', $oldPathPattern . '%')->get();
+            $oldPathPattern = rtrim($oldPath, '/').'/';
+            $descendants = MediaFolder::where('path', 'LIKE', $oldPathPattern.'%')->get();
 
             foreach ($descendants as $descendant) {
                 $descendant->path = str_replace($oldPath, $folder->path, $descendant->path);

@@ -121,6 +121,14 @@ return [
         'error_deleting_folder' => 'Có lỗi khi xóa thư mục',
     ],
 
+    // Picker field (form component)
+    'field' => [
+        'click_to_add' => 'Nhấn để thêm tài nguyên hoặc kéo và thả vào đây',
+        'replace' => 'Thay thế',
+        'view_file' => 'Xem file',
+        'remove' => 'Xóa',
+    ],
+
     'validation' => [
         'folder_name_regex' => 'Tên thư mục chỉ được chứa chữ cái, số, khoảng trắng, dấu gạch ngang và dấu gạch dưới.',
         'folder_name_exists' => 'Đã tồn tại thư mục cùng tên ở vị trí này.',

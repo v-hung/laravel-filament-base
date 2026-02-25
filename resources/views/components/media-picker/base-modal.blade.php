@@ -15,7 +15,7 @@
         ][$maxWidth] ?? 'sm:max-w-2xl';
 @endphp
 
-<div class="fixed inset-0 z-40 overflow-y-auto bg-gray-500/75 dark:bg-gray-900/80 transition-opacity"
+<div class="fixed inset-0 z-50 overflow-y-auto bg-gray-500/75 dark:bg-gray-900/80 transition-opacity"
     aria-labelledby="modal-title" role="dialog" aria-modal="true" x-data="{
         init() {
             document.body.classList.add('overflow-hidden');
