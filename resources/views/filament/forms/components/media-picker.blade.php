@@ -23,7 +23,15 @@
             const selectedIds = this.multiple ?
                 (Array.isArray(this.state) ? this.state : []) :
                 (this.state ? [this.state] : []);
-            Livewire.dispatch('openMediaPicker', { selectedIds });
+            Livewire.dispatch('openMediaPicker', {
+                selectedIds,
+                multiple: {{ $isMultiple() ? 'true' : 'false' }},
+                maxFiles: {{ $getMaxFiles() }},
+                acceptedFileTypes: {{ json_encode($getAcceptedFileTypes()) }},
+                collection: {{ json_encode($getCollection()) }},
+                conversions: {{ json_encode($getSerializedConversions()) }},
+                modelClass: {{ json_encode($getModelClass()) }},
+            });
         },
     
         removeMedia(id) {

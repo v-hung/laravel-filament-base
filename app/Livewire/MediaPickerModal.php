@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Concerns\Media\MediaConversionDefinition;
 use App\Livewire\Concerns\InteractsWithMedia;
 use App\Livewire\Concerns\InteractsWithMediaBrowser;
 use App\Models\Media\MediaFolder;
@@ -28,9 +29,17 @@ class MediaPickerModal extends Component
 
     public bool $multiple = false;
 
-    public array $selected = [];
+    public int $maxFiles = 1;
 
-    public ?string $collection = null;
+    public array $acceptedFileTypes = ['image/*'];
+
+    public string $collection = 'default';
+
+    public array $conversions = [];
+
+    public ?string $modelClass = null;
+
+    public array $selected = [];
 
     public string $view = 'browse'; // 'browse', 'selected' (chỉ cho browse modal)
 
@@ -88,7 +97,7 @@ class MediaPickerModal extends Component
     public function mount(bool $multiple = false, ?string $collection = null): void
     {
         $this->multiple = $multiple;
-        $this->collection = $collection;
+        $this->collection = $collection ?? 'default';
     }
 
     protected function browserFolderProperty(): string
@@ -96,12 +105,25 @@ class MediaPickerModal extends Component
         return 'browsingFolderId';
     }
 
-    public function open(array $selectedIds = []): void
-    {
+    public function open(
+        array $selectedIds = [],
+        bool $multiple = false,
+        int $maxFiles = 1,
+        array $acceptedFileTypes = ['image/*'],
+        string $collection = 'default',
+        array $conversions = [],
+        ?string $modelClass = null,
+    ): void {
         $this->isOpen = true;
         $this->currentModal = 'browse';
         $this->selected = $selectedIds;
         $this->view = 'browse';
+        $this->multiple = $multiple;
+        $this->maxFiles = $maxFiles;
+        $this->acceptedFileTypes = $acceptedFileTypes;
+        $this->collection = $collection;
+        $this->conversions = $conversions;
+        $this->modelClass = $modelClass;
     }
 
     public function close(): void
@@ -214,6 +236,15 @@ class MediaPickerModal extends Component
             if (in_array($mediaId, $this->selected)) {
                 $this->selected = array_values(array_filter($this->selected, fn ($id) => $id !== $mediaId));
             } else {
+                if (count($this->selected) >= $this->maxFiles) {
+                    Notification::make()
+                        ->title(__('media.validation.max_files', ['max' => $this->maxFiles]))
+                        ->warning()
+                        ->send();
+
+                    return;
+                }
+
                 $this->selected[] = $mediaId;
             }
         } else {
@@ -262,7 +293,36 @@ class MediaPickerModal extends Component
 
     public function confirm(): void
     {
-        $mediaItems = $this->mediaRepository->getMediaByIds($this->selected)
+        if (empty($this->selected)) {
+            $this->dispatch('mediaSelected', [], []);
+            $this->close();
+
+            return;
+        }
+
+        if (count($this->selected) > $this->maxFiles) {
+            Notification::make()
+                ->title(__('media.validation.max_files', ['max' => $this->maxFiles]))
+                ->danger()
+                ->send();
+
+            return;
+        }
+
+        $mediaItems = $this->mediaRepository->getMediaByIds($this->selected);
+
+        $invalid = $mediaItems->filter(fn (\App\Models\Media $media) => ! $this->mimeTypeIsAccepted($media->mime_type));
+
+        if ($invalid->isNotEmpty()) {
+            Notification::make()
+                ->title(__('media.validation.invalid_file_type'))
+                ->danger()
+                ->send();
+
+            return;
+        }
+
+        $items = $mediaItems
             ->map(fn (\App\Models\Media $media) => [
                 'id' => $media->id,
                 'name' => $media->name,
@@ -274,15 +334,81 @@ class MediaPickerModal extends Component
             ->values()
             ->toArray();
 
-        $this->dispatch('mediaSelected', $this->selected, $mediaItems);
+        $this->dispatch('mediaSelected', $this->selected, $items);
         $this->close();
+    }
+
+    private function mimeTypeIsAccepted(string $mimeType): bool
+    {
+        foreach ($this->acceptedFileTypes as $type) {
+            if ($type === '*' || $type === '*/*') {
+                return true;
+            }
+
+            if (str_ends_with($type, '/*') && str_starts_with($mimeType, str_replace('/*', '/', $type))) {
+                return true;
+            }
+
+            if ($mimeType === $type) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function generateConversions(\App\Models\Media $media): void
+    {
+        if (empty($this->conversions)) {
+            return;
+        }
+
+        foreach ($this->conversions as $conversionData) {
+            $this->mediaService->generateConversion(
+                $media,
+                $this->makeConversionDefinition($conversionData),
+                $this->modelClass ?: null,
+                $this->collection ?: null,
+            );
+        }
+    }
+
+    private function makeConversionDefinition(array $data): MediaConversionDefinition
+    {
+        $def = MediaConversionDefinition::make($data['name']);
+
+        if (! empty($data['width'])) {
+            $def->width((int) $data['width']);
+        }
+
+        if (! empty($data['height'])) {
+            $def->height((int) $data['height']);
+        }
+
+        if (! empty($data['sharpen'])) {
+            $def->sharpen((int) $data['sharpen']);
+        }
+
+        if (isset($data['queued']) && $data['queued'] === false) {
+            $def->nonQueued();
+        }
+
+        return $def;
     }
 
     public function uploadFiles(): void
     {
-        $this->validate([
-            'uploadedFiles.*' => 'required|file|max:10240',
-        ]);
+        $rules = ['uploadedFiles.*' => ['required', 'file', 'max:10240']];
+
+        if ($this->mode === 'picker') {
+            $rules['uploadedFiles.*'][] = function (string $_attribute, mixed $value, \Closure $fail): void {
+                if (! $this->mimeTypeIsAccepted($value->getMimeType())) {
+                    $fail(__('media.validation.invalid_file_type'));
+                }
+            };
+        }
+
+        $this->validate($rules);
 
         try {
             foreach ($this->uploadedFiles as $file) {
@@ -292,8 +418,16 @@ class MediaPickerModal extends Component
                     $this->currentFolder
                 );
 
+                $this->generateConversions($media);
+
                 if ($this->mode === 'picker') {
-                    $this->selected[] = $media->id;
+                    if ($this->multiple) {
+                        if (count($this->selected) < $this->maxFiles) {
+                            $this->selected[] = $media->id;
+                        }
+                    } else {
+                        $this->selected = [$media->id];
+                    }
                 }
             }
 

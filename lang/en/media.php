@@ -132,5 +132,7 @@ return [
     'validation' => [
         'folder_name_regex' => 'Folder name can only contain letters, numbers, spaces, hyphens, and underscores.',
         'folder_name_exists' => 'A folder with this name already exists in this location.',
+        'max_files' => 'You can only select up to :max file(s).',
+        'invalid_file_type' => 'One or more selected files have an unsupported file type.',
     ],
 ];

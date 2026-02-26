@@ -13,6 +13,8 @@ class MediaPicker extends Field
 
     protected ?string $disk = null;
 
+    protected ?string $collection = null;
+
     protected array $acceptedFileTypes = ['image/*'];
 
     protected int $maxFiles = 1;
@@ -33,6 +35,13 @@ class MediaPicker extends Field
     public function disk(?string $disk): static
     {
         $this->disk = $disk;
+
+        return $this;
+    }
+
+    public function collection(string $collection): static
+    {
+        $this->collection = $collection;
 
         return $this;
     }
@@ -64,9 +73,9 @@ class MediaPicker extends Field
         return $this->multiple;
     }
 
-    public function getCollection(): ?string
+    public function getCollection(): string
     {
-        return $this->name;
+        return $this->collection ?? $this->getName();
     }
 
     public function getDisk(): string
@@ -86,7 +95,37 @@ class MediaPicker extends Field
 
     public function getConversions(): array
     {
-        return $this->conversions;
+        if (! empty($this->conversions)) {
+            return $this->conversions;
+        }
+
+        $record = $this->getRecord();
+
+        if ($record && method_exists($record, 'registerMediaCollections') && method_exists($record, 'getRegisteredMediaConversions')) {
+            $record->registerMediaCollections();
+
+            return $record->getRegisteredMediaConversions($this->getCollection());
+        }
+
+        return [];
+    }
+
+    public function getSerializedConversions(): array
+    {
+        return array_map(fn ($c) => [
+            'name' => $c->name,
+            'width' => $c->width,
+            'height' => $c->height,
+            'sharpen' => $c->sharpen,
+            'queued' => $c->queued,
+        ], $this->getConversions());
+    }
+
+    public function getModelClass(): ?string
+    {
+        $record = $this->getRecord();
+
+        return $record ? get_class($record) : null;
     }
 
     public function getMediaItems(): array

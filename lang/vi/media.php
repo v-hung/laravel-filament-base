@@ -132,5 +132,7 @@ return [
     'validation' => [
         'folder_name_regex' => 'Tên thư mục chỉ được chứa chữ cái, số, khoảng trắng, dấu gạch ngang và dấu gạch dưới.',
         'folder_name_exists' => 'Đã tồn tại thư mục cùng tên ở vị trí này.',
+        'max_files' => 'Bạn chỉ có thể chọn tối đa :max tệp.',
+        'invalid_file_type' => 'Một hoặc nhiều tệp đã chọn có định dạng không được hỗ trợ.',
     ],
 ];
