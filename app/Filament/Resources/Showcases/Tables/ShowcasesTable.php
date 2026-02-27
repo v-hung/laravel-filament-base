@@ -2,10 +2,10 @@
 
 namespace App\Filament\Resources\Showcases\Tables;
 
+use App\Filament\Tables\Columns\MediaImageColumn;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -15,10 +15,10 @@ class ShowcasesTable
     {
         return $table
             ->columns([
-                TextColumn::make('type')->label(__('filament.tables.columns.type'))->badge(),
-                TextColumn::make('title')->label(__('filament.tables.columns.title'))->searchable(),
-                ImageColumn::make('image')->label(__('filament.tables.columns.image'))->disk('public'),
-                TextColumn::make('status')->label(__('filament.tables.columns.status'))->badge(),
+                TextColumn::make('type')->label(__('filament.fields.type'))->badge(),
+                TextColumn::make('title')->label(__('filament.fields.title'))->searchable(),
+                MediaImageColumn::make('image')->label(__('filament.fields.image')),
+                TextColumn::make('status')->label(__('filament.fields.status'))->badge(),
             ])
             ->filters([
                 //

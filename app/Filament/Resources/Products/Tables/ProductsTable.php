@@ -2,11 +2,11 @@
 
 namespace App\Filament\Resources\Products\Tables;
 
+use App\Filament\Tables\Columns\MediaImageColumn;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
-use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -16,28 +16,30 @@ class ProductsTable
     {
         return $table
             ->columns([
-                TextColumn::make('name')->label(__('filament.tables.columns.name'))->searchable(),
-                TextColumn::make('slug')->label(__('filament.tables.columns.slug'))->searchable(),
-                ImageColumn::make('images')->label(__('filament.tables.columns.images'))->disk('public')->limit(3)
+                TextColumn::make('name')->label(__('filament.fields.name'))->searchable(),
+                TextColumn::make('slug')->label(__('filament.fields.slug'))->searchable(),
+                MediaImageColumn::make('images')
+                    ->label(__('filament.fields.images'))
+                    ->limit(3)
                     ->limitedRemainingText(),
                 TextColumn::make('price')
-                    ->label(__('filament.tables.columns.price'))
+                    ->label(__('filament.fields.price'))
                     ->money('VND')
                     ->sortable(),
                 TextColumn::make('stock_quantity')
-                    ->label(__('filament.tables.columns.stock_quantity'))
+                    ->label(__('filament.fields.stock_quantity'))
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('status')
-                    ->label(__('filament.tables.columns.status'))
+                    ->label(__('filament.fields.status'))
                     ->searchable(),
                 TextColumn::make('created_at')
-                    ->label(__('filament.tables.columns.created_at'))
+                    ->label(__('filament.fields.created_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
-                    ->label(__('filament.tables.columns.updated_at'))
+                    ->label(__('filament.fields.updated_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

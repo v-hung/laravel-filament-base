@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\Media\Mediable;
 use App\Models\Media\MediaFolder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Storage;
 
 class Media extends Model
@@ -31,9 +34,14 @@ class Media extends Model
 
     protected $appends = ['dimensions'];
 
-    public function folder()
+    public function folder(): BelongsTo
     {
         return $this->belongsTo(MediaFolder::class, 'folder_id');
+    }
+
+    public function mediables(): HasMany
+    {
+        return $this->hasMany(Mediable::class);
     }
 
     /**

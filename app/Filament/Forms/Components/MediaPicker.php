@@ -2,6 +2,7 @@
 
 namespace App\Filament\Forms\Components;
 
+use App\Models\Media;
 use App\Repositories\MediaRepository;
 use Filament\Forms\Components\Field;
 
@@ -11,15 +12,62 @@ class MediaPicker extends Field
 
     protected bool $multiple = false;
 
-    protected ?string $disk = null;
+    protected ?string $folderPath = null;
 
-    protected ?string $collection = null;
+    protected ?string $disk = null;
 
     protected array $acceptedFileTypes = ['image/*'];
 
     protected int $maxFiles = 1;
 
     protected array $conversions = [];
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->dehydrated(false);
+
+        $this->loadStateFromRelationshipsUsing(function (MediaPicker $component, mixed $record): void {
+            $collection = $component->getCollection();
+            $ids = $record->getMedia($collection)->pluck('id')->toArray();
+
+            $component->state($component->isMultiple() ? $ids : ($ids[0] ?? null));
+        });
+
+        $this->saveRelationshipsUsing(function (MediaPicker $component, mixed $record): void {
+            $state = $component->getState();
+            $collection = $component->getCollection();
+
+            $record->clearMediaCollection($collection);
+
+            if (empty($state)) {
+                return;
+            }
+
+            $ids = is_array($state) ? array_values(array_filter($state)) : [$state];
+
+            foreach ($ids as $index => $mediaId) {
+                $media = Media::find($mediaId);
+
+                if ($media) {
+                    $record->attachMedia($media, $collection, $index);
+                }
+            }
+        });
+    }
+
+    public function folderPath(?string $path): static
+    {
+        $this->folderPath = $path;
+
+        return $this;
+    }
+
+    public function getFolderPath(): ?string
+    {
+        return $this->folderPath;
+    }
 
     public function multiple(bool $condition = true): static
     {
@@ -35,13 +83,6 @@ class MediaPicker extends Field
     public function disk(?string $disk): static
     {
         $this->disk = $disk;
-
-        return $this;
-    }
-
-    public function collection(string $collection): static
-    {
-        $this->collection = $collection;
 
         return $this;
     }
@@ -75,7 +116,7 @@ class MediaPicker extends Field
 
     public function getCollection(): string
     {
-        return $this->collection ?? $this->getName();
+        return $this->getName();
     }
 
     public function getDisk(): string

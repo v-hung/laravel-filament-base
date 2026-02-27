@@ -26,7 +26,7 @@ trait HasMedia
     {
         return $this->morphToMany(
             Media::class,
-            'mediable',
+            'model',
             'mediables'
         )->withPivot(['collection', 'sort_order'])
             ->orderBy('mediables.sort_order');
@@ -34,9 +34,13 @@ trait HasMedia
 
     public function getMedia(string $collection)
     {
-        $media = $this->media()
-            ->wherePivot('collection', $collection)
-            ->get();
+        if (! $this->relationLoaded('media')) {
+            $this->load('media');
+        }
+
+        $media = $this->getRelation('media')
+            ->filter(fn ($item) => $item->pivot?->collection === $collection)
+            ->values();
 
         // Get conversions from collection definition
         $collectionDef = $this->mediaCollections[$collection] ?? null;

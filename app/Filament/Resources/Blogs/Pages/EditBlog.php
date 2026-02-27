@@ -10,14 +10,14 @@ use LaraZeus\SpatieTranslatable\Resources\Pages\EditRecord\Concerns\Translatable
 
 class EditBlog extends EditRecord
 {
-    // use Translatable;
+    use Translatable;
 
     protected static string $resource = BlogResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
-            // LocaleSwitcher::make(),
+            LocaleSwitcher::make(),
             DeleteAction::make(),
         ];
     }

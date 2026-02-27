@@ -17,45 +17,45 @@ class OrderForm
         return $schema
             ->components([
                 TextInput::make('code')
-                    ->label(__('filament.forms.fields.code'))
+                    ->label(__('filament.fields.code'))
                     ->required()
                     ->maxLength(255),
                 TextInput::make('name')
-                    ->label(__('filament.forms.fields.name'))
+                    ->label(__('filament.fields.name'))
                     ->required()->maxLength(255),
                 TextInput::make('phone')
-                    ->label(__('filament.forms.fields.phone'))
+                    ->label(__('filament.fields.phone'))
                     ->required()->maxLength(20),
                 TextInput::make('email')
-                    ->label(__('filament.forms.fields.email'))
+                    ->label(__('filament.fields.email'))
                     ->email()->maxLength(255),
                 // Select::make('user_id')
                 //     ->relationship('user', 'name')
                 //     ->nullable(),
                 Select::make('province_id')
-                    ->label(__('filament.forms.fields.province_id'))
+                    ->label(__('filament.fields.province_id'))
                     ->relationship('province', 'name')
                     ->nullable(),
                 Select::make('ward_id')
-                    ->label(__('filament.forms.fields.ward_id'))
+                    ->label(__('filament.fields.ward_id'))
                     ->relationship('ward', 'name')
                     ->nullable(),
                 TextInput::make('address')
-                    ->label(__('filament.forms.fields.address'))
+                    ->label(__('filament.fields.address'))
                     ->maxLength(255),
                 Textarea::make('note')
-                    ->label(__('filament.forms.fields.note')),
+                    ->label(__('filament.fields.note')),
                 TextInput::make('total')
-                    ->label(__('filament.forms.fields.total'))
+                    ->label(__('filament.fields.total'))
                     ->numeric('VND')->default(0),
                 Select::make('status')
-                    ->label(__('filament.forms.fields.status'))
+                    ->label(__('filament.fields.status'))
                     ->options(OrderStatus::class),
                 Select::make('payment_method')
-                    ->label(__('filament.forms.fields.payment_method'))
+                    ->label(__('filament.fields.payment_method'))
                     ->options(PaymentMethod::class),
                 Select::make('payment_status')
-                    ->label(__('filament.forms.fields.payment_status'))
+                    ->label(__('filament.fields.payment_status'))
                     ->options(PaymentStatus::class),
             ]);
     }

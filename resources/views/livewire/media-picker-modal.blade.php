@@ -4,7 +4,7 @@
             @if ($currentModal === 'browse')
                 <!-- Main Modal: Browse & Selected Files -->
                 <x-media-picker.modals.browse-modal :view="$view" :selected="$selected" :mediaItems="$mediaItems" :folders="$folders"
-                    :breadcrumbs="$breadcrumbs" />
+                    :breadcrumbs="$breadcrumbs" :selectedItems="$selectedItems" />
             @elseif($currentModal === 'detail')
                 <!-- Detail Modal -->
                 @if ($this->getDetailMedia())

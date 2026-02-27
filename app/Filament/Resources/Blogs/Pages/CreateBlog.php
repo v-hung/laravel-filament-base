@@ -9,14 +9,14 @@ use LaraZeus\SpatieTranslatable\Resources\Pages\CreateRecord\Concerns\Translatab
 
 class CreateBlog extends CreateRecord
 {
-    // use Translatable;
+    use Translatable;
 
     protected static string $resource = BlogResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
-            // LocaleSwitcher::make(),
+            LocaleSwitcher::make(),
             // ...
         ];
     }

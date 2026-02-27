@@ -31,6 +31,7 @@
                 collection: {{ json_encode($getCollection()) }},
                 conversions: {{ json_encode($getSerializedConversions()) }},
                 modelClass: {{ json_encode($getModelClass()) }},
+                folderPath: {{ json_encode($getFolderPath()) }},
             });
         },
     

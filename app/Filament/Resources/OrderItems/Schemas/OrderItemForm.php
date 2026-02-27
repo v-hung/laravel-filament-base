@@ -19,10 +19,10 @@ class OrderItemForm
                     ->relationship('product', 'name')
                     ->required(),
                 TextInput::make('quantity')
-                    ->label(__('filament.forms.fields.quantity'))
+                    ->label(__('filament.fields.quantity'))
                     ->numeric()->required(),
                 TextInput::make('price')
-                    ->label(__('filament.forms.fields.price'))
+                    ->label(__('filament.fields.price'))
                     ->numeric('VND')->required(),
             ]);
     }

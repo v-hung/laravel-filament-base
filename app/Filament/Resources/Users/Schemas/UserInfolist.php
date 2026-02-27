@@ -12,18 +12,18 @@ class UserInfolist
     {
         return $schema
             ->components([
-                TextEntry::make('name'),
+                TextEntry::make('name')->label(__('filament.fields.name')),
                 TextEntry::make('email')
-                    ->label('Email address'),
-                TextEntry::make('email_verified_at')
+                    ->label(__('filament.fields.email')),
+                TextEntry::make('email_verified_at')->label(__('filament.fields.email_verified_at'))
                     ->dateTime()
                     ->placeholder('-'),
-                IconEntry::make('is_admin')
+                IconEntry::make('is_admin')->label(__('filament.fields.is_admin'))
                     ->boolean(),
-                TextEntry::make('created_at')
+                TextEntry::make('created_at')->label(__('filament.fields.created_at'))
                     ->dateTime()
                     ->placeholder('-'),
-                TextEntry::make('updated_at')
+                TextEntry::make('updated_at')->label(__('filament.fields.updated_at'))
                     ->dateTime()
                     ->placeholder('-'),
             ]);

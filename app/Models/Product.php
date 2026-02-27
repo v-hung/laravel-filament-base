@@ -72,7 +72,7 @@ class Product extends Model
      */
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('gallery')
+        $this->addMediaCollection('images')
             ->acceptsMimeTypes(['image/*'])
             ->multiple()
             ->conversions([
@@ -85,6 +85,6 @@ class Product extends Model
 
     public function images(): Attribute
     {
-        return Attribute::get(fn() => $this->getMedia('gallery'));
+        return Attribute::get(fn () => $this->getMedia('images'));
     }
 }

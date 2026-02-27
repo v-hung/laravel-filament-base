@@ -72,7 +72,7 @@ function FooterSectionColumn({
                         <li key={link.label}>
                             <a
                                 href={link.href}
-                                className="text-btn-16 text-duyang-grey-light hover:text-duyang-white transition-colors"
+                                className="text-btn-16 text-duyang-grey-light transition-colors hover:text-duyang-white"
                             >
                                 {link.label}
                             </a>
@@ -81,7 +81,7 @@ function FooterSectionColumn({
                         <li key={link.label}>
                             <Link
                                 href={link.href}
-                                className="text-btn-16 text-duyang-grey-light hover:text-duyang-white transition-colors"
+                                className="text-btn-16 text-duyang-grey-light transition-colors hover:text-duyang-white"
                             >
                                 {link.label}
                             </Link>
@@ -111,7 +111,7 @@ function NewsletterSection({ className }: { className?: string }) {
                 <input
                     type="email"
                     placeholder="Email"
-                    className="text-p-16-regular border-duyang-grey-light text-duyang-white placeholder:text-duyang-grey-light focus:border-duyang-white flex-1 border-b bg-transparent pb-2 outline-none transition-colors"
+                    className="text-p-16-regular flex-1 border-b border-duyang-grey-light bg-transparent pb-2 text-duyang-white transition-colors outline-none placeholder:text-duyang-grey-light focus:border-duyang-white"
                 />
                 <DuButton type="submit" variant="solid" color="white">
                     Đăng Ký
@@ -125,7 +125,7 @@ export const Footer: FC = () => {
     return (
         <footer className="bg-duyang-black">
             <Container>
-                <div className="pb-12 pt-12 md:pb-14 md:pt-16">
+                <div className="pt-12 pb-12 md:pt-16 md:pb-14">
                     {/* Mobile-only logo at top */}
                     <div className="mb-8 md:hidden">
                         <BrandLogo />
@@ -154,19 +154,19 @@ export const Footer: FC = () => {
                             <BrandLogo />
                         </div>
                         <div className="flex flex-wrap gap-8 md:gap-12">
-                            <p className="text-p-16-semibold text-duyang-white text-center">
+                            <p className="text-p-16-semibold text-center text-duyang-white">
                                 © {new Date().getFullYear()} DUYANG VIETNAM. All
                                 Rights Reserved
                             </p>
                             <a
                                 href="#"
-                                className="text-p-16-regular text-duyang-grey-light hover:text-duyang-white transition-colors"
+                                className="text-p-16-regular text-duyang-grey-light transition-colors hover:text-duyang-white"
                             >
                                 Chính Sách Bảo Mật
                             </a>
                             <a
                                 href="#"
-                                className="text-p-16-regular text-duyang-grey-light hover:text-duyang-white transition-colors"
+                                className="text-p-16-regular text-duyang-grey-light transition-colors hover:text-duyang-white"
                             >
                                 Điều Khoản Sử Dụng
                             </a>

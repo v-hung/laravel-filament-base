@@ -14,11 +14,11 @@ class OrderItemsTable
     {
         return $table
             ->columns([
-                TextColumn::make('order.code')->label(__('filament.tables.columns.order_code')),
-                TextColumn::make('product.name')->label(__('filament.tables.columns.product')),
-                TextColumn::make('quantity')->label(__('filament.tables.columns.quantity')),
-                TextColumn::make('price')->money('VND')->label(__('filament.tables.columns.price')),
-                TextColumn::make('created_at')->dateTime()->label(__('filament.tables.columns.created_at')),
+                TextColumn::make('order.code')->label(__('filament.fields.order_code')),
+                TextColumn::make('product.name')->label(__('filament.fields.product')),
+                TextColumn::make('quantity')->label(__('filament.fields.quantity')),
+                TextColumn::make('price')->money('VND')->label(__('filament.fields.price')),
+                TextColumn::make('created_at')->dateTime()->label(__('filament.fields.created_at')),
             ])
             ->filters([
                 //

@@ -4,7 +4,7 @@ namespace App\Filament\Resources\Showcases\Schemas;
 
 use App\Enums\ShowcaseType;
 use App\Enums\Status;
-use Filament\Forms\Components\FileUpload;
+use App\Filament\Forms\Components\MediaPicker;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -17,33 +17,34 @@ class ShowcaseForm
         return $schema
             ->components([
                 Select::make('type')
-                    ->label(__('filament.forms.fields.type'))
+                    ->label(__('filament.fields.type'))
                     ->options(ShowcaseType::class)
                     ->required(),
                 TextInput::make('title')
-                    ->label(__('filament.forms.fields.title'))
+                    ->label(__('filament.fields.title'))
                     ->maxLength(255)
                     ->required(),
                 TextInput::make('description')
-                    ->label(__('filament.forms.fields.description'))
+                    ->label(__('filament.fields.description'))
                     ->maxLength(255)->columnSpan('full'),
                 RichEditor::make('content')
-                    ->label(__('filament.forms.fields.content'))
+                    ->label(__('filament.fields.content'))
                     ->columnSpan('full')
                     ->extraInputAttributes(['style' => 'min-height: 20rem;']),
-                FileUpload::make('image')
-                    ->label(__('filament.forms.fields.image'))
-                    ->disk('public')
-                    ->directory('showcases'),
+                MediaPicker::make('image')
+                    ->label(__('filament.fields.image'))
+                    ->folderPath('showcases')
+                    ->acceptedFileTypes(['image/*'])
+                    ->columnSpan('full'),
                 TextInput::make('link')
-                    ->label(__('filament.forms.fields.link'))
+                    ->label(__('filament.fields.link'))
                     ->maxLength(255),
                 TextInput::make('order')
-                    ->label(__('filament.forms.fields.order'))
+                    ->label(__('filament.fields.order'))
                     ->numeric()
                     ->default(0),
                 Select::make('status')
-                    ->label(__('filament.forms.fields.status'))
+                    ->label(__('filament.fields.status'))
                     ->options(Status::class)->default(Status::Active),
             ]);
     }

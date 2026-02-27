@@ -14,13 +14,13 @@ class OrdersTable
     {
         return $table
             ->columns([
-                TextColumn::make('code')->label(__('filament.tables.columns.code')),
-                TextColumn::make('name')->label(__('filament.tables.columns.customer_name')),
-                TextColumn::make('total')->money('VND')->label(__('filament.tables.columns.total')),
-                TextColumn::make('status')->label(__('filament.tables.columns.status'))->badge(),
-                TextColumn::make('payment_method')->label(__('filament.tables.columns.payment_method'))->badge(),
-                TextColumn::make('payment_status')->label(__('filament.tables.columns.payment_status'))->badge(),
-                TextColumn::make('created_at')->dateTime()->label(__('filament.tables.columns.created_at')),
+                TextColumn::make('code')->label(__('filament.fields.code')),
+                TextColumn::make('name')->label(__('filament.fields.customer_name')),
+                TextColumn::make('total')->money('VND')->label(__('filament.fields.total')),
+                TextColumn::make('status')->label(__('filament.fields.status'))->badge(),
+                TextColumn::make('payment_method')->label(__('filament.fields.payment_method'))->badge(),
+                TextColumn::make('payment_status')->label(__('filament.fields.payment_status'))->badge(),
+                TextColumn::make('created_at')->dateTime()->label(__('filament.fields.created_at')),
             ])
             ->filters([
                 //

@@ -20,7 +20,7 @@ class ProductForm
         return $schema
             ->components([
                 TextInput::make('name')
-                    ->label(__('filament.forms.fields.name'))
+                    ->label(__('filament.fields.name'))
                     ->maxLength(255)
                     ->required()
                     ->live(onBlur: true)
@@ -28,7 +28,7 @@ class ProductForm
                         $set('slug', Str::slug($state));
                     }),
                 TextInput::make('slug')
-                    ->label(__('filament.forms.fields.slug'))
+                    ->label(__('filament.fields.slug'))
                     ->required()
                     ->maxLength(255)
                     ->rules(function ($livewire, $record) {
@@ -41,39 +41,41 @@ class ProductForm
                         ];
                     }),
                 TextInput::make('description')
-                    ->label(__('filament.forms.fields.description'))
+                    ->label(__('filament.fields.description'))
                     ->maxLength(255)->columnSpan('full'),
                 RichEditor::make('content')
-                    ->label(__('filament.forms.fields.content'))
+                    ->label(__('filament.fields.content'))
                     ->columnSpan('full')
                     ->extraInputAttributes(['style' => 'min-height: 20rem;']),
                 MediaPicker::make('images')
-                    ->label(__('filament.forms.fields.images'))
+                    ->label(__('filament.fields.images'))
+                    ->folderPath('products')
                     ->acceptedFileTypes(['image/*'])
                     ->multiple()
                     ->conversions([
                         MediaConversionDefinition::make('thumb')
-                            ->width(200)
-                            ->height(200)
+                            ->width(400)
+                            ->height(400)
                             ->sharpen(10),
                     ])
                     ->columnSpan('full'),
                 TextInput::make('compare_at_price')
-                    ->label(__('filament.forms.fields.compare_at_price'))
+                    ->label(__('filament.fields.compare_at_price'))
                     ->numeric()
                     ->prefix('VND'),
                 TextInput::make('price')
-                    ->label(__('filament.forms.fields.price'))
+                    ->label(__('filament.fields.price'))
                     ->required()
                     ->numeric()
+                    ->default(0)
                     ->prefix('VND'),
                 TextInput::make('stock_quantity')
-                    ->label(__('filament.forms.fields.stock_quantity'))
+                    ->label(__('filament.fields.stock_quantity'))
                     ->required()
                     ->numeric()
                     ->default(0),
                 Select::make('collections')
-                    ->label(__('filament.forms.fields.collections'))
+                    ->label(__('filament.fields.collections'))
                     ->relationship('collections', 'title')
                     ->multiple()
                     ->searchable()
@@ -82,7 +84,7 @@ class ProductForm
                 //     ProductOptionVariant::make('option_variant'),
                 // ])->columnSpan('full'),
                 Select::make('status')
-                    ->label(__('filament.forms.fields.status'))
+                    ->label(__('filament.fields.status'))
                     ->options(ProductStatus::class)
                     ->default(ProductStatus::Active),
             ]);

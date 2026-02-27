@@ -38,7 +38,7 @@ class MediaRepository
                         ->orWhere('file_name', 'like', '%'.$search.'%');
                 })
             )
-            ->when($collection, fn ($query) => $query->where('collection_name', $collection))
+            ->when($collection, fn ($query) => $query->whereHas('mediables', fn ($q) => $q->where('collection', $collection)))
             ->orderBy($sortBy, $sortDirection)
             ->paginate($perPage);
     }
@@ -62,6 +62,37 @@ class MediaRepository
     public function getFolder(int $folderId): ?MediaFolder
     {
         return MediaFolder::find($folderId);
+    }
+
+    /**
+     * Get folder by path (e.g. "parent/child")
+     */
+    public function getFolderByPath(string $path): ?MediaFolder
+    {
+        return MediaFolder::where('path', $path)->first();
+    }
+
+    /**
+     * Get or create folders along a path, creating missing segments as needed.
+     * E.g. "products/banners" → creates "products" then "products/banners" if they don't exist.
+     */
+    public function getOrCreateFolderByPath(string $path): MediaFolder
+    {
+        $segments = explode('/', trim($path, '/'));
+        $parentId = null;
+        $currentPath = '';
+        $folder = null;
+
+        foreach ($segments as $segment) {
+            $currentPath = $currentPath === '' ? $segment : $currentPath.'/'.$segment;
+            $folder = MediaFolder::firstOrCreate(
+                ['path' => $currentPath],
+                ['name' => $segment, 'parent_id' => $parentId],
+            );
+            $parentId = $folder->id;
+        }
+
+        return $folder;
     }
 
     /**

@@ -10,14 +10,14 @@ use LaraZeus\SpatieTranslatable\Resources\Pages\ListRecords\Concerns\Translatabl
 
 class ListBlogs extends ListRecords
 {
-    // use Translatable;
+    use Translatable;
 
     protected static string $resource = BlogResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
-            // LocaleSwitcher::make(),
+            LocaleSwitcher::make(),
             CreateAction::make(),
         ];
     }

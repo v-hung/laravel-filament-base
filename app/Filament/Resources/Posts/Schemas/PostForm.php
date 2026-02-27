@@ -2,8 +2,9 @@
 
 namespace App\Filament\Resources\Posts\Schemas;
 
+use App\Concerns\Media\MediaConversionDefinition;
 use App\Enums\ContentStatus;
-use Filament\Forms\Components\FileUpload;
+use App\Filament\Forms\Components\MediaPicker;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -19,7 +20,7 @@ class PostForm
         return $schema
             ->components([
                 TextInput::make('title')
-                    ->label(__('filament.forms.fields.title'))
+                    ->label(__('filament.fields.title'))
                     ->maxLength(255)
                     ->required()
                     ->live(onBlur: true)
@@ -27,38 +28,45 @@ class PostForm
                         $set('slug', Str::slug($state));
                     }),
                 TextInput::make('slug')
-                    ->label(__('filament.forms.fields.slug'))
+                    ->label(__('filament.fields.slug'))
                     ->required()
                     ->maxLength(255)
                     ->rules(function ($livewire, $record) {
                         $locale = $livewire->activeLocale ?? app()->getLocale();
 
                         return [
-                            Rule::unique('posts', 'slug')->ignore($record?->id),
-                            // Rule::unique('posts', "slug->$locale")
-                            //     ->ignore($record?->id),
+                            // Rule::unique('posts', 'slug')->ignore($record?->id),
+                            Rule::unique('posts', "slug->$locale")
+                                ->ignore($record?->id),
                         ];
                     }),
                 TextInput::make('description')
-                    ->label(__('filament.forms.fields.description'))
+                    ->label(__('filament.fields.description'))
                     ->maxLength(255)->columnSpan('full'),
                 RichEditor::make('content')
-                    ->label(__('filament.forms.fields.content'))
+                    ->label(__('filament.fields.content'))
                     ->columnSpan('full')
                     ->extraInputAttributes(['style' => 'min-height: 20rem;']),
-                FileUpload::make('images')
-                    ->label(__('filament.forms.fields.images'))
-                    ->disk('public')->directory('posts')
-                    ->multiple(),
+                MediaPicker::make('image')
+                    ->label(__('filament.fields.image'))
+                    ->folderPath('posts')
+                    ->acceptedFileTypes(['image/*'])
+                    ->conversions([
+                        MediaConversionDefinition::make('thumb')
+                            ->width(300)
+                            ->height(300)
+                            ->sharpen(10),
+                    ])
+                    ->columnSpan('full'),
                 Select::make('categories')
-                    ->label(__('filament.forms.fields.categories'))
+                    ->label(__('filament.fields.categories'))
                     ->relationship('categories', 'title')
                     ->multiple()
                     ->searchable()
                     ->preload()
                     ->required(),
                 Select::make('status')
-                    ->label(__('filament.forms.fields.status'))
+                    ->label(__('filament.fields.status'))
                     ->options(ContentStatus::class)
                     ->default(ContentStatus::Published),
             ]);

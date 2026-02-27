@@ -113,6 +113,7 @@ class MediaPickerModal extends Component
         string $collection = 'default',
         array $conversions = [],
         ?string $modelClass = null,
+        ?string $folderPath = null,
     ): void {
         $this->isOpen = true;
         $this->currentModal = 'browse';
@@ -124,6 +125,9 @@ class MediaPickerModal extends Component
         $this->collection = $collection;
         $this->conversions = $conversions;
         $this->modelClass = $modelClass;
+        $this->browsingFolderId = $folderPath
+            ? $this->mediaRepository->getOrCreateFolderByPath($folderPath)->id
+            : null;
     }
 
     public function close(): void
@@ -805,15 +809,19 @@ class MediaPickerModal extends Component
 
         $browser = $this->resolveMediaBrowserData(
             perPage: 12,
-            collection: $this->collection,
             includeFolders: true,
             breadcrumbsFolderId: $folderId,
         );
+
+        $selectedItems = ! empty($this->selected)
+            ? $this->mediaRepository->getMediaByIds($this->selected)
+            : collect();
 
         return view('livewire.media-picker-modal', [
             'mediaItems' => $browser['mediaItems'],
             'folders' => $browser['folders'],
             'breadcrumbs' => $browser['folderPath'],
+            'selectedItems' => $selectedItems,
         ]);
     }
 }

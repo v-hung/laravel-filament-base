@@ -17,25 +17,25 @@ class UsersTable
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label(__('filament.tables.columns.name'))
+                    ->label(__('filament.fields.name'))
                     ->searchable(),
                 TextColumn::make('email')
-                    ->label(__('filament.tables.columns.email_address'))
+                    ->label(__('filament.fields.email_address'))
                     ->searchable(),
                 TextColumn::make('email_verified_at')
-                    ->label(__('filament.tables.columns.email_verified_at'))
+                    ->label(__('filament.fields.email_verified_at'))
                     ->dateTime()
                     ->sortable(),
                 IconColumn::make('is_admin')
-                    ->label(__('filament.tables.columns.is_admin'))
+                    ->label(__('filament.fields.is_admin'))
                     ->boolean(),
                 TextColumn::make('created_at')
-                    ->label(__('filament.tables.columns.created_at'))
+                    ->label(__('filament.fields.created_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
-                    ->label(__('filament.tables.columns.updated_at'))
+                    ->label(__('filament.fields.updated_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

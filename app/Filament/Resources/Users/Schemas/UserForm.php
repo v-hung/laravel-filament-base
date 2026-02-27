@@ -15,25 +15,25 @@ class UserForm
         return $schema
             ->components([
                 TextInput::make('name')
-                    ->label(__('filament.forms.fields.name'))
+                    ->label(__('filament.fields.name'))
                     ->required(),
                 TextInput::make('email')
-                    ->label(__('filament.forms.fields.email'))
+                    ->label(__('filament.fields.email'))
                     ->email()
                     ->required(),
                 DateTimePicker::make('email_verified_at')
-                    ->label(__('filament.forms.fields.email_verified_at')),
+                    ->label(__('filament.fields.email_verified_at')),
                 TextInput::make('password')
-                    ->label(__('filament.forms.fields.password'))
+                    ->label(__('filament.fields.password'))
                     ->password()
                     ->required(),
                 Select::make('roles')
-                    ->label(__('filament.forms.fields.roles'))
+                    ->label(__('filament.fields.roles'))
                     ->relationship('roles', 'name')
                     ->multiple()
                     ->preload(),
                 Toggle::make('is_admin')
-                    ->label(__('filament.forms.fields.is_admin'))
+                    ->label(__('filament.fields.is_admin'))
                     ->required(),
             ]);
     }
