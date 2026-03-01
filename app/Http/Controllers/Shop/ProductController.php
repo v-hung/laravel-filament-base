@@ -22,15 +22,11 @@ class ProductController extends Controller
     public function shop(Request $request)
     {
         $products = $this->productRepository->search(ProductSearchParams::fromRequest($request));
-        $best_selling_products = $this->productRepository->search(new ProductSearchParams(['perPage' => 3, 'orderType' => ProductOrderType::BEST_SELLING]));
-        $collections = $this->collectionRepository->getAll();
-        $price_range = $this->productRepository->getPriceRange();
+        $featured_products = $this->productRepository->search(new ProductSearchParams(['perPage' => 3, 'orderType' => ProductOrderType::FEATURED]));
 
         return $this->render('shop/index', [
             'products' => $products,
-            'best_selling_products' => $best_selling_products,
-            'collections' => $collections,
-            'price_range' => $price_range,
+            'featured_products' => $featured_products,
         ]);
     }
 

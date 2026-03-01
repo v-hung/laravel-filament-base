@@ -19,9 +19,10 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-import Container from './Container';
+import Container from './container';
 import { Icons } from './Icons';
 import DuInput from './du-input';
+import BrandLogo from './brand-logo';
 
 type NavItem = {
     label: string;
@@ -87,7 +88,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
                                 className="w-[85%] max-w-xs border-r border-duyang-grey-light bg-duyang-white p-0 shadow-none"
                             >
                                 <div className="p-6">
-                                    <SheetTitle className="text-h-20-semibold mb-6 text-duyang-black">
+                                    <SheetTitle className="mb-6 text-p-18-semibold text-duyang-black lg:text-h-20-semibold">
                                         Menu
                                     </SheetTitle>
 
@@ -97,7 +98,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
                                                 key={item.label}
                                                 href={item.href}
                                                 className={cn(
-                                                    'text-p-16-semibold border-duyang-grey-light py-2 transition-colors',
+                                                    'border-duyang-grey-light py-2 text-p-14-semibold transition-colors lg:text-p-16-semibold',
                                                     url == item.href
                                                         ? 'border-b text-duyang-black'
                                                         : 'text-duyang-grey hover:text-duyang-black',
@@ -118,9 +119,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
                             href={home().url}
                             className="flex items-center gap-2"
                         >
-                            <span className="text-h-20-semibold text-duyang-black">
-                                DUYANG VIETNAM
-                            </span>
+                            <BrandLogo />
                         </Link>
                     </div>
 
@@ -131,7 +130,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
                                 key={item.label}
                                 href={item.href}
                                 className={cn(
-                                    'text-btn-16 px-1.5 py-2.5',
+                                    'px-1.5 py-2.5 text-btn-14 lg:text-btn-16',
                                     url == item.href
                                         ? 'border-b border-duyang-grey-light text-duyang-black'
                                         : 'text-duyang-grey hover:text-duyang-black',

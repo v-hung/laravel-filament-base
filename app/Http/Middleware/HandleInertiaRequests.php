@@ -38,13 +38,20 @@ class HandleInertiaRequests extends Middleware
     {
         return [
             ...parent::share($request),
-            'name' => config('app.name'),
+            'name' => setting('shop.site_name'),
             'auth' => [
                 'user' => $request->user(),
             ],
             'cart' => function () {
                 return app(CartService::class)->getCart();
             },
+            'settings' => [
+                'site_name' => setting('shop.site_name'),
+                'site_logo' => setting_image('shop.site_logo'),
+                'site_email' => setting('shop.site_email'),
+                'site_phone' => setting('shop.site_phone'),
+                'site_address' => setting('shop.site_address'),
+            ],
         ];
     }
 }

@@ -20,7 +20,7 @@ use UnitEnum;
 
 class PostResource extends Resource
 {
-    // use Translatable;
+    use Translatable;
 
     protected static ?string $model = Post::class;
 

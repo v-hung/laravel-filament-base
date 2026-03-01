@@ -5,13 +5,12 @@ import { cn } from '@/lib/utils/cn';
 import { about, contact, posts as postsRoute, shop } from '@/routes';
 
 import BrandLogo from './brand-logo';
-import Container from './Container';
+import Container from './container';
 import DuButton from './du-button';
 
 type FooterLink = {
     label: string;
     href: string;
-    external?: boolean;
 };
 
 type FooterSectionData = {
@@ -47,9 +46,9 @@ const FOOTER_SECTIONS: FooterSectionData[] = [
     {
         heading: 'Kết Nối Với Chúng Tôi',
         links: [
-            { label: 'Email', href: 'mailto:info@duyang.vn', external: true },
-            { label: 'Facebook', href: '#', external: true },
-            { label: 'WhatsApp', href: '#', external: true },
+            { label: 'Email', href: 'mailto:info@duyang.vn' },
+            { label: 'Facebook', href: '#' },
+            { label: 'WhatsApp', href: '#' },
         ],
     },
 ];
@@ -62,32 +61,26 @@ function FooterSectionColumn({
     className?: string;
 }) {
     return (
-        <div className={cn('flex flex-col gap-6', className)}>
-            <h4 className="text-h-22-bold text-duyang-white">
+        <div
+            className={cn(
+                'flex flex-col gap-6 md:row-span-2 md:grid md:grid-rows-subgrid',
+                className,
+            )}
+        >
+            <h4 className="text-h-20-bold text-duyang-white lg:text-h-22-bold">
                 {section.heading}
             </h4>
             <ul className="flex flex-wrap gap-5 md:flex-col md:flex-nowrap">
-                {section.links.map((link) =>
-                    link.external ? (
-                        <li key={link.label}>
-                            <a
-                                href={link.href}
-                                className="text-btn-16 text-duyang-grey-light transition-colors hover:text-duyang-white"
-                            >
-                                {link.label}
-                            </a>
-                        </li>
-                    ) : (
-                        <li key={link.label}>
-                            <Link
-                                href={link.href}
-                                className="text-btn-16 text-duyang-grey-light transition-colors hover:text-duyang-white"
-                            >
-                                {link.label}
-                            </Link>
-                        </li>
-                    ),
-                )}
+                {section.links.map((link) => (
+                    <li key={link.label}>
+                        <Link
+                            href={link.href}
+                            className="text-btn-14 text-duyang-grey-light transition-colors hover:text-duyang-white lg:text-btn-16"
+                        >
+                            {link.label}
+                        </Link>
+                    </li>
+                ))}
             </ul>
         </div>
     );
@@ -99,24 +92,34 @@ function NewsletterSection({ className }: { className?: string }) {
     };
 
     return (
-        <div className={cn('flex flex-col gap-4', className)}>
-            <h4 className="text-h-22-bold text-duyang-white">
+        <div
+            className={cn(
+                'flex flex-col gap-4 md:row-span-2 md:grid md:grid-rows-subgrid',
+                className,
+            )}
+        >
+            <h4 className="text-h-20-bold text-duyang-white lg:text-h-22-bold">
                 Nhận Thông Tin Từ DUYANG VIETNAM
             </h4>
-            <p className="text-p-16-regular text-duyang-grey-light">
-                Đăng ký để nhận cập nhật về năng lực sản xuất, sản phẩm mới và
-                thông tin hợp tác.
-            </p>
-            <form className="mt-6 flex items-end gap-3" onSubmit={handleSubmit}>
-                <input
-                    type="email"
-                    placeholder="Email"
-                    className="text-p-16-regular flex-1 border-b border-duyang-grey-light bg-transparent pb-2 text-duyang-white transition-colors outline-none placeholder:text-duyang-grey-light focus:border-duyang-white"
-                />
-                <DuButton type="submit" variant="solid" color="white">
-                    Đăng Ký
-                </DuButton>
-            </form>
+            <div className="flex flex-col gap-4">
+                <p className="text-p-14-regular text-duyang-grey-light lg:text-p-16-regular">
+                    Đăng ký để nhận cập nhật về năng lực sản xuất, sản phẩm mới
+                    và thông tin hợp tác.
+                </p>
+                <form
+                    className="mt-6 flex items-end gap-3"
+                    onSubmit={handleSubmit}
+                >
+                    <input
+                        type="email"
+                        placeholder="Email"
+                        className="flex-1 border-b border-duyang-grey-light bg-transparent pb-2 text-p-14-regular text-duyang-white transition-colors outline-none placeholder:text-duyang-grey-light focus:border-duyang-white lg:text-p-16-regular"
+                    />
+                    <DuButton type="submit" variant="solid" color="white">
+                        Đăng Ký
+                    </DuButton>
+                </form>
+            </div>
         </div>
     );
 }
@@ -128,7 +131,7 @@ export const Footer: FC = () => {
                 <div className="pt-12 pb-12 md:pt-16 md:pb-14">
                     {/* Mobile-only logo at top */}
                     <div className="mb-8 md:hidden">
-                        <BrandLogo />
+                        <BrandLogo white />
                     </div>
                     {/* Link columns + Newsletter */}
                     <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-10 lg:grid-cols-8 xl:grid-cols-12">
@@ -151,22 +154,22 @@ export const Footer: FC = () => {
                     <div className="flex flex-col items-center gap-4 md:flex-row md:justify-between">
                         {/* Logo — desktop only (mobile logo is at top) */}
                         <div className="hidden lg:block">
-                            <BrandLogo />
+                            <BrandLogo white />
                         </div>
-                        <div className="flex flex-wrap gap-8 md:gap-12">
-                            <p className="text-p-16-semibold text-center text-duyang-white">
+                        <div className="flex flex-wrap gap-4 md:gap-8 lg:gap-12">
+                            <p className="text-p-14- text-center text-duyang-white lg:text-p-16-semibold">
                                 © {new Date().getFullYear()} DUYANG VIETNAM. All
                                 Rights Reserved
                             </p>
                             <a
                                 href="#"
-                                className="text-p-16-regular text-duyang-grey-light transition-colors hover:text-duyang-white"
+                                className="text-p-14-regular text-duyang-cream transition-colors hover:text-duyang-white lg:text-p-16-regular"
                             >
                                 Chính Sách Bảo Mật
                             </a>
                             <a
                                 href="#"
-                                className="text-p-16-regular text-duyang-grey-light transition-colors hover:text-duyang-white"
+                                className="text-p-14-regular text-duyang-cream transition-colors hover:text-duyang-white lg:text-p-16-regular"
                             >
                                 Điều Khoản Sử Dụng
                             </a>

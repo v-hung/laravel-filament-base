@@ -3,6 +3,7 @@
 namespace App\Concerns\Media;
 
 use App\Models\Media;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Http\UploadedFile;
 
@@ -10,16 +11,18 @@ trait HasMedia
 {
     protected array $mediaCollections = [];
 
-    protected static function bootHasMedia(): void
+    /**
+     * Called automatically by Laravel for each model instance using this trait.
+     * Hides the raw `media` relation from serialization — models expose media
+     * through explicit accessors (e.g. `images`, `image`) instead.
+     */
+    public function initializeHasMedia(): void
     {
-        static::created(function ($model) {
-            if (method_exists($model, 'registerMediaCollections')) {
-                $model->registerMediaCollections();
-            }
-            if (method_exists($model, 'registerMediaConversions')) {
-                $model->registerMediaConversions();
-            }
-        });
+        $this->hidden = array_unique(array_merge($this->hidden, ['media']));
+
+        if (method_exists($this, 'registerMediaCollections')) {
+            $this->registerMediaCollections();
+        }
     }
 
     public function media(): MorphToMany
@@ -32,14 +35,15 @@ trait HasMedia
             ->orderBy('mediables.sort_order');
     }
 
-    public function getMedia(string $collection)
+    public function getMedia(string $collection): EloquentCollection
     {
         if (! $this->relationLoaded('media')) {
             $this->load('media');
         }
 
+        /** @var EloquentCollection<int, Media> $media */
         $media = $this->getRelation('media')
-            ->filter(fn ($item) => $item->pivot?->collection === $collection)
+            ->filter(fn (Media $item): bool => $item->pivot?->collection === $collection)
             ->values();
 
         // Get conversions from collection definition
@@ -48,10 +52,8 @@ trait HasMedia
             return $media;
         }
 
-        $modelBasename = class_basename(static::class);
-
         // Add filtered conversions to each media item
-        $media->each(function ($item) use ($modelBasename, $collection, $collectionDef) {
+        $media->each(function ($item) use ($collectionDef) {
             $allConversions = $item->generated_conversions ?? [];
             $filteredConversions = [];
 
@@ -60,10 +62,11 @@ trait HasMedia
 
             foreach ($definedConversions as $conversionDef) {
                 $conversionName = $conversionDef->name;
-                $conversionKey = "{$modelBasename}_{$collection}_{$conversionName}";
+                $conversionKey = $item->buildConversionKey($conversionName);
 
                 // Check if this conversion exists in generated_conversions
                 if (isset($allConversions[$conversionKey])) {
+                    $allConversions[$conversionKey]['url'] = $item->getUrl($conversionName);
                     $filteredConversions[$conversionName] = $allConversions[$conversionKey];
                 }
             }

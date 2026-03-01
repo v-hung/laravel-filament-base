@@ -12,8 +12,16 @@ export type MediaPivot = {
 
 export type MediaConversion = {
     file_name?: string;
+    url: string;
     width?: number;
     height?: number;
+    [key: string]: unknown;
+};
+
+export type MediaCustomProperties = {
+    alt_text?: string | null;
+    caption?: string | null;
+    original_name?: string | null;
     [key: string]: unknown;
 };
 
@@ -28,20 +36,19 @@ export type MediaMediable =
 
 export type Media = {
     id: number;
-    file_name?: string;
+    name: string;
+    file_name: string;
+    url: string;
     mime_type?: string;
-    size?: number;
-    disk?: string;
-    width?: number | null;
-    height?: number | null;
-    dimensions?: [number, number] | null;
-    original_url?: string;
-    preview_url?: string;
-    custom_properties?: Record<string, unknown> | null;
-    conversions?: Record<string, MediaConversion>;
-    pivot?: MediaPivot;
-    mediables?: MediaMediable[];
-    created_at?: string;
-    updated_at?: string;
+    size: number;
+    width: number | null;
+    height: number | null;
+    dimensions: [number, number] | null;
+    custom_properties: MediaCustomProperties | null;
+    conversions: Record<string, MediaConversion>;
+    pivot: MediaPivot;
+    mediables: MediaMediable[];
+    created_at: string;
+    updated_at: string;
     [key: string]: unknown;
 };

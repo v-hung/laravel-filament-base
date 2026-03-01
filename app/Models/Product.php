@@ -85,6 +85,9 @@ class Product extends Model
 
     public function images(): Attribute
     {
-        return Attribute::get(fn () => $this->getMedia('images'));
+        return Attribute::get(fn () => $this->getMedia('images')
+            ->map(fn (Media $media): array => $media->toMediaData())
+            ->values()
+            ->all());
     }
 }

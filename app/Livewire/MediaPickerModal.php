@@ -198,7 +198,7 @@ class MediaPickerModal extends Component
                 'required',
                 'string',
                 'max:255',
-                'regex:/^[a-zA-Z0-9\s\-_]+$/',
+                'regex:/^[\pL\pN _-]+$/u',
             ],
         ], [
             'newFolderName.regex' => __('media.validation.folder_name_regex'),
@@ -327,14 +327,7 @@ class MediaPickerModal extends Component
         }
 
         $items = $mediaItems
-            ->map(fn (\App\Models\Media $media) => [
-                'id' => $media->id,
-                'name' => $media->name,
-                'file_name' => $media->file_name,
-                'url' => $media->getUrl(),
-                'mime_type' => $media->mime_type,
-                'size' => $media->size,
-            ])
+            ->map(fn (\App\Models\Media $media) => $media->toMediaData())
             ->values()
             ->toArray();
 
@@ -692,7 +685,7 @@ class MediaPickerModal extends Component
                 'required',
                 'string',
                 'max:255',
-                'regex:/^[a-zA-Z0-9\s\-_]+$/',
+                'regex:/^[\pL\pN _-]+$/u',
             ],
         ], [
             'detailFolderName.regex' => __('media.validation.folder_name_regex'),
@@ -722,27 +715,8 @@ class MediaPickerModal extends Component
         }
 
         try {
-            $oldPath = $folder->path;
             $folder->name = $this->detailFolderName;
-
-            // Update path
-            if ($folder->parent_id) {
-                $parent = $this->mediaRepository->getFolder($folder->parent_id);
-                $folder->path = $parent->path.'/'.$this->detailFolderName;
-            } else {
-                $folder->path = $this->detailFolderName;
-            }
-
             $folder->save();
-
-            // Update paths of all descendant folders
-            $oldPathPattern = rtrim($oldPath, '/').'/';
-            $descendants = MediaFolder::where('path', 'LIKE', $oldPathPattern.'%')->get();
-
-            foreach ($descendants as $descendant) {
-                $descendant->path = str_replace($oldPath, $folder->path, $descendant->path);
-                $descendant->save();
-            }
 
             Notification::make()
                 ->title(__('media.notifications.folder_updated'))

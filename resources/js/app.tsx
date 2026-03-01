@@ -4,6 +4,8 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import '../css/app.css';
 import { initializeTheme } from './hooks/use-appearance';
+import SettingListener from './shared/listeners/SettingListener';
+import type { ShopSettings } from './types';
 
 // const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -16,9 +18,13 @@ createInertiaApp({
         ),
     setup({ el, App, props }) {
         const root = createRoot(el);
+        const initialSettings =
+            (props.initialPage.props as { settings?: ShopSettings | null })
+                .settings ?? null;
 
         root.render(
             <StrictMode>
+                <SettingListener initialSettings={initialSettings} />
                 <App {...props} />
             </StrictMode>,
         );

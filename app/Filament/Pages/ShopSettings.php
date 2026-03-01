@@ -3,9 +3,9 @@
 namespace App\Filament\Pages;
 
 use App\Filament\Core\Pages\PageSettingsTranslatable;
+use App\Filament\Forms\Components\MediaPicker;
 use BackedEnum;
 use Filament\Actions\Action;
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -54,13 +54,17 @@ class ShopSettings extends PageSettingsTranslatable
                     ->label(__('filament-panels::resources/pages/edit-record.form.actions.save.label'))
                     ->action('save'),
                 TextInput::make('site_name')->label(__('filament.settings.fields.site_name')),
-                FileUpload::make('site_logo')->disk('public')->directory('settings')->label(__('filament.settings.fields.site_logo')),
+                MediaPicker::make('site_logo')
+                    ->label(__('filament.settings.fields.site_logo'))
+                    ->folderPath('settings')
+                    ->acceptedFileTypes(['image/*'])
+                    ->columnSpan('full'),
                 TextInput::make('site_email')->label(__('filament.settings.fields.site_email')),
                 TextInput::make('site_phone')->label(__('filament.settings.fields.site_phone')),
                 TextInput::make('site_address')->label(__('filament.settings.fields.site_address')),
                 Textarea::make('site_description')->label(__('filament.settings.fields.site_description')),
                 TextArea::make('site_map')->label(__('filament.settings.fields.site_map')),
-                KeyValue::make('bank_info')->label(__('filament.settings.fields.bank_info')),
+                // KeyValue::make('bank_info')->label(__('filament.settings.fields.bank_info')),
             ])->statePath('data');
     }
 }

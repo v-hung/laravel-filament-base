@@ -1,12 +1,13 @@
 import type { ContentStatus, CategoryStatus } from '../enums';
 import type { Media } from './media';
+import type { Translatable } from '@/lib/utils/trans-value';
 
 export type Post = {
     id: number;
-    title: string;
-    slug: string;
-    description?: string | null;
-    content?: string | null;
+    title: Translatable;
+    slug: Translatable;
+    description?: Translatable | null;
+    content?: Translatable | null;
     images?: Media[] | null;
     image?: Media | null;
     status?: ContentStatus | null;
@@ -18,9 +19,9 @@ export type Post = {
 
 export type Blog = {
     id: number;
-    title: string;
-    slug: string;
-    description?: string | null;
+    title: Translatable;
+    slug: Translatable;
+    description?: Translatable | null;
     image?: Media | null;
     status?: CategoryStatus | null;
     created_at?: string;
@@ -31,10 +32,10 @@ export type Blog = {
 
 export type Page = {
     id: number;
-    title: string;
-    slug: string;
-    description?: string | null;
-    content?: string | null;
+    title: Translatable;
+    slug: Translatable;
+    description?: Translatable | null;
+    content?: Translatable | null;
     images?: Media[] | null;
     image?: Media | null;
     status?: ContentStatus | null;

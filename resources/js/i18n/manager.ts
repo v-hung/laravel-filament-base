@@ -1,6 +1,6 @@
 import type { Locale as DateFnsLocale } from 'date-fns';
 import { loadDateFnsLocale } from './loader';
-import { CURRENT_LANGUAGE, type AppLocale } from './config';
+import { CURRENT_LANGUAGE, type AppLocale } from './constants';
 
 type LocaleData = {
     appLocale: AppLocale;
@@ -67,5 +67,30 @@ export class LocaleManager {
     }
 }
 
-// export singleton instance
 export const localeManager = new LocaleManager();
+
+/**
+ * Get the current app locale — safe to call anywhere (including plain .ts files).
+ * Falls back to CURRENT_LANGUAGE if LocaleManager hasn't been initialized yet.
+ */
+export function getLocale(): AppLocale {
+    return localeManager.isInitialized
+        ? localeManager.locale.appLocale
+        : CURRENT_LANGUAGE;
+}
+
+/**
+ * Subscribe to locale changes from plain .ts files (non-React).
+ * Returns an unsubscribe function.
+ *
+ * @example
+ * const unsubscribe = onLocaleChange((locale) => { ... });
+ * // later: unsubscribe();
+ */
+export function onLocaleChange(callback: (locale: AppLocale) => void): () => void {
+    return localeManager.subscribe(() => {
+        if (localeManager.isInitialized) {
+            callback(localeManager.locale.appLocale);
+        }
+    });
+}

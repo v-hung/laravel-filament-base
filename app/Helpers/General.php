@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Media;
 use Illuminate\Support\Facades\Storage;
 
 if (! function_exists('setting')) {
@@ -13,6 +14,29 @@ if (! function_exists('setting')) {
         $settings = app('settings');
 
         return $settings[$key] ?? $default ?? $key;
+    }
+}
+
+if (! function_exists('setting_image')) {
+    function setting_image(string $key): mixed
+    {
+        $value = setting($key);
+
+        if (! $value) {
+            return null;
+        }
+
+        if (is_array($value)) {
+            return Media::whereIn('id', $value)
+                ->get()
+                ->map(fn (Media $media): array => $media->toMediaData())
+                ->values()
+                ->toArray();
+        }
+
+        $media = Media::find($value);
+
+        return $media ? $media->toMediaData() : null;
     }
 }
 

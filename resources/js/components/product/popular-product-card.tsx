@@ -1,6 +1,7 @@
 import { cn } from '@/lib/utils/cn';
 import type { Product } from '@/types/models/product';
 import { Icons } from '../shared/Icons';
+import { transValue } from '@/lib/utils/trans-value';
 
 interface PopularProductCardProps {
     product: Product;
@@ -15,19 +16,19 @@ function ProductImage({
     product: Product;
     className?: string;
 }) {
-    const imageUrl = product.images?.[0]?.original_url ?? null;
+    const imageUrl = product.images?.[0]?.url ?? null;
 
     return (
         <div className={cn('overflow-hidden bg-duyang-cream', className)}>
             {imageUrl ? (
                 <img
                     src={imageUrl}
-                    alt={product.name}
+                    alt={transValue(product.name)}
                     className="h-full w-full object-cover"
                 />
             ) : (
                 <div className="flex h-full w-full items-center justify-center">
-                    <span className="text-p-14-regular text-duyang-grey-light">
+                    <span className="text-p-14-regular text-duyang-grey-light lg:text-p-16-regular">
                         No image
                     </span>
                 </div>
@@ -62,11 +63,11 @@ export function PopularProductCard({
                     {version === 'v2' && rating !== undefined && (
                         <div className="flex items-center gap-0.5 rounded bg-duyang-white px-3 py-0.5 shadow-sm">
                             <Icons.Star width={20} height={20} />
-                            <span className="text-p-16-bold text-duyang-black">
+                            <span className="text-p-14-bold text-duyang-black lg:text-p-16-bold">
                                 {rating}
                             </span>
                             {reviewCount !== undefined && (
-                                <span className="text-p-16-regular text-duyang-black">
+                                <span className="text-p-14-regular text-duyang-black lg:text-p-16-regular">
                                     ({reviewCount} Reviews)
                                 </span>
                             )}
@@ -74,7 +75,7 @@ export function PopularProductCard({
                     )}
                     {version === 'v1' && (
                         <>
-                            <div className="text-p-16-semibold flex items-center gap-2 text-duyang-grey">
+                            <div className="flex items-center gap-2 text-p-14-semibold text-duyang-grey lg:text-p-16-semibold">
                                 {product.collections
                                     ?.slice(0, 2)
                                     .map((col, index) => (
@@ -85,8 +86,8 @@ export function PopularProductCard({
                                             {index > 0 && (
                                                 <div className="h-1 w-1 rounded-full bg-duyang-grey" />
                                             )}
-                                            <span className="text-p-14-regular text-duyang-grey">
-                                                {col.title}
+                                            <span className="text-p-14-regular text-duyang-grey lg:text-p-16-regular">
+                                                {transValue(col.title)}
                                             </span>
                                         </span>
                                     ))}
@@ -98,7 +99,7 @@ export function PopularProductCard({
                                         height={20}
                                         fill="var(--color-duyang-grey)"
                                     />
-                                    <span className="text-p-16-bold text-duyang-grey">
+                                    <span className="text-p-14-bold text-duyang-grey lg:text-p-16-bold">
                                         ({rating})
                                     </span>
                                 </div>
@@ -110,20 +111,20 @@ export function PopularProductCard({
 
             {/* Info */}
             <div>
-                <h3 className="text-h-20-semibold mt-3 text-duyang-black">
-                    {product.name}
+                <h3 className="mt-3 text-p-18-semibold text-duyang-black lg:text-h-20-semibold">
+                    {transValue(product.name)}
                 </h3>
                 {version === 'v2' && product.description && (
-                    <p className="text-p-16-regular mt-3 line-clamp-2 text-duyang-grey">
-                        {product.description}
+                    <p className="mt-3 line-clamp-2 text-p-14-regular text-duyang-grey lg:text-p-16-regular">
+                        {transValue(product.description)}
                     </p>
                 )}
                 <p
                     className={cn(
                         'mt-1',
                         version === 'v2'
-                            ? 'text-p-18-semibold mt-3 text-duyang-black'
-                            : 'text-p-14-regular mt-3 text-duyang-grey',
+                            ? 'mt-3 text-p-16-semibold text-duyang-black lg:text-p-18-semibold'
+                            : 'mt-3 text-p-14-regular text-duyang-grey lg:text-p-16-regular',
                     )}
                 >
                     ${Number(product.price).toLocaleString()}

@@ -1,12 +1,13 @@
 import type { ProductStatus, CategoryStatus } from '../enums';
 import type { Media } from './media';
+import type { Translatable } from '@/lib/utils/trans-value';
 
 export type Product = {
     id: number;
-    name: string;
-    slug: string;
-    description?: string | null;
-    content?: string | null;
+    name: Translatable;
+    slug: Translatable;
+    description?: Translatable | null;
+    content?: Translatable | null;
     images?: Media[] | null;
     price: string | number;
     has_variant?: boolean;
@@ -64,9 +65,9 @@ export type ProductVariant = {
 
 export type Collection = {
     id: number;
-    title: string;
-    slug: string;
-    description?: string | null;
+    title: Translatable;
+    slug: Translatable;
+    description?: Translatable | null;
     image?: Media | null;
     status?: CategoryStatus | null;
     created_at?: string;

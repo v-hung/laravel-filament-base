@@ -6,4 +6,5 @@
     "LaravelExtraIntellisense.basePathForCode": "/var/www/html",
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "i18n-ally.keystyle": "nested",
+    "tailwindCSS.experimental.configFile": "resources/css/app.css"
 }

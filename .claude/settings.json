@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ddev php vendor/bin/pint --dirty app/Concerns/Media/HasMedia.php)"
+    ]
+  }
+}

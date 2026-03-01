@@ -33,9 +33,9 @@ const colorVariantClasses: Record<
 };
 
 const sizeClasses: Record<DuButtonSize, string> = {
-    sm: 'text-btn-16 px-4 py-2 gap-1.5',
-    md: 'text-btn-18 px-4 py-2.5 gap-2',
-    lg: 'text-btn-18 px-6 py-3 gap-2',
+    sm: 'text-btn-14 lg:text-btn-16 px-4 py-2 gap-1.5',
+    md: 'text-btn-16 lg:text-btn-18 px-4 py-2.5 gap-2',
+    lg: 'text-btn-16 lg:text-btn-18 px-6 py-3 gap-2',
 };
 
 const iconSizes: Record<DuButtonSize, number> = {

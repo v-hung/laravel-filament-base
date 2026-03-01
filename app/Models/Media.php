@@ -71,7 +71,7 @@ class Media extends Model
     /**
      * Build conversion key from pivot context or simple name
      */
-    protected function buildConversionKey(string $conversionName): string
+    public function buildConversionKey(string $conversionName): string
     {
         // If media is loaded via relationship, use pivot data
         if (isset($this->pivot) && $this->pivot->model_type && $this->pivot->collection) {
@@ -148,5 +148,31 @@ class Media extends Model
         $this->custom_properties = $properties;
 
         return $this;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function toMediaData(): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'file_name' => $this->file_name,
+            'url' => $this->getUrl(),
+            'mime_type' => $this->mime_type,
+            'size' => $this->size,
+            'width' => $this->width,
+            'height' => $this->height,
+            'dimensions' => $this->dimensions,
+            'custom_properties' => array_merge([
+                'alt_text' => null,
+                'caption' => null,
+                'original_name' => null,
+            ], $this->custom_properties ?? []),
+            'conversions' => $this->conversions ?? [],
+            'created_at' => $this->created_at?->toJSON(),
+            'updated_at' => $this->updated_at?->toJSON(),
+        ];
     }
 }

@@ -1,5 +1,5 @@
 import type { Locale as DateFnsLocale } from 'date-fns';
-import type { AppLocale } from './config';
+import type { AppLocale } from './constants';
 
 const DATE_FNS_LOCALE_MAP: Partial<Record<AppLocale, DateFnsLocale>> = {};
 

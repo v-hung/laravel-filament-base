@@ -4,6 +4,7 @@ namespace App\Filament\Forms\Components;
 
 use App\Models\Media;
 use App\Repositories\MediaRepository;
+use App\Services\MediaService;
 use Filament\Forms\Components\Field;
 
 class MediaPicker extends Field
@@ -26,7 +27,7 @@ class MediaPicker extends Field
     {
         parent::setUp();
 
-        $this->dehydrated(false);
+        $this->dehydrated(fn ($component) => $component->getRecord() === null);
 
         $this->loadStateFromRelationshipsUsing(function (MediaPicker $component, mixed $record): void {
             $collection = $component->getCollection();
@@ -49,12 +50,40 @@ class MediaPicker extends Field
 
             foreach ($ids as $index => $mediaId) {
                 $media = Media::find($mediaId);
+                $media = app(MediaRepository::class)->getMediaById($mediaId);
 
                 if ($media) {
                     $record->attachMedia($media, $collection, $index);
+                    $component->ensureMissingConversions($media, $record, $collection);
                 }
             }
         });
+    }
+
+    /**
+     * Generate conversions that are missing for the given model+collection context.
+     * Handles both: images uploaded before record existed (wrong key), and existing
+     * images picked from the browser that never had conversions generated.
+     */
+    private function ensureMissingConversions(Media $media, mixed $record, string $collection): void
+    {
+        $conversions = $this->getConversions();
+
+        if (empty($conversions)) {
+            return;
+        }
+
+        $modelClass = get_class($record);
+        $existingConversions = $media->generated_conversions ?? [];
+        $mediaService = app(MediaService::class);
+
+        foreach ($conversions as $conversion) {
+            $expectedKey = $media->buildConversionKey($conversion->name);
+
+            if (! array_key_exists($expectedKey, $existingConversions)) {
+                $mediaService->generateConversion($media, $conversion, $modelClass, $collection);
+            }
+        }
     }
 
     public function folderPath(?string $path): static
@@ -180,14 +209,7 @@ class MediaPicker extends Field
         $ids = $this->multiple ? (is_array($state) ? $state : [$state]) : [$state];
 
         return app(MediaRepository::class)->getMediaByIds($ids)
-            ->map(fn ($media) => [
-                'id' => $media->id,
-                'name' => $media->name,
-                'file_name' => $media->file_name,
-                'url' => $media->getUrl(),
-                'mime_type' => $media->mime_type,
-                'size' => $media->size,
-            ])
+            ->map(fn ($media) => $media->toMediaData())
             ->toArray();
     }
 }

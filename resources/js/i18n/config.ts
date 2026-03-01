@@ -5,12 +5,7 @@ import chainedBackend from 'i18next-chained-backend';
 import httpBackend from 'i18next-http-backend';
 import localStorageBackend from 'i18next-localstorage-backend';
 import { localeManager } from './manager';
-
-export type AppLocale = 'en' | 'vi';
-
-export const SUPPORTED_LANGUAGES: AppLocale[] = ['en', 'vi'];
-export const CURRENT_LANGUAGE: AppLocale =
-    import.meta.env.VITE_APP_LOCALE || 'en';
+import { CURRENT_LANGUAGE, SUPPORTED_LANGUAGES, type AppLocale } from './constants';
 
 i18n.use(languageDetector)
     .use(chainedBackend)

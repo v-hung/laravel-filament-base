@@ -1,15 +1,4 @@
 /**
- * DUYANG WEBSITE — Design System
- * ============================================================
- * Source: Figma file R8FpBu39Qh3uuMFIV0OSnY
- *
- * Usage in app.css:
- *   @import './duyang-design-system.css';
- *
- * ============================================================
- */
-
-/* ============================================================
  * GOOGLE FONTS — Manrope
  * ============================================================
  * Load from your layout blade or via npm (@fontsource/manrope).
@@ -52,78 +41,95 @@
     --color-duyang-white: var(--duyang-white);
 }
 
-@layer components {
-    /* --- HEADINGS (H) --- */
-    .text-h-80 {
-        @apply text-[80px] leading-[110%] font-bold;
-    }
-    .text-h-56-semibold {
-        @apply text-[56px] leading-[120%] font-semibold;
-    }
-    .text-h-56-bold {
-        @apply text-[56px] leading-[115%] font-bold;
-    }
-    .text-h-40 {
-        @apply text-[40px] leading-[120%] font-bold;
-    }
-    .text-h-32-bold {
-        @apply text-[32px] leading-[120%] font-bold;
-    }
-    .text-h-32-semibold {
-        @apply text-[32px] leading-[120%] font-semibold;
-    }
-    .text-h-24-bold {
-        @apply text-[24px] leading-[120%] font-bold;
-    }
-    .text-h-24-medium {
-        @apply text-[24px] leading-[120%] font-medium;
-    }
-    .text-h-22-bold {
-        @apply text-[22px] leading-[120%] font-bold;
-    }
-    .text-h-20-semibold {
-        @apply text-[20px] leading-[120%] font-semibold;
-    }
+/* ============================================================
+ * TYPOGRAPHY UTILITIES — @utility for IntelliSense support
+ * ============================================================ */
 
-    /* --- PARAGRAPHS (P) --- */
-    .text-p-18-semibold {
-        @apply text-[18px] leading-[145%] font-semibold;
-    }
-    .text-p-18-medium {
-        @apply text-[18px] leading-[145%] font-medium;
-    }
-    .text-p-18-regular {
-        @apply text-[18px] leading-[145%] font-normal;
-    }
-    .text-p-16-bold {
-        @apply text-[16px] leading-[160%] font-bold;
-    }
-    .text-p-16-semibold {
-        @apply text-[16px] leading-[160%] font-semibold;
-    }
-    .text-p-16-regular {
-        @apply text-[16px] leading-[160%] font-normal;
-    }
-    .text-p-14-semibold {
-        @apply text-[14px] leading-[145%] font-semibold;
-    }
-    .text-p-14-medium {
-        @apply text-[14px] leading-[145%] font-medium;
-    }
-    .text-p-14-regular {
-        @apply text-[14px] leading-[145%] font-normal;
-    }
+/* --- HEADINGS (H) --- */
+@utility text-h-80-bold {
+    @apply text-[80px] leading-[110%] font-bold;
+}
+@utility text-h-56-semibold {
+    @apply text-[56px] leading-[120%] font-semibold;
+}
+@utility text-h-56-bold {
+    @apply text-[56px] leading-[115%] font-bold;
+}
+@utility text-h-40-semibold {
+    @apply text-[40px] leading-[120%] font-semibold;
+}
+@utility text-h-40-bold {
+    @apply text-[40px] leading-[120%] font-bold;
+}
+@utility text-h-32-bold {
+    @apply text-[32px] leading-[120%] font-bold;
+}
+@utility text-h-32-semibold {
+    @apply text-[32px] leading-[120%] font-semibold;
+}
+@utility text-h-24-bold {
+    @apply text-[24px] leading-[120%] font-bold;
+}
+@utility text-h-24-medium {
+    @apply text-[24px] leading-[120%] font-medium;
+}
+@utility text-h-22-bold {
+    @apply text-[22px] leading-[120%] font-bold;
+}
+@utility text-h-20-bold {
+    @apply text-[20px] leading-[120%] font-bold;
+}
+@utility text-h-20-semibold {
+    @apply text-[20px] leading-[120%] font-semibold;
+}
 
-    /* --- BUTTONS (Btn) --- */
-    .text-btn-16 {
-        @apply text-[16px] leading-[100%] font-medium tracking-[2%];
-    }
-    .text-btn-18 {
-        @apply text-[18px] leading-[100%] font-medium tracking-[2%];
-    }
+/* --- PARAGRAPHS (P) --- */
+@utility text-p-18-semibold {
+    @apply text-[18px] leading-[145%] font-semibold;
+}
+@utility text-p-18-medium {
+    @apply text-[18px] leading-[145%] font-medium;
+}
+@utility text-p-18-regular {
+    @apply text-[18px] leading-[145%] font-normal;
+}
+@utility text-p-16-bold {
+    @apply text-[16px] leading-[160%] font-bold;
+}
+@utility text-p-16-semibold {
+    @apply text-[16px] leading-[160%] font-semibold;
+}
+@utility text-p-16-medium {
+    @apply text-[16px] leading-[160%] font-medium;
+}
+@utility text-p-16-regular {
+    @apply text-[16px] leading-[160%] font-normal;
+}
+@utility text-p-14-bold {
+    @apply text-[14px] leading-[145%] font-bold;
+}
+@utility text-p-14-semibold {
+    @apply text-[14px] leading-[145%] font-semibold;
+}
+@utility text-p-14-medium {
+    @apply text-[14px] leading-[145%] font-medium;
+}
+@utility text-p-14-regular {
+    @apply text-[14px] leading-[145%] font-normal;
+}
 
-    /* --- SURFACES (Surface) --- */
-    .surface-page {
-        background-color: var(--duyang-cream);
-    }
+/* --- BUTTONS (Btn) --- */
+@utility text-btn-14 {
+    @apply text-[14px] leading-[100%] font-medium tracking-[2%];
+}
+@utility text-btn-16 {
+    @apply text-[16px] leading-[100%] font-medium tracking-[2%];
+}
+@utility text-btn-18 {
+    @apply text-[18px] leading-[100%] font-medium tracking-[2%];
+}
+
+/* --- SURFACES --- */
+@utility surface-page {
+    background-color: var(--duyang-cream);
 }
