@@ -45,4 +45,23 @@ class HomeController extends Controller
             'partners' => $partners,
         ]);
     }
+
+    public function about()
+    {
+        $testimonials = $this->showcaseRepository->search(new ShowcaseSearchParams(['perPage' => 6, 'type' => ShowcaseType::Testimonial]));
+
+        return $this->render('site/about', [
+            'testimonials' => $testimonials,
+        ]);
+    }
+
+    public function contact()
+    {
+        return $this->render('site/contact');
+    }
+
+    public function partner()
+    {
+        return $this->render('site/partner');
+    }
 }
