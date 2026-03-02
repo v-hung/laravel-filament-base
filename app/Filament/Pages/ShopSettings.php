@@ -56,6 +56,7 @@ class ShopSettings extends PageSettingsTranslatable
                 TextInput::make('site_name')->label(__('filament.settings.fields.site_name')),
                 MediaPicker::make('site_logo')
                     ->label(__('filament.settings.fields.site_logo'))
+                    ->dehydrated(true)
                     ->folderPath('settings')
                     ->acceptedFileTypes(['image/*'])
                     ->columnSpan('full'),

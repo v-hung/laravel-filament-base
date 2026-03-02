@@ -27,7 +27,7 @@ class MediaPicker extends Field
     {
         parent::setUp();
 
-        $this->dehydrated(fn ($component) => $component->getRecord() === null);
+        $this->dehydrated(false);
 
         $this->loadStateFromRelationshipsUsing(function (MediaPicker $component, mixed $record): void {
             $collection = $component->getCollection();
@@ -182,7 +182,7 @@ class MediaPicker extends Field
 
     public function getSerializedConversions(): array
     {
-        return array_map(fn ($c) => [
+        return array_map(fn($c) => [
             'name' => $c->name,
             'width' => $c->width,
             'height' => $c->height,
@@ -209,7 +209,7 @@ class MediaPicker extends Field
         $ids = $this->multiple ? (is_array($state) ? $state : [$state]) : [$state];
 
         return app(MediaRepository::class)->getMediaByIds($ids)
-            ->map(fn ($media) => $media->toMediaData())
+            ->map(fn($media) => $media->toMediaData())
             ->toArray();
     }
 }
