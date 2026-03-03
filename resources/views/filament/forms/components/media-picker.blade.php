@@ -4,8 +4,41 @@
         multiple: {{ $isMultiple() ? 'true' : 'false' }},
         mediaItems: {{ json_encode($getMediaItems()) }},
         currentIndex: 0,
-    
+
+        normalizeStateIds(value) {
+            if (this.multiple) {
+                return Array.isArray(value) ? value.filter(Boolean) : [];
+            }
+
+            return value ? [value] : [];
+        },
+
+        syncFromState(value) {
+            const stateIds = this.normalizeStateIds(value);
+
+            if (stateIds.length === 0) {
+                this.mediaItems = [];
+                this.currentIndex = 0;
+
+                return;
+            }
+
+            const availableIds = this.mediaItems.map(item => item.id);
+            const allExist = stateIds.every(id => availableIds.includes(id));
+
+            if (!allExist || this.mediaItems.length !== stateIds.length) {
+                this.mediaItems = [];
+                this.currentIndex = 0;
+            }
+        },
+
         init() {
+            this.syncFromState(this.state);
+
+            this.$watch('state', value => {
+                this.syncFromState(value);
+            });
+
             Livewire.on('mediaSelected', (args) => {
                 const ids = args[0] || [];
                 const items = args[1] || [];
@@ -18,7 +51,7 @@
                 }
             });
         },
-    
+
         openPicker() {
             const selectedIds = this.multiple ?
                 (Array.isArray(this.state) ? this.state : []) :
@@ -34,7 +67,7 @@
                 folderPath: {{ json_encode($getFolderPath()) }},
             });
         },
-    
+
         removeMedia(id) {
             if (this.multiple) {
                 const removedIndex = this.mediaItems.findIndex(item => item.id === id);
@@ -52,11 +85,11 @@
                 this.mediaItems = [];
             }
         },
-    
+
         prev() {
             if (this.currentIndex > 0) this.currentIndex--;
         },
-    
+
         next() {
             if (this.currentIndex < this.mediaItems.length - 1) this.currentIndex++;
         }

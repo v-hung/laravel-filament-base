@@ -51,16 +51,16 @@ class SystemSettings extends Page implements HasForms
                 Action::make('save')
                     ->label(__('filament-panels::resources/pages/edit-record.form.actions.save.label'))
                     ->action('save'),
-                Section::make('System Actions')->description('Các thao tác hệ thống. Nhấn nút tương ứng để thực hiện.')
+                Section::make(__('filament.sections.system_actions'))->description(__('filament.system_settings.description'))
                     ->schema([
                         Grid::make(2)->schema([
 
                             Action::make('Clear Cache')
-                                ->tooltip('Xóa toàn bộ cache')
+                                ->tooltip(__('filament.system_settings.clear_cache_tooltip'))
                                 ->action(function () {
                                     Artisan::call('optimize:clear');
                                     Notification::make()
-                                        ->title('Cache cleared')
+                                        ->title(__('filament.system_settings.cache_cleared'))
                                         ->success()
                                         ->send();
                                 }),

@@ -20,9 +20,11 @@ return new class extends Migration
             $table->decimal('price', 15, 2);
             $table->boolean('has_variant')->default(false);
             $table->decimal('compare_at_price', 15, 2)->nullable();
+            $table->boolean('is_featured')->default(false);
             $table->integer('featured_position')->default(0);
             $table->integer('stock_quantity')->default(0);
             $table->integer('sales_count')->default(0);
+            $table->json('specifications')->nullable();
             $table->string('status')->default('active')->comment('active, inactive, out_of_stock, coming_soon, discontinued');
             $table->timestamps();
         });

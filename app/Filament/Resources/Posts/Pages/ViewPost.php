@@ -10,14 +10,14 @@ use LaraZeus\SpatieTranslatable\Resources\Pages\ViewRecord\Concerns\Translatable
 
 class ViewPost extends ViewRecord
 {
-    // use Translatable;
+    use Translatable;
 
     protected static string $resource = PostResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
-            // LocaleSwitcher::make(),
+            LocaleSwitcher::make(),
             EditAction::make(),
         ];
     }

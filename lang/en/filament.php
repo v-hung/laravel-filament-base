@@ -57,6 +57,24 @@ return [
         ],
     ],
 
+    'sections' => [
+        'basic' => 'Basic Information',
+        'branding' => 'Branding',
+        'contact' => 'Contact Information',
+        'content' => 'Content',
+        'faq' => 'FAQ',
+        'featured' => 'Featured',
+        'images' => 'Images',
+        'customer' => 'Customer Information',
+        'organization' => 'Organization',
+        'permissions' => 'Permissions',
+        'pricing' => 'Pricing & Inventory',
+        'shipping' => 'Shipping Information',
+        'specifications' => 'Technical Specifications',
+        'business_info' => 'Business Information',
+        'system_actions' => 'System Actions',
+    ],
+
     'settings' => [
         'fields' => [
             'site_name' => 'Site Name',
@@ -66,8 +84,23 @@ return [
             'site_address' => 'Store Address',
             'site_description' => 'Site Description',
             'site_map' => 'Map Address',
+            'tax_code' => 'Tax Code',
+            'business_field' => 'Business Field',
+            'representative' => 'Representative',
+            'working_hours' => 'Working Hours',
+            'working_hours_day' => 'Day',
+            'working_hours_time' => 'Hours',
             'bank_info' => 'Bank Information',
+            'faq' => 'FAQ',
+            'faq_question' => 'Question',
+            'faq_answer' => 'Answer',
         ],
+    ],
+
+    'system_settings' => [
+        'description' => 'System actions. Press the corresponding button to execute.',
+        'clear_cache_tooltip' => 'Clear all cache',
+        'cache_cleared' => 'Cache cleared',
     ],
 
     'fields' => [
@@ -101,6 +134,8 @@ return [
         'payment_status' => 'Payment Status',
         'roles' => 'Roles',
         'is_admin' => 'Is Admin',
+        'is_featured' => 'Featured Product',
+        'featured_position' => 'Featured Position',
         'email_verified_at' => 'Email Verified',
         'created_at' => 'Created At',
         'updated_at' => 'Updated At',
@@ -108,5 +143,13 @@ return [
         'product' => 'Product',
         'order_code' => 'Order Code',
         'email_address' => 'Email Address',
+        'reviewer_name' => 'Reviewer Name',
+        'reviewer_email' => 'Reviewer Email',
+        'rating' => 'Rating',
+        'comment' => 'Comment',
+        'is_approved' => 'Approved',
+        'specifications' => 'Technical Specifications',
+        'spec_key' => 'Specification',
+        'spec_value' => 'Value',
     ],
 ];

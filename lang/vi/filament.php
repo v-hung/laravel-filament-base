@@ -57,6 +57,24 @@ return [
         ],
     ],
 
+    'sections' => [
+        'basic' => 'Thông tin cơ bản',
+        'branding' => 'Thương hiệu',
+        'contact' => 'Thông tin liên hệ',
+        'content' => 'Nội dung',
+        'faq' => 'Câu hỏi thường gặp',
+        'featured' => 'Nổi bật',
+        'images' => 'Hình ảnh',
+        'customer' => 'Thông tin khách hàng',
+        'organization' => 'Phân loại',
+        'permissions' => 'Phân quyền',
+        'pricing' => 'Giá & Tồn kho',
+        'shipping' => 'Thông tin giao hàng',
+        'specifications' => 'Thông số kỹ thuật',
+        'business_info' => 'Thông tin doanh nghiệp',
+        'system_actions' => 'Thao tác hệ thống',
+    ],
+
     'settings' => [
         'fields' => [
             'site_name' => 'Tên website',
@@ -66,8 +84,23 @@ return [
             'site_address' => 'Địa chỉ cửa hàng',
             'site_description' => 'Mô tả website',
             'site_map' => 'Địa chỉ map',
+            'tax_code' => 'Mã số thuế',
+            'business_field' => 'Ngành nghề sản xuất',
+            'representative' => 'Người đại diện',
+            'working_hours' => 'Giờ làm việc',
+            'working_hours_day' => 'Ngày',
+            'working_hours_time' => 'Giờ',
             'bank_info' => 'Thông tin ngân hàng',
+            'faq' => 'Câu hỏi thường gặp',
+            'faq_question' => 'Câu hỏi',
+            'faq_answer' => 'Câu trả lời',
         ],
+    ],
+
+    'system_settings' => [
+        'description' => 'Các thao tác hệ thống. Nhấn nút tương ứng để thực hiện.',
+        'clear_cache_tooltip' => 'Xóa toàn bộ cache',
+        'cache_cleared' => 'Đã xóa cache',
     ],
 
     'fields' => [
@@ -101,6 +134,8 @@ return [
         'payment_status' => 'Trạng thái thanh toán',
         'roles' => 'Vai trò',
         'is_admin' => 'Là admin',
+        'is_featured' => 'Sản phẩm nổi bật',
+        'featured_position' => 'Vị trí nổi bật',
         'email_verified_at' => 'Email xác nhận',
         'created_at' => 'Ngày tạo',
         'updated_at' => 'Ngày cập nhật',
@@ -108,5 +143,13 @@ return [
         'product' => 'Sản phẩm',
         'order_code' => 'Mã đơn',
         'email_address' => 'Địa chỉ Email',
+        'reviewer_name' => 'Tên người đánh giá',
+        'reviewer_email' => 'Email người đánh giá',
+        'rating' => 'Đánh giá',
+        'comment' => 'Bình luận',
+        'is_approved' => 'Đã duyệt',
+        'specifications' => 'Thông số kỹ thuật',
+        'spec_key' => 'Thông số',
+        'spec_value' => 'Giá trị',
     ],
 ];

@@ -20,7 +20,7 @@ use UnitEnum;
 
 class PageResource extends Resource
 {
-    // use Translatable;
+    use Translatable;
 
     protected static ?string $model = Page::class;
 
@@ -75,7 +75,7 @@ class PageResource extends Resource
         return [
             'index' => ListPages::route('/'),
             'create' => CreatePage::route('/create'),
-            'view' => ViewPage::route('/{record}'),
+            // 'view' => ViewPage::route('/{record}'),
             'edit' => EditPage::route('/{record}/edit'),
         ];
     }

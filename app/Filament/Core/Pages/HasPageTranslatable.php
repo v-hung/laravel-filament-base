@@ -3,6 +3,7 @@
 namespace App\Filament\Core\Pages;
 
 use App\Models\Setting;
+use Filament\Forms\Components\Field;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
@@ -47,12 +48,14 @@ trait HasPageTranslatable
 
         $this->otherLocaleData[$this->oldActiveLocale] = $this->data;
 
-        $this->data = [
-            ...Arr::except($this->data, $this->translatableAttributes),
-            ...($this->otherLocaleData[$this->activeLocale] ?? []),
-        ];
+        $newLocaleData = $this->otherLocaleData[$this->activeLocale] ?? [];
 
         unset($this->otherLocaleData[$this->activeLocale]);
+
+        $this->form->fill([
+            ...Arr::except($this->data, $this->translatableAttributes),
+            ...$newLocaleData,
+        ]);
     }
 
     public function setActiveLocale(string $locale): void
@@ -68,7 +71,7 @@ trait HasPageTranslatable
         $settings = Setting::where('group', $this->getGroupKey())->get()->keyBy('key');
 
         $attributes = [];
-        $fields = collect($this->form->getComponents());
+        $fields = $this->getFlatFields($this->form->getComponents());
 
         foreach ($fields as $field) {
             $fieldName = $field->getName();
@@ -77,6 +80,22 @@ trait HasPageTranslatable
             $attributes[$fieldName] = optional($setting)->getTranslation('value', $this->activeLocale)
                 ?: collect(optional($setting)->getTranslations('value'))->first()
                 ?: null;
+        }
+
+        // Pre-load translatable data for other locales so switching works correctly
+        foreach ($this->getTranslatableLocales() as $locale) {
+            if ($locale === $this->activeLocale) {
+                continue;
+            }
+
+            $localeAttributes = [];
+
+            foreach ($this->translatableAttributes as $attribute) {
+                $setting = $settings->get($attribute);
+                $localeAttributes[$attribute] = optional($setting)->getTranslation('value', $locale) ?: null;
+            }
+
+            $this->otherLocaleData[$locale] = $localeAttributes;
         }
 
         $this->form->fill($attributes);
@@ -144,16 +163,29 @@ trait HasPageTranslatable
         return $translations;
     }
 
-    protected function getLocaleValue(string $key, string $locale): ?string
+    /**
+     * @param  array<\Filament\Schemas\Components\Component>  $components
+     * @return array<Field>
+     */
+    protected function getFlatFields(array $components): array
     {
-        $value = $locale === $this->activeLocale
-            ? ($this->data[$key] ?? null)
-            : ($this->otherLocaleData[$locale][$key] ?? null);
+        $fields = [];
 
-        if (is_array($value)) {
-            $value = $value[0] ?? null;
+        foreach ($components as $component) {
+            if ($component instanceof Field) {
+                $fields[] = $component;
+            } elseif (method_exists($component, 'getChildComponents')) {
+                array_push($fields, ...$this->getFlatFields($component->getChildComponents()));
+            }
         }
 
-        return $value;
+        return $fields;
+    }
+
+    protected function getLocaleValue(string $key, string $locale): mixed
+    {
+        return $locale === $this->activeLocale
+            ? ($this->data[$key] ?? null)
+            : ($this->otherLocaleData[$locale][$key] ?? null);
     }
 }

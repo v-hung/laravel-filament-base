@@ -7,6 +7,7 @@ use App\Concerns\Media\MediaConversionDefinition;
 use App\Models\Product\ProductOption;
 use App\Models\Product\ProductVariant;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -14,18 +15,20 @@ use Spatie\Translatable\HasTranslations;
 
 class Product extends Model
 {
-    use HasMedia, HasTranslations;
+    use HasFactory, HasMedia, HasTranslations;
 
     public array $translatable = [
         'name',
         'slug',
         'description',
         'content',
+        'specifications',
     ];
 
     protected $casts = [
         'price' => 'decimal:2',
         'compare_at_price' => 'decimal:2',
+        'featured_position' => 'integer',
     ];
 
     protected $guarded = [];
@@ -45,6 +48,11 @@ class Product extends Model
     public function variants(): HasMany
     {
         return $this->hasMany(ProductVariant::class);
+    }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(ProductReview::class);
     }
 
     protected function isDiscounted(): Attribute
