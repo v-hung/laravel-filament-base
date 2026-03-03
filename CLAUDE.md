@@ -114,7 +114,7 @@ This project has domain-specific skills available. You MUST activate the relevan
 ## Constructors
 
 - Use PHP 8 constructor property promotion in `__construct()`.
-    - <code-snippet>public function __construct(public GitHub $github) { }</code-snippet>
+    - <code-snippet>public function \_\_construct(public GitHub $github) { }</code-snippet>
 - Do not allow empty `__construct()` methods with zero parameters unless the constructor is private.
 
 ## Type Declarations
@@ -313,13 +313,13 @@ use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Utilities\Get;
 
 Select::make('type')
-    ->options(CompanyType::class)
-    ->required()
-    ->live(),
+->options(CompanyType::class)
+->required()
+->live(),
 
 TextInput::make('company_name')
-    ->required()
-    ->visible(fn (Get $get): bool => $get('type') === 'business'),
+->required()
+->visible(fn (Get $get): bool => $get('type') === 'business'),
 
 </code-snippet>
 
@@ -329,7 +329,7 @@ Use `state()` with a `Closure` to compute derived column values:
 use Filament\Tables\Columns\TextColumn;
 
 TextColumn::make('full_name')
-    ->state(fn (User $record): string => "{$record->first_name} {$record->last_name}"),
+->state(fn (User $record): string => "{$record->first_name} {$record->last_name}"),
 
 </code-snippet>
 
@@ -340,10 +340,10 @@ use Filament\Actions\Action;
 use Filament\Forms\Components\TextInput;
 
 Action::make('updateEmail')
-    ->form([
-        TextInput::make('email')->email()->required(),
-    ])
-    ->action(fn (array $data, User $record): void => $record->update($data)),
+->form([
+TextInput::make('email')->email()->required(),
+])
+->action(fn (array $data, User $record): void => $record->update($data)),
 
 </code-snippet>
 
@@ -412,6 +412,7 @@ Authenticate before testing panel functionality. Filament uses Livewire, so use 
 ### Common Mistakes
 
 **Commonly Incorrect Namespaces:**
+
 - Form fields (TextInput, Select, etc.): `Filament\Forms\Components\`
 - Infolist entries (for read-only views) (TextEntry, IconEntry, etc.): `Filament\Infolists\Components\`
 - Layout components (Grid, Section, Fieldset, Tabs, Wizard, etc.): `Filament\Schemas\Components\`
@@ -420,6 +421,7 @@ Authenticate before testing panel functionality. Filament uses Livewire, so use 
 - Icons: `Filament\Support\Icons\Heroicon` enum (e.g., `Heroicon::PencilSquare`)
 
 **Recent breaking changes to Filament:**
+
 - File visibility is `private` by default. Use `->visibility('public')` for public access.
 - `Grid`, `Section`, and `Fieldset` no longer span all columns by default.
 
@@ -430,7 +432,7 @@ Authenticate before testing panel functionality. Filament uses Livewire, so use 
 - Fortify is a headless authentication backend that provides authentication routes and controllers for Laravel applications.
 - IMPORTANT: Always use the `search-docs` tool for detailed Laravel Fortify patterns and documentation.
 - IMPORTANT: Activate `developing-with-fortify` skill when working with Fortify authentication features.
-</laravel-boost-guidelines>
+  </laravel-boost-guidelines>
 
 # Environment Rules
 
@@ -452,27 +454,3 @@ This project has a custom design system for the DUYANG WEBSITE.
 - **ALWAYS read `docs/DESIGN.md` before building any component or page.** It contains the full color palette, typography scale, spacing rules, component patterns, and do/don'ts.
 - **CSS tokens file:** `resources/css/duyang-design-system.css` — all `--duyang-*` custom properties and Tailwind `@theme` registrations.
 - Ensure `@import './duyang-design-system.css';` is present in `resources/css/app.css` before using any token.
-
-### Quick token reference
-
-**Colors** (6 only — never use arbitrary hex values):
-
-- `bg-duyang-cream` / `#F8F6F1` — page background
-- `bg-duyang-white` / `#FFFFFF` — card surface
-- `text-duyang-black` / `#111111` — primary text
-- `text-duyang-grey` / `#565656` — secondary text
-- `text-duyang-grey-mid` / `#7A7A7A` — muted / placeholder
-- `text-duyang-grey-light` / `#9E9E9E` — decorative labels
-
-**Typography** — font is `Manrope` only, load via Google Fonts (`wght@400;500;600;700`):
-
-Headings (H): `.text-h-80` · `.text-h-56-semibold` · `.text-h-56-bold` · `.text-h-40` · `.text-h-32-bold` · `.text-h-32-semibold` · `.text-h-24-bold` · `.text-h-24-medium` · `.text-h-22` · `.text-h-20`
-
-Paragraphs (P): `.text-p-18-semibold` · `.text-p-18-medium` · `.text-p-18-regular` · `.text-p-16-bold` · `.text-p-16-semibold` · `.text-p-16-regular` · `.text-p-14-semibold` · `.text-p-14-medium` · `.text-p-14-regular`
-
-Buttons (Btn): `.text-btn-16` · `.text-btn-18`
-
-**Surfaces:**
-
-- `.surface-page` — cream background (`var(--duyang-cream)`)
-- Use `bg-duyang-white` directly for white card surfaces
