@@ -43,6 +43,10 @@ return [
             'label' => 'Trưng bày',
             'plural_label' => 'Danh sách mục trưng bày',
         ],
+        'contact' => [
+            'label' => 'Liên hệ',
+            'plural_label' => 'Danh sách liên hệ',
+        ],
     ],
 
     'pages' => [
@@ -151,5 +155,10 @@ return [
         'specifications' => 'Thông số kỹ thuật',
         'spec_key' => 'Thông số',
         'spec_value' => 'Giá trị',
+        'contact_message' => 'Nội dung',
+        'contact_is_read' => 'Đã đọc',
+        'contact_read_status' => 'Trạng thái đọc',
+        'contact_read' => 'Đã đọc',
+        'contact_unread' => 'Chưa đọc',
     ],
 ];

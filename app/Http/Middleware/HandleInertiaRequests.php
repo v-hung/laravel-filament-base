@@ -52,6 +52,9 @@ class HandleInertiaRequests extends Middleware
                 'site_phone' => setting('shop.site_phone'),
                 'site_address' => setting('shop.site_address'),
             ],
+            'flash' => [
+                'success' => fn () => $request->session()->get('success'),
+            ],
         ];
     }
 }

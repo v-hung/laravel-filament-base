@@ -4,6 +4,7 @@ use App\Http\Controllers\Content\PostController;
 use App\Http\Controllers\Purchase\CartController;
 use App\Http\Controllers\Purchase\PaymentController;
 use App\Http\Controllers\Shop\ProductController;
+use App\Http\Controllers\Site\ContactController;
 use App\Http\Controllers\Site\HomeController;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
@@ -11,7 +12,8 @@ use Illuminate\Support\Facades\Route;
 // home & pages
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/about-us', [HomeController::class, 'about'])->name('about');
-Route::get('/contact-us', [HomeController::class, 'contact'])->name('contact');
+Route::get('/contact-us', [ContactController::class, 'index'])->name('contact');
+Route::post('/contact-us', [ContactController::class, 'store'])->name('contact.store');
 Route::get('/partner', [HomeController::class, 'partner'])->name('partner');
 
 // products
@@ -47,4 +49,4 @@ Route::get('/greeting/{locale}', function (string $locale) {
     return redirect()->back();
 })->name('lang.switch');
 
-require __DIR__ . '/settings.php';
+require __DIR__.'/settings.php';

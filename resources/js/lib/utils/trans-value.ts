@@ -4,11 +4,14 @@ import { CURRENT_LANGUAGE, type AppLocale } from '@/i18n/constants';
 /**
  * Represents a translatable field from Laravel's spatie/laravel-translatable.
  * Stored as JSON: { vi: "...", en: "..." }
+ *
+ * @template T - The type of each locale's value. Defaults to `string`.
+ *   Can be an array, object, or any other type.
  */
-export type Translatable = Partial<Record<AppLocale, string>>;
+export type Translatable<T = string> = Partial<Record<AppLocale, T>>;
 
 /**
- * Extracts the correct locale string from a translatable field.
+ * Extracts the correct locale value from a translatable field.
  * Safe to call anywhere — in React components, plain .ts files, or stores.
  *
  * Fallback order:
@@ -16,18 +19,20 @@ export type Translatable = Partial<Record<AppLocale, string>>;
  * 2. CURRENT_LANGUAGE (env default)
  * 3. First non-empty value in the object
  */
-export function transValue(
-    value: Translatable | string | null | undefined,
+export function transValue<T = string>(
+    value: Translatable<T> | T | null | undefined,
     locale?: AppLocale,
-): string {
-    if (!value) return '';
-    if (typeof value === 'string') return value;
+): T | string {
+    if (value === null || value === undefined) return '';
+    if (typeof value !== 'object' || Array.isArray(value)) return value as T;
 
+    const obj = value as Translatable<T>;
     const currentLocale = locale ?? getLocale();
 
-    if (value[currentLocale]) return value[currentLocale]!;
+    if (obj[currentLocale] !== undefined) return obj[currentLocale]!;
 
-    if (value[CURRENT_LANGUAGE]) return value[CURRENT_LANGUAGE]!;
+    if (obj[CURRENT_LANGUAGE] !== undefined) return obj[CURRENT_LANGUAGE]!;
 
-    return Object.values(value).find(Boolean) ?? '';
+    const first = Object.values(obj).find((v) => v !== undefined && v !== null);
+    return first ?? '';
 }

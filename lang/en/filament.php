@@ -43,6 +43,10 @@ return [
             'label' => 'Showcase',
             'plural_label' => 'Showcases',
         ],
+        'contact' => [
+            'label' => 'Contact',
+            'plural_label' => 'Contacts',
+        ],
     ],
 
     'pages' => [
@@ -151,5 +155,10 @@ return [
         'specifications' => 'Technical Specifications',
         'spec_key' => 'Specification',
         'spec_value' => 'Value',
+        'contact_message' => 'Message',
+        'contact_is_read' => 'Read',
+        'contact_read_status' => 'Read Status',
+        'contact_read' => 'Read',
+        'contact_unread' => 'Unread',
     ],
 ];
