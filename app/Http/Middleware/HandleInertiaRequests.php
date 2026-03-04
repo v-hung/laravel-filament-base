@@ -45,13 +45,7 @@ class HandleInertiaRequests extends Middleware
             'cart' => function () {
                 return app(CartService::class)->getCart();
             },
-            'settings' => [
-                'site_name' => setting('shop.site_name'),
-                'site_logo' => setting_image('shop.site_logo'),
-                'site_email' => setting('shop.site_email'),
-                'site_phone' => setting('shop.site_phone'),
-                'site_address' => setting('shop.site_address'),
-            ],
+            'settings' => settings_all('shop'),
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),
             ],

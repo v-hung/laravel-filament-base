@@ -18,21 +18,23 @@ export type Translatable<T = string> = Partial<Record<AppLocale, T>>;
  * 1. Requested locale (or current app locale)
  * 2. CURRENT_LANGUAGE (env default)
  * 3. First non-empty value in the object
+ * 4. `undefined` if nothing found
  */
 export function transValue<T = string>(
     value: Translatable<T> | T | null | undefined,
     locale?: AppLocale,
-): T | string {
-    if (value === null || value === undefined) return '';
+): T | undefined {
+    if (value === null || value === undefined) return undefined;
     if (typeof value !== 'object' || Array.isArray(value)) return value as T;
 
     const obj = value as Translatable<T>;
     const currentLocale = locale ?? getLocale();
 
-    if (obj[currentLocale] !== undefined) return obj[currentLocale]!;
+    if (obj[currentLocale] !== undefined) return obj[currentLocale];
 
-    if (obj[CURRENT_LANGUAGE] !== undefined) return obj[CURRENT_LANGUAGE]!;
+    if (obj[CURRENT_LANGUAGE] !== undefined) return obj[CURRENT_LANGUAGE];
 
-    const first = Object.values(obj).find((v) => v !== undefined && v !== null);
-    return first ?? '';
+    return Object.values(obj).find((v) => v !== undefined && v !== null) as
+        | T
+        | undefined;
 }

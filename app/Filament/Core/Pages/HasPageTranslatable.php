@@ -23,6 +23,8 @@ trait HasPageTranslatable
 
     public array $translatableAttributes = [];
 
+    public array $imageAttributes = [];
+
     public function getGroupKey(): string
     {
         return strtolower(static::$GROUP_KEY);
@@ -114,17 +116,19 @@ trait HasPageTranslatable
             $setting = $existingSettings->get($key);
             $translations = $this->getAllLocaleTranslationsForKey($key, $locales, $setting?->getTranslations('value') ?? []);
 
-            if ($setting) {
+            $type = in_array($key, $this->imageAttributes) ? 'image' : null;
 
+            if ($setting) {
                 $setting->updated_at = now();
                 $setting->value = $translations;
+                $setting->type = $type;
                 $setting->save();
             } else {
-
                 Setting::create([
                     'group' => $this->getGroupKey(),
                     'key' => $key,
                     'value' => $translations,
+                    'type' => $type,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);

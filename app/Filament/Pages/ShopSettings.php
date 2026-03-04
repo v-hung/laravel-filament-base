@@ -38,6 +38,8 @@ class ShopSettings extends PageSettingsTranslatable
 
     public array $translatableAttributes = ['faq', 'business_field', 'site_description', 'site_name', 'site_address', 'working_hours', 'tax_code', 'representative'];
 
+    public array $imageAttributes = ['site_logo'];
+
     public function form(Schema $schema): Schema
     {
         return $schema

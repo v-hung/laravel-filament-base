@@ -1,5 +1,6 @@
 import { Head } from '@inertiajs/react';
 import { Monitor, Moon, Sun, type LucideIcon } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import type { Appearance } from '@/hooks/use-appearance';
 import { useAppearance } from '@/hooks/use-appearance';
 import AccountLayout from '@/layouts/account-layout';
@@ -7,20 +8,21 @@ import { cn } from '@/lib/utils/cn';
 
 export default function Appearance() {
     const { appearance, updateAppearance } = useAppearance();
+    const { t } = useTranslation();
 
     const tabs: { value: Appearance; icon: LucideIcon; label: string }[] = [
-        { value: 'light', icon: Sun, label: 'Light' },
-        { value: 'dark', icon: Moon, label: 'Dark' },
-        { value: 'system', icon: Monitor, label: 'System' },
+        { value: 'light', icon: Sun, label: t('settings.light') },
+        { value: 'dark', icon: Moon, label: t('settings.dark') },
+        { value: 'system', icon: Monitor, label: t('settings.system') },
     ];
 
     return (
         <AccountLayout>
-            <Head title="Appearance settings" />
+            <Head title={t('settings.appearanceTitle')} />
 
             <div className="space-y-6">
-                <h1>Appearance</h1>
-                <h2>Choose your preferred appearance</h2>
+                <h1>{t('settings.appearance')}</h1>
+                <h2>{t('settings.chooseAppearance')}</h2>
 
                 <div
                     className={

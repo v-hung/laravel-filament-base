@@ -1,4 +1,5 @@
 import { type HTMLAttributes } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { cn } from '@/lib/utils/cn';
 
@@ -8,17 +9,16 @@ export type BannerProps = HTMLAttributes<HTMLElement> & {
     description?: string;
 };
 
-const defaultTitle = 'Explore The\nEarthy Tones\nCollection';
-const defaultDescription =
-    'Ground your interiors with our latest arrivals in warm woods, neutrals, and natural textures';
-
 export default function Banner({
     imageUrl,
-    title = defaultTitle,
-    description = defaultDescription,
+    title,
+    description,
     className,
     ...props
 }: BannerProps) {
+    const { t } = useTranslation();
+    const resolvedTitle = title ?? t('banner.defaultTitle');
+    const resolvedDescription = description ?? t('banner.defaultDescription');
     return (
         <section
             className={cn(
@@ -35,11 +35,11 @@ export default function Banner({
 
             <div className="relative flex min-h-105 flex-col justify-between px-6 py-8 md:min-h-140 md:px-12 md:py-12 lg:min-h-175 lg:px-20 lg:py-16">
                 <h1 className="max-w-[20rem] text-h-40-bold whitespace-pre-line text-duyang-white md:max-w-136 md:text-h-56-bold">
-                    {title}
+                    {resolvedTitle}
                 </h1>
 
                 <p className="max-w-5xl text-p-16-regular text-duyang-white md:text-p-18-regular">
-                    {description}
+                    {resolvedDescription}
                 </p>
             </div>
         </section>

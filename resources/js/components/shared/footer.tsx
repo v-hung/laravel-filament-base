@@ -1,5 +1,6 @@
 import { Link } from '@inertiajs/react';
 import type { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { cn } from '@/lib/utils/cn';
 import { about, contact, posts as postsRoute, shop } from '@/routes';
@@ -18,40 +19,44 @@ type FooterSectionData = {
     links: FooterLink[];
 };
 
-const FOOTER_SECTIONS: FooterSectionData[] = [
-    {
-        heading: 'Sản Phẩm',
-        links: [
-            { label: 'Móc Treo Gỗ', href: shop().url },
-            { label: 'Móc Treo Nhựa', href: shop().url },
-            { label: 'Giá Kim Loại', href: shop().url },
-        ],
-    },
-    {
-        heading: 'Thông Tin',
-        links: [
-            { label: 'Về Chúng Tôi', href: about().url },
-            { label: 'Năng Lực Sản Xuất', href: about().url },
-            { label: 'Tin Tức Nhà Máy', href: postsRoute().url },
-        ],
-    },
-    {
-        heading: 'Hỗ Trợ',
-        links: [
-            { label: 'Liên Hệ', href: contact().url },
-            { label: 'Câu Hỏi', href: '#' },
-            { label: 'Chính Sách', href: '#' },
-        ],
-    },
-    {
-        heading: 'Kết Nối Với Chúng Tôi',
-        links: [
-            { label: 'Email', href: 'mailto:info@duyang.vn' },
-            { label: 'Facebook', href: '#' },
-            { label: 'WhatsApp', href: '#' },
-        ],
-    },
-];
+function useFooterSections(): FooterSectionData[] {
+    const { t } = useTranslation();
+
+    return [
+        {
+            heading: t('footer.products'),
+            links: [
+                { label: t('footer.woodenHangers'), href: shop().url },
+                { label: t('footer.plasticHangers'), href: shop().url },
+                { label: t('footer.metalRacks'), href: shop().url },
+            ],
+        },
+        {
+            heading: t('footer.information'),
+            links: [
+                { label: t('footer.aboutUs'), href: about().url },
+                { label: t('footer.productionCapacity'), href: about().url },
+                { label: t('footer.factoryNews'), href: postsRoute().url },
+            ],
+        },
+        {
+            heading: t('footer.support'),
+            links: [
+                { label: t('footer.contactUs'), href: contact().url },
+                { label: t('footer.faq'), href: '#' },
+                { label: t('footer.policies'), href: '#' },
+            ],
+        },
+        {
+            heading: t('footer.connectWithUs'),
+            links: [
+                { label: 'Email', href: 'mailto:info@duyang.vn' },
+                { label: 'Facebook', href: '#' },
+                { label: 'WhatsApp', href: '#' },
+            ],
+        },
+    ];
+}
 
 function FooterSectionColumn({
     section,
@@ -87,6 +92,8 @@ function FooterSectionColumn({
 }
 
 function NewsletterSection({ className }: { className?: string }) {
+    const { t } = useTranslation();
+
     const handleSubmit = (e: React.SubmitEvent) => {
         e.preventDefault();
     };
@@ -99,12 +106,11 @@ function NewsletterSection({ className }: { className?: string }) {
             )}
         >
             <h4 className="text-h-20-bold text-duyang-white lg:text-h-22-bold">
-                Nhận Thông Tin Từ DUYANG VIETNAM
+                {t('footer.newsletterTitle')}
             </h4>
             <div className="flex flex-col gap-4">
                 <p className="text-p-14-regular text-duyang-grey-light lg:text-p-16-regular">
-                    Đăng ký để nhận cập nhật về năng lực sản xuất, sản phẩm mới
-                    và thông tin hợp tác.
+                    {t('footer.newsletterDescription')}
                 </p>
                 <form
                     className="mt-6 flex items-end gap-3"
@@ -112,11 +118,11 @@ function NewsletterSection({ className }: { className?: string }) {
                 >
                     <input
                         type="email"
-                        placeholder="Email"
+                        placeholder={t('common.email')}
                         className="flex-1 border-b border-duyang-grey-light bg-transparent pb-2 text-p-14-regular text-duyang-white transition-colors outline-none placeholder:text-duyang-grey-light focus:border-duyang-white lg:text-p-16-regular"
                     />
                     <DuButton type="submit" variant="solid" color="white">
-                        Đăng Ký
+                        {t('common.subscribe')}
                     </DuButton>
                 </form>
             </div>
@@ -125,6 +131,9 @@ function NewsletterSection({ className }: { className?: string }) {
 }
 
 export const Footer: FC = () => {
+    const { t } = useTranslation();
+    const footerSections = useFooterSections();
+
     return (
         <footer className="bg-duyang-black">
             <Container>
@@ -135,7 +144,7 @@ export const Footer: FC = () => {
                     </div>
                     {/* Link columns + Newsletter */}
                     <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-10 lg:grid-cols-8 xl:grid-cols-12">
-                        {FOOTER_SECTIONS.map((section) => (
+                        {footerSections.map((section) => (
                             <FooterSectionColumn
                                 key={section.heading}
                                 section={section}
@@ -158,20 +167,21 @@ export const Footer: FC = () => {
                         </div>
                         <div className="flex flex-wrap gap-4 md:gap-8 lg:gap-12">
                             <p className="text-p-14- text-center text-duyang-white lg:text-p-16-semibold">
-                                © {new Date().getFullYear()} DUYANG VIETNAM. All
-                                Rights Reserved
+                                {t('common.allRightsReserved', {
+                                    year: new Date().getFullYear(),
+                                })}
                             </p>
                             <a
                                 href="#"
                                 className="text-p-14-regular text-duyang-cream transition-colors hover:text-duyang-white lg:text-p-16-regular"
                             >
-                                Chính Sách Bảo Mật
+                                {t('common.privacyPolicy')}
                             </a>
                             <a
                                 href="#"
                                 className="text-p-14-regular text-duyang-cream transition-colors hover:text-duyang-white lg:text-p-16-regular"
                             >
-                                Điều Khoản Sử Dụng
+                                {t('common.termsOfService')}
                             </a>
                         </div>
                     </div>

@@ -1,6 +1,7 @@
 import { cn } from '@/lib/utils/cn';
 import type { PaginatorLink } from '@/types';
 import { Link } from '@inertiajs/react';
+import { useTranslation } from 'react-i18next';
 
 type PaginationProps = {
     links: PaginatorLink[];
@@ -13,6 +14,8 @@ export default function Pagination({
     lastPage,
     className,
 }: PaginationProps) {
+    const { t } = useTranslation();
+
     if (lastPage <= 1) {
         return null;
     }
@@ -30,11 +33,11 @@ export default function Pagination({
                     href={prevLink.url}
                     className="border border-duyang-black/20 px-4 py-2 text-p-14-regular text-duyang-black hover:bg-duyang-cream"
                 >
-                    Previous
+                    {t('common.previous')}
                 </Link>
             ) : (
                 <span className="cursor-not-allowed border border-duyang-black/10 px-4 py-2 text-p-14-regular text-duyang-grey-mid">
-                    Previous
+                    {t('common.previous')}
                 </span>
             )}
 
@@ -67,11 +70,11 @@ export default function Pagination({
                     href={nextLink.url}
                     className="border border-duyang-black/20 px-4 py-2 text-p-14-regular text-duyang-black hover:bg-duyang-cream"
                 >
-                    Next
+                    {t('common.next')}
                 </Link>
             ) : (
                 <span className="cursor-not-allowed border border-duyang-black/10 px-4 py-2 text-p-14-regular text-duyang-grey-mid">
-                    Next
+                    {t('common.next')}
                 </span>
             )}
         </div>

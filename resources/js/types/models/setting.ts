@@ -15,12 +15,12 @@ export type ShopSettings = {
     tax_code?: Translatable | null;
     representative?: Translatable | null;
     business_field?: Translatable | null;
-    working_hours?: Translatable<Record<string, string>> | null;
+    working_hours?: Translatable<{ key: string; value: string }[]> | null;
 
     // Content
     site_description?: Translatable | null;
     site_map?: string | null;
 
     // FAQ
-    faq?: Translatable<Record<string, string>> | null;
+    faq?: Translatable<{ key: string; value: string }[]> | null;
 };

@@ -7,13 +7,7 @@ type SettingState = {
     resetShopSettings: () => void;
 };
 
-const defaultShopSettings: ShopSettings = {
-    site_name: null,
-    site_logo: null,
-    site_email: null,
-    site_phone: null,
-    site_address: null,
-};
+const defaultShopSettings: ShopSettings = {};
 
 export const useSettingStore = create<SettingState>((set) => ({
     shopSettings: defaultShopSettings,

@@ -2,9 +2,11 @@ import { Link, usePage } from '@inertiajs/react';
 import { CheckIcon } from 'lucide-react';
 import type { FC } from 'react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { cn } from '@/lib/utils/cn';
 import { about, home, shop } from '@/routes';
+import { CURRENT_LANGUAGE, type AppLocale } from '@/i18n/constants';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import {
     Sheet,
@@ -31,22 +33,24 @@ type NavItem = {
 };
 
 type Language = {
-    value: 'vi' | 'en' | 'jp';
+    value: AppLocale;
     label: string;
     icon: FC<{ size?: number; className?: string }>;
 };
 
-const NAV_ITEMS: NavItem[] = [
-    { label: 'Trang chủ', href: home().url },
-    { label: 'Đối Tác Tin Cậy', href: 'asd' },
-    { label: 'Sản Phẩm', href: shop().url },
-    { label: 'Về Chúng Tôi', href: about().url },
-];
+function useNavItems(): NavItem[] {
+    const { t } = useTranslation();
+    return [
+        { label: t('nav.home'), href: home().url },
+        { label: t('nav.partner'), href: 'asd' },
+        { label: t('nav.shop'), href: shop().url },
+        { label: t('nav.about'), href: about().url },
+    ];
+}
 
 const LANGUAGES: Language[] = [
     { value: 'vi', label: 'VI', icon: Icons.Vi },
     { value: 'en', label: 'EN', icon: Icons.En },
-    { value: 'jp', label: 'JP', icon: Icons.Jp },
 ];
 
 export type HeaderProps = {
@@ -54,12 +58,14 @@ export type HeaderProps = {
 };
 
 const Header: FC<HeaderProps> = ({ className }) => {
+    const { t, i18n } = useTranslation();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [searchPopupOpen, setSearchPopupOpen] = useState(false);
-    const [language, setLanguage] = useState<Language['value']>('vi');
 
+    const navItems = useNavItems();
     const { url, component } = usePage();
 
+    const language = (i18n.language as AppLocale) || CURRENT_LANGUAGE;
     const selectedLanguage =
         LANGUAGES.find((item) => item.value === language) ?? LANGUAGES[0];
 
@@ -77,7 +83,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
                                 <button
                                     type="button"
                                     className="text-duyang-black hover:text-duyang-grey motion-safe:transition-all motion-safe:duration-200 lg:hidden"
-                                    aria-label="Mở menu điều hướng"
+                                    aria-label={t('nav.openMenu')}
                                 >
                                     <Icons.List size={24} />
                                 </button>
@@ -89,11 +95,11 @@ const Header: FC<HeaderProps> = ({ className }) => {
                             >
                                 <div className="p-6">
                                     <SheetTitle className="mb-6 text-p-18-semibold text-duyang-black lg:text-h-20-semibold">
-                                        Menu
+                                        {t('common.menu')}
                                     </SheetTitle>
 
                                     <nav className="flex flex-col gap-4">
-                                        {NAV_ITEMS.map((item) => (
+                                        {navItems.map((item) => (
                                             <Link
                                                 key={item.label}
                                                 href={item.href}
@@ -125,7 +131,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
 
                     {/* Center: Navigation Menu (Desktop) */}
                     <nav className="hidden items-center gap-8 lg:flex">
-                        {NAV_ITEMS.map((item) => (
+                        {navItems.map((item) => (
                             <Link
                                 key={item.label}
                                 href={item.href}
@@ -163,8 +169,10 @@ const Header: FC<HeaderProps> = ({ className }) => {
                                     <DuInput
                                         autoFocus
                                         type="text"
-                                        label="Tìm kiếm"
-                                        placeholder="Nhập từ khóa sản phẩm..."
+                                        label={t('common.search')}
+                                        placeholder={t(
+                                            'contact.searchPlaceholder',
+                                        )}
                                     />
                                 </div>
                             </DialogContent>
@@ -174,7 +182,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
                             <DropdownMenuTrigger asChild>
                                 <button
                                     type="button"
-                                    aria-label="Chọn ngôn ngữ"
+                                    aria-label={t('nav.selectLanguage')}
                                     className="rounded-none border-0 bg-transparent px-0 py-0 focus-visible:outline-none"
                                 >
                                     <selectedLanguage.icon size={24} />
@@ -184,7 +192,9 @@ const Header: FC<HeaderProps> = ({ className }) => {
                                 {LANGUAGES.map((item) => (
                                     <DropdownMenuItem
                                         key={item.value}
-                                        onClick={() => setLanguage(item.value)}
+                                        onClick={() =>
+                                            i18n.changeLanguage(item.value)
+                                        }
                                         className="text-p-14-medium text-duyang-black focus:bg-duyang-cream focus:text-duyang-black"
                                     >
                                         <span className="flex w-full items-center justify-between gap-3">

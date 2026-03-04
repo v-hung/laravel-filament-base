@@ -38,7 +38,7 @@ const DuInput = forwardRef<HTMLInputElement, DuInputProps>(
                     ref={ref}
                     id={inputId}
                     className={cn(
-                        'h-auto rounded-none border-0 border-b border-duyang-grey-light bg-transparent px-0 pt-0 pb-2 text-p-14-semibold text-duyang-black shadow-none placeholder:text-duyang-grey-mid focus-visible:border-duyang-grey focus-visible:ring-0 lg:text-p-16-regular',
+                        'h-auto rounded-none border-0 border-b border-duyang-grey-light bg-transparent px-0 pt-0 pb-2 text-p-14-regular text-duyang-black shadow-none placeholder:text-duyang-grey-mid focus-visible:border-duyang-grey focus-visible:ring-0 lg:text-p-16-regular',
                         inputClassName,
                         className,
                     )}

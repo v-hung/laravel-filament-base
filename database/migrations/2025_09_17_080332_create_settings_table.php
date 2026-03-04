@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('group');
             $table->string('key');
+            $table->string('type')->nullable();
             $table->json('value')->nullable();
             $table->timestamps();
         });

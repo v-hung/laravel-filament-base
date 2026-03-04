@@ -3,6 +3,7 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import '../css/app.css';
+import './i18n/config';
 import { initializeTheme } from './hooks/use-appearance';
 import SettingListener from './shared/listeners/SettingListener';
 import type { ShopSettings } from './types';

@@ -1,6 +1,7 @@
 import { Transition } from '@headlessui/react';
 import { Form, Head } from '@inertiajs/react';
 import { useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import PasswordController from '@/actions/App/Http/Controllers/Settings/PasswordController';
 
 import { Button } from '@/components/ui/button';
@@ -9,12 +10,13 @@ import { Label } from '@/components/ui/label';
 import AccountLayout from '@/layouts/account-layout';
 
 export default function Password() {
+    const { t } = useTranslation();
     const passwordInput = useRef<HTMLInputElement>(null);
     const currentPasswordInput = useRef<HTMLInputElement>(null);
 
     return (
         <AccountLayout>
-            <Head title="Password settings" />
+            <Head title={t('settings.passwordTitle')} />
             <div className="space-y-6">
                 <Form
                     {...PasswordController.update.form()}
@@ -42,7 +44,7 @@ export default function Password() {
                         <>
                             <div className="grid gap-2">
                                 <Label htmlFor="current_password">
-                                    Current password
+                                    {t('settings.currentPassword')}
                                 </Label>
 
                                 <Input
@@ -52,14 +54,16 @@ export default function Password() {
                                     type="password"
                                     className="mt-1 block w-full"
                                     autoComplete="current-password"
-                                    placeholder="Current password"
+                                    placeholder={t('settings.currentPassword')}
                                 />
 
                                 <p> {errors.current_password} </p>
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="password">New password</Label>
+                                <Label htmlFor="password">
+                                    {t('settings.newPassword')}
+                                </Label>
 
                                 <Input
                                     id="password"
@@ -68,7 +72,7 @@ export default function Password() {
                                     type="password"
                                     className="mt-1 block w-full"
                                     autoComplete="new-password"
-                                    placeholder="New password"
+                                    placeholder={t('settings.newPassword')}
                                 />
 
                                 <p> {errors.password} </p>
@@ -76,7 +80,7 @@ export default function Password() {
 
                             <div className="grid gap-2">
                                 <Label htmlFor="password_confirmation">
-                                    Confirm password
+                                    {t('auth.confirmPassword')}
                                 </Label>
 
                                 <Input
@@ -85,7 +89,7 @@ export default function Password() {
                                     type="password"
                                     className="mt-1 block w-full"
                                     autoComplete="new-password"
-                                    placeholder="Confirm password"
+                                    placeholder={t('auth.confirmPassword')}
                                 />
 
                                 <p> {errors.password_confirmation} </p>
@@ -96,7 +100,7 @@ export default function Password() {
                                     disabled={processing}
                                     data-test="update-password-button"
                                 >
-                                    Save password
+                                    {t('settings.savePassword')}
                                 </Button>
 
                                 <Transition
@@ -107,7 +111,7 @@ export default function Password() {
                                     leaveTo="opacity-0"
                                 >
                                     <p className="text-sm text-neutral-600">
-                                        Saved
+                                        {t('common.saved')}
                                     </p>
                                 </Transition>
                             </div>
