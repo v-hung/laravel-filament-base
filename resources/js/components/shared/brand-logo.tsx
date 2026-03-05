@@ -12,8 +12,6 @@ const BrandLogo: React.FC<BrandLogoProps> = (props) => {
     const logo = useSettingStore((state) => state.shopSettings.site_logo);
     const media = Array.isArray(logo) ? logo[0] : logo;
 
-    console.log('BrandLogo media', media);
-
     return (
         <div className={cn('h-5 lg:h-7', className)} {...rest}>
             {media && (
