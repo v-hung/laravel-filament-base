@@ -9,7 +9,7 @@ import {
     CollapsibleTrigger,
 } from '@/components/ui/collapsible';
 import AppLayout from '@/layouts/app-layout';
-import { transValue } from '@/lib/utils/trans-value';
+import { useTransValue } from '@/lib/utils/trans-value';
 import { contact } from '@/routes';
 import { useSettingStore } from '@/stores/setting';
 import { useForm, usePage } from '@inertiajs/react';
@@ -19,6 +19,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function Contact() {
     const { t } = useTranslation();
+    const tv = useTransValue();
     const formId = useId();
     const [openFaq, setOpenFaq] = useState<string | null>(null);
     const { flash } = usePage<{ flash: { success?: string } }>().props;
@@ -36,6 +37,7 @@ export default function Contact() {
     };
 
     const shopSettings = useSettingStore((state) => state.shopSettings);
+    const mapTrans = tv(shopSettings.site_map);
 
     return (
         <AppLayout>
@@ -57,7 +59,7 @@ export default function Contact() {
                                 {t('contact.title')}
                             </h2>
                             <p className="mt-6 max-w-xl text-p-14-regular text-duyang-grey lg:text-p-16-regular">
-                                {transValue(shopSettings.site_description)}
+                                {tv(shopSettings.site_description)}
                             </p>
                             {flash?.success && (
                                 <p className="mt-8 max-w-xl border-l-2 border-duyang-black py-1 pl-4 text-p-14-regular text-duyang-black lg:text-p-16-regular">
@@ -157,7 +159,7 @@ export default function Contact() {
                                     {t('contact.officeAddress')}
                                 </h3>
                                 <p className="text-p-14-regular text-duyang-grey lg:text-p-16-regular">
-                                    {transValue(shopSettings.site_address)}
+                                    {tv(shopSettings.site_address)}
                                 </p>
                             </div>
                             <div className="flex flex-col gap-2">
@@ -165,7 +167,7 @@ export default function Contact() {
                                     {t('contact.taxCode')}
                                 </h3>
                                 <p className="text-p-14-regular text-duyang-grey lg:text-p-16-regular">
-                                    {transValue(shopSettings.tax_code)}
+                                    {tv(shopSettings.tax_code)}
                                 </p>
                             </div>
                             <div className="flex flex-col gap-2">
@@ -173,7 +175,7 @@ export default function Contact() {
                                     {t('contact.representative')}
                                 </h3>
                                 <p className="text-p-14-regular text-duyang-grey lg:text-p-16-regular">
-                                    {transValue(shopSettings.representative)}
+                                    {tv(shopSettings.representative)}
                                 </p>
                             </div>
                         </div>
@@ -184,7 +186,7 @@ export default function Contact() {
                                     {t('contact.phone')}
                                 </h3>
                                 <p className="text-p-14-regular text-duyang-grey lg:text-p-16-regular">
-                                    {transValue(shopSettings.site_phone)}
+                                    {tv(shopSettings.site_phone)}
                                 </p>
                             </div>
                             <div className="flex flex-col gap-2">
@@ -192,7 +194,7 @@ export default function Contact() {
                                     {t('contact.businessField')}
                                 </h3>
                                 <p className="text-p-14-regular text-duyang-grey lg:text-p-16-regular">
-                                    {transValue(shopSettings.business_field)}
+                                    {tv(shopSettings.business_field)}
                                 </p>
                             </div>
                             <div className="flex flex-col gap-2">
@@ -200,7 +202,7 @@ export default function Contact() {
                                     Email
                                 </h3>
                                 <p className="text-p-14-regular text-duyang-grey lg:text-p-16-regular">
-                                    {transValue(shopSettings.site_email)}
+                                    {tv(shopSettings.site_email)}
                                 </p>
                             </div>
                         </div>
@@ -210,7 +212,7 @@ export default function Contact() {
                                 {t('contact.workingHours')}
                             </h3>
                             <div className="mt-8 flex flex-col gap-5">
-                                {transValue(shopSettings.working_hours)?.map(
+                                {tv(shopSettings.working_hours)?.map(
                                     (item, index) => (
                                         <div
                                             key={index}
@@ -232,13 +234,13 @@ export default function Contact() {
             </Section>
 
             {/* Map Section */}
-            {shopSettings.site_map && (
+            {mapTrans && (
                 <Section>
                     <Container>
                         <div
                             className="h-75 w-full overflow-hidden lg:h-125 [&_iframe]:h-full! [&_iframe]:w-full!"
                             dangerouslySetInnerHTML={{
-                                __html: shopSettings.site_map,
+                                __html: mapTrans,
                             }}
                         />
                     </Container>
@@ -260,7 +262,7 @@ export default function Contact() {
                         </div>
                         {/* Right — Accordion */}
                         <div className="lg:col-span-8">
-                            {(transValue(shopSettings?.faq) ?? []).map(
+                            {(tv(shopSettings?.faq) ?? []).map(
                                 (item, index) => {
                                     const isOpen = item.key === openFaq;
                                     return (

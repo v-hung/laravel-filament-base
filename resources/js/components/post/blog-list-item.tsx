@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 
 import { cn } from '@/lib/utils/cn';
-import { transValue } from '@/lib/utils/trans-value';
+import { useTransValue } from '@/lib/utils/trans-value';
 import type { Post } from '@/types';
 
 export type BlogListItemProps = {
@@ -11,6 +11,7 @@ export type BlogListItemProps = {
 };
 
 const BlogListItem: FC<BlogListItemProps> = ({ post, date, className }) => {
+    const tv = useTransValue();
     const image = post.image ?? post.images?.[0] ?? null;
 
     return (
@@ -20,11 +21,11 @@ const BlogListItem: FC<BlogListItemProps> = ({ post, date, className }) => {
                     <p className="text-h-40-bold text-duyang-grey">{date}</p>
 
                     <h3 className="text-h-32-bold text-duyang-black lg:text-h-56-bold">
-                        {transValue(post.title)}
+                        {tv(post.title)}
                     </h3>
 
                     <p className="max-w-5xl text-p-18-regular text-duyang-grey">
-                        {transValue(post.description)}
+                        {tv(post.description)}
                     </p>
                 </div>
 

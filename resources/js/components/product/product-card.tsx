@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils/cn';
-import { transValue } from '@/lib/utils/trans-value';
+import { useTransValue } from '@/lib/utils/trans-value';
 import type { Product } from '@/types';
 import React from 'react';
 
@@ -9,6 +9,7 @@ export type ProductCardProps = React.HTMLAttributes<HTMLDivElement> & {
 
 const ProductCard: React.FC<ProductCardProps> = (props) => {
     const { className = '', product, ...rest } = props;
+    const tv = useTransValue();
 
     const image = product.images?.[0] ?? null;
 
@@ -32,7 +33,7 @@ const ProductCard: React.FC<ProductCardProps> = (props) => {
                                     <div className="h-1 w-1 rounded-full bg-duyang-grey" />
                                 )}
                                 <span className="text-p-14-regular text-duyang-grey lg:text-p-16-regular">
-                                    {transValue(col.title)}
+                                    {tv(col.title)}
                                 </span>
                             </span>
                         ))}
@@ -43,7 +44,7 @@ const ProductCard: React.FC<ProductCardProps> = (props) => {
             {/* Info */}
             <div>
                 <h3 className="mt-3 text-p-18-semibold text-duyang-black lg:text-h-20-semibold">
-                    {transValue(product.name)}
+                    {tv(product.name)}
                 </h3>
 
                 <p

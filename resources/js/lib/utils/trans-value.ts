@@ -1,4 +1,5 @@
-import { getLocale } from '@/i18n/manager';
+import { useCallback, useSyncExternalStore } from 'react';
+import { getLocale, localeManager } from '@/i18n/manager';
 import { CURRENT_LANGUAGE, type AppLocale } from '@/i18n/constants';
 
 /**
@@ -37,4 +38,23 @@ export function transValue<T = string>(
     return Object.values(obj).find((v) => v !== undefined && v !== null) as
         | T
         | undefined;
+}
+
+/**
+ * Reactive version of transValue for use inside React components.
+ * Re-renders the component whenever the locale changes.
+ */
+export function useTransValue() {
+    const locale = useSyncExternalStore(
+        (callback) => localeManager.subscribe(callback),
+        () => (localeManager.isInitialized ? localeManager.locale.appLocale : CURRENT_LANGUAGE),
+        () => CURRENT_LANGUAGE,
+    );
+
+    return useCallback(
+        <T = string>(value: Translatable<T> | T | null | undefined): T | undefined => {
+            return transValue(value, locale);
+        },
+        [locale],
+    );
 }

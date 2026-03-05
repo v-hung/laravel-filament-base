@@ -4,7 +4,7 @@ import { type FC } from 'react';
 import { Icons } from '@/components/shared/Icons';
 import { cn } from '@/lib/utils/cn';
 import type { Product } from '@/types/models/product';
-import { transValue } from '@/lib/utils/trans-value';
+import { useTransValue } from '@/lib/utils/trans-value';
 
 export type LatestProductCardProps = {
     product: Product;
@@ -17,6 +17,7 @@ const LatestProductCard: FC<LatestProductCardProps> = ({
     href,
     className,
 }) => {
+    const tv = useTransValue();
     const imageUrl = product.images?.[0]?.url ?? null;
     const collections = product.collections ?? [];
 
@@ -27,7 +28,7 @@ const LatestProductCard: FC<LatestProductCardProps> = ({
                 {imageUrl ? (
                     <img
                         src={imageUrl}
-                        alt={transValue(product.name)}
+                        alt={tv(product.name)}
                         className="h-full w-full object-cover"
                     />
                 ) : (
@@ -42,7 +43,7 @@ const LatestProductCard: FC<LatestProductCardProps> = ({
                                 key={col.id}
                                 className="bg-duyang-white px-2.5 py-1 text-p-14-regular text-duyang-black"
                             >
-                                {transValue(col.title)}
+                                {tv(col.title)}
                             </span>
                         ))}
                     </div>
@@ -52,7 +53,7 @@ const LatestProductCard: FC<LatestProductCardProps> = ({
             {/* Info */}
             <div className="relative pt-4">
                 <p className="text-h-24-bold text-duyang-black">
-                    {transValue(product.name)}
+                    {tv(product.name)}
                 </p>
                 <p className="mt-1 text-p-18-regular text-duyang-grey">
                     ${Number(product.price).toLocaleString()}

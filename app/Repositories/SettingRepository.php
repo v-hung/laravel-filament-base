@@ -8,18 +8,13 @@ class SettingRepository
 {
     public function getAll(): array
     {
-        $locale = app()->getLocale();
-
-        return cache()->remember('settings', now()->addMinutes(60), function () use ($locale) {
+        return cache()->remember('settings', now()->addMinutes(60), function () {
             $all = Setting::get();
 
-            $values = $all->mapWithKeys(function ($setting) use ($locale) {
+            $values = $all->mapWithKeys(function ($setting) {
                 $key = strtolower($setting->group.'.'.$setting->key);
-                $value = $setting->getTranslation('value', $locale)
-                    ?: collect(optional($setting)->getTranslations('value'))->first()
-                    ?: null;
 
-                return [$key => $value];
+                return [$key => $setting->getTranslations('value')];
             })->toArray();
 
             $values['__types'] = $all->whereNotNull('type')

@@ -2,7 +2,7 @@ import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { cn } from '@/lib/utils/cn';
-import { transValue } from '@/lib/utils/trans-value';
+import { useTransValue } from '@/lib/utils/trans-value';
 import type { Blog, Post } from '@/types';
 
 export type PostItemProps = {
@@ -13,6 +13,7 @@ export type PostItemProps = {
 
 const PostItem: FC<PostItemProps> = ({ post, date, className }) => {
     const { t } = useTranslation();
+    const tv = useTransValue();
     const image = post.image ?? post.images?.[0] ?? null;
 
     return (
@@ -33,7 +34,7 @@ const PostItem: FC<PostItemProps> = ({ post, date, className }) => {
                             className="flex items-center gap-2 bg-duyang-cream px-4 py-2 text-p-14-semibold text-duyang-black uppercase"
                         >
                             <span aria-hidden="true">•</span>
-                            {transValue(category.title)}
+                            {tv(category.title)}
                         </span>
                     ))}
 
@@ -43,17 +44,17 @@ const PostItem: FC<PostItemProps> = ({ post, date, className }) => {
                 </div>
 
                 <h3 className="text-h-40 text-duyang-black">
-                    {transValue(post.title)}
+                    {tv(post.title)}
                 </h3>
 
                 {post.description && (
                     <p className="text-p-18-regular text-duyang-grey">
-                        {transValue(post.description)}
+                        {tv(post.description)}
                     </p>
                 )}
 
                 <a
-                    href={`/blog/${transValue(post.slug)}`}
+                    href={`/blog/${tv(post.slug)}`}
                     className="inline-flex items-center gap-3 text-p-16-semibold text-duyang-black hover:opacity-70"
                 >
                     {t('common.readMore')}

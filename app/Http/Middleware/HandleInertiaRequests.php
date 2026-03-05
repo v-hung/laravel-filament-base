@@ -38,16 +38,16 @@ class HandleInertiaRequests extends Middleware
     {
         return [
             ...parent::share($request),
-            'name' => setting('shop.site_name'),
+            'name' => setting_locales('shop.site_name'),
             'auth' => [
                 'user' => $request->user(),
             ],
             'cart' => function () {
                 return app(CartService::class)->getCart();
             },
-            'settings' => settings_all('shop'),
+            'settings' => settings_all_locales('shop'),
             'flash' => [
-                'success' => fn () => $request->session()->get('success'),
+                'success' => fn() => $request->session()->get('success'),
             ],
         ];
     }

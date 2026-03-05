@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils/cn';
 import type { Product } from '@/types/models/product';
 import { Icons } from '../shared/Icons';
-import { transValue } from '@/lib/utils/trans-value';
+import { useTransValue } from '@/lib/utils/trans-value';
 
 interface PopularProductCardProps {
     product: Product;
@@ -16,6 +16,7 @@ function ProductImage({
     product: Product;
     className?: string;
 }) {
+    const tv = useTransValue();
     const imageUrl = product.images?.[0]?.url ?? null;
 
     return (
@@ -23,7 +24,7 @@ function ProductImage({
             {imageUrl ? (
                 <img
                     src={imageUrl}
-                    alt={transValue(product.name)}
+                    alt={tv(product.name)}
                     className="h-full w-full object-cover"
                 />
             ) : (
@@ -42,6 +43,7 @@ export function PopularProductCard({
     version = 'v1',
     className,
 }: PopularProductCardProps) {
+    const tv = useTransValue();
     const rating = (product as { rating?: number; review_count?: number })
         .rating;
     const reviewCount = (product as { review_count?: number }).review_count;
@@ -87,7 +89,7 @@ export function PopularProductCard({
                                                 <div className="h-1 w-1 rounded-full bg-duyang-grey" />
                                             )}
                                             <span className="text-p-14-regular text-duyang-grey lg:text-p-16-regular">
-                                                {transValue(col.title)}
+                                                {tv(col.title)}
                                             </span>
                                         </span>
                                     ))}
@@ -112,11 +114,11 @@ export function PopularProductCard({
             {/* Info */}
             <div>
                 <h3 className="mt-3 text-p-18-semibold text-duyang-black lg:text-h-20-semibold">
-                    {transValue(product.name)}
+                    {tv(product.name)}
                 </h3>
                 {version === 'v2' && product.description && (
                     <p className="mt-3 line-clamp-2 text-p-14-regular text-duyang-grey lg:text-p-16-regular">
-                        {transValue(product.description)}
+                        {tv(product.description)}
                     </p>
                 )}
                 <p

@@ -7,7 +7,7 @@ import AppLayout from '@/layouts/app-layout';
 import { detail } from '@/routes/products';
 import type { Paginator, Product } from '@/types';
 import { Link } from '@inertiajs/react';
-import { transValue } from '@/lib/utils/trans-value';
+import { useTransValue } from '@/lib/utils/trans-value';
 import { useTranslation } from 'react-i18next';
 
 type ShopProps = {
@@ -17,6 +17,7 @@ type ShopProps = {
 
 export default function ShopIndex({ products, featured_products }: ShopProps) {
     const { t } = useTranslation();
+    const tv = useTransValue();
 
     return (
         <AppLayout>
@@ -48,7 +49,7 @@ export default function ShopIndex({ products, featured_products }: ShopProps) {
                             <Link
                                 key={product.id}
                                 href={detail.url(
-                                    transValue(product.slug) || '#',
+                                    tv(product.slug) || '#',
                                 )}
                             >
                                 <ProductCard product={product} />
@@ -77,7 +78,7 @@ export default function ShopIndex({ products, featured_products }: ShopProps) {
                             <Link
                                 key={product.id}
                                 href={detail.url(
-                                    transValue(product.slug) || '#',
+                                    tv(product.slug) || '#',
                                 )}
                             >
                                 <PopularProductCard
