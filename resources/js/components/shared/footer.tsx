@@ -1,4 +1,5 @@
-import { Link } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
+import { useRef } from 'react';
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -94,8 +95,12 @@ function FooterSectionColumn({
 function NewsletterSection({ className }: { className?: string }) {
     const { t } = useTranslation();
 
-    const handleSubmit = (e: React.SubmitEvent) => {
+    const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
+        const email = e.currentTarget.email.value;
+        if (email) {
+            router.get(contact().url, { email });
+        }
     };
 
     return (
@@ -106,11 +111,11 @@ function NewsletterSection({ className }: { className?: string }) {
             )}
         >
             <h4 className="text-h-20-bold text-duyang-white lg:text-h-22-bold">
-                {t('footer.newsletterTitle')}
+                {t('footer.newsletter.title')}
             </h4>
             <div className="flex flex-col gap-4">
                 <p className="text-p-14-regular text-duyang-grey-light lg:text-p-16-regular">
-                    {t('footer.newsletterDescription')}
+                    {t('footer.newsletter.description')}
                 </p>
                 <form
                     className="mt-6 flex items-end gap-3"
@@ -119,7 +124,9 @@ function NewsletterSection({ className }: { className?: string }) {
                     <input
                         type="email"
                         placeholder={t('common.email')}
+                        name="email"
                         className="flex-1 border-b border-duyang-grey-light bg-transparent pb-2 text-p-14-regular text-duyang-white transition-colors outline-none placeholder:text-duyang-grey-light focus:border-duyang-white lg:text-p-16-regular"
+                        required
                     />
                     <DuButton type="submit" variant="solid" color="white">
                         {t('common.subscribe')}
@@ -156,10 +163,10 @@ export const Footer: FC = () => {
                 </div>
 
                 {/* Separator */}
-                <div className="border-t border-white/10" />
+                <div className="border-t border-duyang-grey-light/30" />
 
                 {/* Bottom bar */}
-                <div className="py-6">
+                <div className="py-6 lg:py-10">
                     <div className="flex flex-col items-center gap-4 md:flex-row md:justify-between">
                         {/* Logo — desktop only (mobile logo is at top) */}
                         <div className="hidden lg:block">

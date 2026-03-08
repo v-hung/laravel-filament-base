@@ -26,10 +26,10 @@ export default function Login({
 
     return (
         <AuthLayout
-            title={t('auth.loginTitle')}
-            description={t('auth.loginDescription')}
+            title={t('auth.login.title')}
+            description={t('auth.login.description')}
         >
-            <Head title={t('auth.login')} />
+            <Head title={t('auth.logIn')} />
 
             <Form
                 {...store.form()}
@@ -67,7 +67,7 @@ export default function Login({
                                             className="ml-auto text-sm"
                                             tabIndex={5}
                                         >
-                                            {t('auth.forgotPassword')}
+                                            {t('auth.login.forgotPassword')}
                                         </Link>
                                     )}
                                 </div>
@@ -89,7 +89,7 @@ export default function Login({
                                     tabIndex={3}
                                 />
                                 <Label htmlFor="remember">
-                                    {t('auth.rememberMe')}
+                                    {t('auth.login.rememberMe')}
                                 </Label>
                             </div>
 
@@ -107,9 +107,9 @@ export default function Login({
 
                         {canRegister && (
                             <div className="text-center text-sm text-muted-foreground">
-                                {t('auth.noAccount')}{' '}
+                                {t('auth.login.noAccount')}{' '}
                                 <Link href={register()} tabIndex={5}>
-                                    {t('auth.signUp')}
+                                    {t('auth.login.signUp')}
                                 </Link>
                             </div>
                         )}

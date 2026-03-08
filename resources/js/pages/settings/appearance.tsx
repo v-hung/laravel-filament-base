@@ -11,18 +11,18 @@ export default function Appearance() {
     const { t } = useTranslation();
 
     const tabs: { value: Appearance; icon: LucideIcon; label: string }[] = [
-        { value: 'light', icon: Sun, label: t('settings.light') },
-        { value: 'dark', icon: Moon, label: t('settings.dark') },
-        { value: 'system', icon: Monitor, label: t('settings.system') },
+        { value: 'light', icon: Sun, label: t('settings.appearance.light') },
+        { value: 'dark', icon: Moon, label: t('settings.appearance.dark') },
+        { value: 'system', icon: Monitor, label: t('settings.appearance.system') },
     ];
 
     return (
         <AccountLayout>
-            <Head title={t('settings.appearanceTitle')} />
+            <Head title={t('settings.appearance.title')} />
 
             <div className="space-y-6">
-                <h1>{t('settings.appearance')}</h1>
-                <h2>{t('settings.chooseAppearance')}</h2>
+                <h1>{t('settings.appearance.label')}</h1>
+                <h2>{t('settings.appearance.description')}</h2>
 
                 <div
                     className={

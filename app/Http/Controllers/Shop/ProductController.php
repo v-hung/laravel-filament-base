@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Repositories\CollectionRepository;
 use App\Repositories\ProductRepository;
 use Illuminate\Http\Request;
+use Throwable;
 
 class ProductController extends Controller
 {
@@ -35,16 +36,22 @@ class ProductController extends Controller
      */
     public function detail(string $slug)
     {
-        $product = $this->productRepository->findBySlug($slug);
+        try {
+            $product = $this->productRepository->findBySlug($slug);
 
-        $related_products = $this->productRepository->search(
-            new ProductSearchParams(['collections' => $product->collections->pluck('slug')->toArray()]),
-            // [$product->id]
-        );
+            $related_products = $this->productRepository->search(
+                new ProductSearchParams(['collections' => $product->collections->pluck('slug')->toArray()]),
+                [$product->id]
+            );
 
-        return $this->render('shop/product-detail', [
-            'product' => $product,
-            'related_products' => $related_products,
-        ]);
+            return $this->render('shop/product-detail', [
+                'product' => $product,
+                'related_products' => $related_products,
+            ]);
+        } catch (Throwable $e) {
+            $this->flash('toast', ['type' => 'error', 'message' => __('shop.product.not_found')]);
+
+            return back();
+        }
     }
 }

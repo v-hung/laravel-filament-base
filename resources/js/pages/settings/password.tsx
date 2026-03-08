@@ -16,7 +16,7 @@ export default function Password() {
 
     return (
         <AccountLayout>
-            <Head title={t('settings.passwordTitle')} />
+            <Head title={t('settings.password.title')} />
             <div className="space-y-6">
                 <Form
                     {...PasswordController.update.form()}
@@ -44,7 +44,7 @@ export default function Password() {
                         <>
                             <div className="grid gap-2">
                                 <Label htmlFor="current_password">
-                                    {t('settings.currentPassword')}
+                                    {t('settings.password.currentPassword')}
                                 </Label>
 
                                 <Input
@@ -54,7 +54,7 @@ export default function Password() {
                                     type="password"
                                     className="mt-1 block w-full"
                                     autoComplete="current-password"
-                                    placeholder={t('settings.currentPassword')}
+                                    placeholder={t('settings.password.currentPassword')}
                                 />
 
                                 <p> {errors.current_password} </p>
@@ -62,7 +62,7 @@ export default function Password() {
 
                             <div className="grid gap-2">
                                 <Label htmlFor="password">
-                                    {t('settings.newPassword')}
+                                    {t('settings.password.newPassword')}
                                 </Label>
 
                                 <Input
@@ -72,7 +72,7 @@ export default function Password() {
                                     type="password"
                                     className="mt-1 block w-full"
                                     autoComplete="new-password"
-                                    placeholder={t('settings.newPassword')}
+                                    placeholder={t('settings.password.newPassword')}
                                 />
 
                                 <p> {errors.password} </p>
@@ -100,7 +100,7 @@ export default function Password() {
                                     disabled={processing}
                                     data-test="update-password-button"
                                 >
-                                    {t('settings.savePassword')}
+                                    {t('settings.password.save')}
                                 </Button>
 
                                 <Transition

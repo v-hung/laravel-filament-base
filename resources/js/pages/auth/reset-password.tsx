@@ -17,10 +17,10 @@ export default function ResetPassword({ token, email }: Props) {
 
     return (
         <AuthLayout
-            title={t('auth.resetPasswordTitle')}
-            description={t('auth.resetPasswordDescription')}
+            title={t('auth.resetPassword.title')}
+            description={t('auth.resetPassword.description')}
         >
-            <Head title={t('auth.resetPasswordTitle')} />
+            <Head title={t('auth.resetPassword.title')} />
 
             <Form
                 {...update.form()}
@@ -78,7 +78,7 @@ export default function ResetPassword({ token, email }: Props) {
                             data-test="reset-password-button"
                         >
                             {processing && <Spinner />}
-                            {t('auth.resetPassword')}
+                            {t('auth.resetPassword.submit')}
                         </Button>
                     </div>
                 )}

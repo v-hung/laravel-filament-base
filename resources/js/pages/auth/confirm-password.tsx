@@ -12,10 +12,10 @@ export default function ConfirmPassword() {
 
     return (
         <AuthLayout
-            title={t('auth.confirmPasswordTitle')}
-            description={t('auth.confirmPasswordDescription')}
+            title={t('auth.confirmPasswordPage.title')}
+            description={t('auth.confirmPasswordPage.description')}
         >
-            <Head title={t('auth.confirmPasswordTitle')} />
+            <Head title={t('auth.confirmPasswordPage.title')} />
 
             <Form {...store.form()} resetOnSuccess={['password']}>
                 {({ processing }) => (
@@ -41,7 +41,7 @@ export default function ConfirmPassword() {
                                 data-test="confirm-password-button"
                             >
                                 {processing && <Spinner />}
-                                {t('auth.confirmPasswordTitle')}
+                                {t('auth.confirmPasswordPage.title')}
                             </Button>
                         </div>
                     </div>

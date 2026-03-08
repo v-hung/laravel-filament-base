@@ -1,6 +1,7 @@
 import { useSettingStore } from '@/stores/setting';
 import { cn } from '@/lib/utils/cn';
 import React from 'react';
+import { transValue } from '@/lib/utils/trans-value';
 
 export type BrandLogoProps = React.HTMLAttributes<HTMLDivElement> & {
     white?: boolean;
@@ -10,7 +11,7 @@ const BrandLogo: React.FC<BrandLogoProps> = (props) => {
     const { white = false, className, ...rest } = props;
 
     const logo = useSettingStore((state) => state.shopSettings.site_logo);
-    const media = Array.isArray(logo) ? logo[0] : logo;
+    const media = transValue(logo);
 
     return (
         <div className={cn('h-5 lg:h-7', className)} {...rest}>
@@ -20,7 +21,7 @@ const BrandLogo: React.FC<BrandLogoProps> = (props) => {
                         'h-full w-auto',
                         white && 'brightness-0 invert',
                     )}
-                    src={media.original_url ?? media.url ?? ''}
+                    src={media.url}
                     alt={media.custom_properties?.alt_text ?? media.name}
                 />
             )}

@@ -25,7 +25,7 @@ class ContactNotificationMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.contact.notification',
+            markdown: 'mail.contact.notification',
         );
     }
 

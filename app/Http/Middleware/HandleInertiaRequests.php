@@ -38,6 +38,7 @@ class HandleInertiaRequests extends Middleware
     {
         return [
             ...parent::share($request),
+            'appLocale' => app()->getLocale(),
             'name' => setting_locales('shop.site_name'),
             'auth' => [
                 'user' => $request->user(),
@@ -46,9 +47,6 @@ class HandleInertiaRequests extends Middleware
                 return app(CartService::class)->getCart();
             },
             'settings' => settings_all_locales('shop'),
-            'flash' => [
-                'success' => fn() => $request->session()->get('success'),
-            ],
         ];
     }
 }

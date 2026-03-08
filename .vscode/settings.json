@@ -1,10 +1,11 @@
 {
     "i18n-ally.localesPaths": [
-        "lang"
+        "lang",
+        // "public/locales"
     ],
+    "i18n-ally.keystyle": "nested",
     "LaravelExtraIntellisense.phpCommand": "ddev php -r \"{code}\"",
     "LaravelExtraIntellisense.basePathForCode": "/var/www/html",
     "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "i18n-ally.keystyle": "nested",
     "tailwindCSS.experimental.configFile": "resources/css/app.css"
 }

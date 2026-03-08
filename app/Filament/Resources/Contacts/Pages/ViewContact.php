@@ -6,7 +6,6 @@ use App\Filament\Resources\Contacts\ContactResource;
 use App\Models\Contact;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\ViewRecord;
-use Illuminate\Support\Facades\DB;
 
 class ViewContact extends ViewRecord
 {
@@ -19,15 +18,15 @@ class ViewContact extends ViewRecord
         ];
     }
 
-    protected function afterMount(): void
+    public function mount(int|string $record): void
     {
-        /** @var Contact $record */
-        $record = $this->getRecord();
+        parent::mount($record);
 
-        if (! $record->isRead()) {
-            DB::table('contacts')
-                ->where('id', $record->id)
-                ->update(['read_at' => now()]);
+        /** @var Contact $contact */
+        $contact = $this->getRecord();
+
+        if (! $contact->isRead()) {
+            $contact->update(['read_at' => now()]);
         }
     }
 }

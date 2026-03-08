@@ -24,9 +24,42 @@ export default function Pagination({
     const nextLink = links[links.length - 1];
     const pageLinks = links.slice(1, -1);
 
+    const currentPage = pageLinks.findIndex((l) => l.active) + 1 || 1;
+
+    const visiblePages = (() => {
+        const pages: (number | '...')[] = [];
+        const delta = 1;
+
+        const rangeStart = Math.max(2, currentPage - delta);
+        const rangeEnd = Math.min(lastPage - 1, currentPage + delta);
+
+        pages.push(1);
+
+        if (rangeStart > 2) {
+            pages.push('...');
+        }
+
+        for (let p = rangeStart; p <= rangeEnd; p++) {
+            pages.push(p);
+        }
+
+        if (rangeEnd < lastPage - 1) {
+            pages.push('...');
+        }
+
+        if (lastPage > 1) {
+            pages.push(lastPage);
+        }
+
+        return pages;
+    })();
+
     return (
         <div
-            className={cn('flex items-center justify-center gap-1', className)}
+            className={cn(
+                'flex flex-wrap items-center justify-center gap-1',
+                className,
+            )}
         >
             {prevLink.url ? (
                 <Link
@@ -41,10 +74,24 @@ export default function Pagination({
                 </span>
             )}
 
-            {pageLinks.map((link, i) =>
-                link.url ? (
+            {visiblePages.map((page, i) => {
+                if (page === '...') {
+                    return (
+                        <span
+                            key={`ellipsis-${i}`}
+                            className="px-2 py-2 text-p-14-regular text-duyang-grey-mid"
+                        >
+                            &hellip;
+                        </span>
+                    );
+                }
+
+                const link = pageLinks[page - 1];
+                if (!link) return null;
+
+                return link.url ? (
                     <Link
-                        key={i}
+                        key={page}
                         href={link.url}
                         className={cn(
                             'min-w-9 border px-3 py-2 text-center text-p-14-regular',
@@ -57,13 +104,13 @@ export default function Pagination({
                     </Link>
                 ) : (
                     <span
-                        key={i}
-                        className="px-2 py-2 text-p-14-regular text-duyang-grey-mid"
+                        key={page}
+                        className="min-w-9 border border-duyang-black/20 px-3 py-2 text-center text-p-14-regular text-duyang-grey-mid"
                     >
                         {link.label}
                     </span>
-                ),
-            )}
+                );
+            })}
 
             {nextLink.url ? (
                 <Link

@@ -12,10 +12,10 @@ export default function Register() {
 
     return (
         <AuthLayout
-            title={t('auth.registerTitle')}
-            description={t('auth.registerDescription')}
+            title={t('auth.register.title')}
+            description={t('auth.register.description')}
         >
-            <Head title={t('auth.registerTitle')} />
+            <Head title={t('auth.register.title')} />
             <Form
                 {...store.form()}
                 resetOnSuccess={['password', 'password_confirmation']}
@@ -91,12 +91,12 @@ export default function Register() {
                                 data-test="register-user-button"
                             >
                                 {processing && <Spinner />}
-                                {t('auth.createAccount')}
+                                {t('auth.register.submit')}
                             </Button>
                         </div>
 
                         <div className="text-center text-sm text-muted-foreground">
-                            {t('auth.hasAccount')}{' '}
+                            {t('auth.register.hasAccount')}{' '}
                         </div>
                     </>
                 )}

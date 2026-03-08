@@ -4,7 +4,9 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import '../css/app.css';
 import './i18n/config';
+import { Toaster } from './components/ui/sonner';
 import { initializeTheme } from './hooks/use-appearance';
+import FlashListener from './shared/listeners/FlashListener';
 import SettingListener from './shared/listeners/SettingListener';
 import type { ShopSettings } from './types';
 
@@ -26,7 +28,9 @@ createInertiaApp({
         root.render(
             <StrictMode>
                 <SettingListener initialSettings={initialSettings} />
+                <FlashListener />
                 <App {...props} />
+                <Toaster position="top-right" />
             </StrictMode>,
         );
     },

@@ -1,11 +1,11 @@
-import { Link, usePage } from '@inertiajs/react';
+import { Link, usePage, router } from '@inertiajs/react';
 import { CheckIcon } from 'lucide-react';
 import type { FC } from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { cn } from '@/lib/utils/cn';
-import { about, home, shop } from '@/routes';
+import { about, contact, home, partner, shop } from '@/routes';
 import { CURRENT_LANGUAGE, type AppLocale } from '@/i18n/constants';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import {
@@ -42,9 +42,10 @@ function useNavItems(): NavItem[] {
     const { t } = useTranslation();
     return [
         { label: t('nav.home'), href: home().url },
-        { label: t('nav.partner'), href: 'asd' },
+        { label: t('nav.partner'), href: partner().url },
         { label: t('nav.shop'), href: shop().url },
         { label: t('nav.about'), href: about().url },
+        { label: t('nav.contact'), href: contact().url },
     ];
 }
 
@@ -63,16 +64,30 @@ const Header: FC<HeaderProps> = ({ className }) => {
     const [searchPopupOpen, setSearchPopupOpen] = useState(false);
 
     const navItems = useNavItems();
-    const { url, component } = usePage();
+    const { url, component, props } = usePage();
+    const appLocale = (props.appLocale as AppLocale) || CURRENT_LANGUAGE;
 
-    const language = (i18n.language as AppLocale) || CURRENT_LANGUAGE;
+    const language =
+        (i18n.language as AppLocale) || appLocale || CURRENT_LANGUAGE;
     const selectedLanguage =
         LANGUAGES.find((item) => item.value === language) ?? LANGUAGES[0];
+
+    const handleLanguageChange = async (locale: AppLocale) => {
+        // Change language on server
+        router.visit(`/greeting/${locale}`, {
+            method: 'get',
+            preserveState: true,
+            onSuccess: () => {
+                // Change language on client after server confirms
+                i18n.changeLanguage(locale);
+            },
+        });
+    };
 
     return (
         <header className={cn('bg-duyang-white', className)}>
             <Container>
-                <div className="flex items-center justify-between py-4">
+                <div className="flex items-center justify-between py-4 lg:py-8">
                     {/* Left: Menu Icon + Logo */}
                     <div className="flex items-center gap-4">
                         <Sheet
@@ -171,7 +186,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
                                         type="text"
                                         label={t('common.search')}
                                         placeholder={t(
-                                            'contact.searchPlaceholder',
+                                            'contact.faq.searchPlaceholder',
                                         )}
                                     />
                                 </div>
@@ -193,7 +208,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
                                     <DropdownMenuItem
                                         key={item.value}
                                         onClick={() =>
-                                            i18n.changeLanguage(item.value)
+                                            handleLanguageChange(item.value)
                                         }
                                         className="text-p-14-medium text-duyang-black focus:bg-duyang-cream focus:text-duyang-black"
                                     >

@@ -44,7 +44,13 @@ class ProductRepository
 
     public function findBySlug(string $slug): ?Product
     {
-        return Product::with('collections')->where('status', ProductStatus::Active)->where('slug', $slug)->firstOrFail();
+        $query = Product::with('collections')->where('status', ProductStatus::Active);
+
+        foreach (['vi', 'en'] as $locale) {
+            $query->orWhere("slug->$locale", $slug);
+        }
+
+        return $query->firstOrFail();
     }
 
     /**
@@ -144,24 +150,24 @@ class ProductRepository
     {
         $sortedOptions = $product->options->sortBy('position');
 
-        $product->setAttribute('options_raw', $sortedOptions->map(fn ($opt) => [
+        $product->setAttribute('options_raw', $sortedOptions->map(fn($opt) => [
             'id' => $opt->id,
             'name' => $opt->name,
             'values' => $opt->values
                 ->sortBy('position')
-                ->map(fn ($val) => [
+                ->map(fn($val) => [
                     'id' => $val->id,
                     'label' => $val->label,
                 ])->toArray(),
         ])->toArray());
 
-        $product->setAttribute('variants_raw', $product->variants->map(fn ($variant) => [
+        $product->setAttribute('variants_raw', $product->variants->map(fn($variant) => [
             'id' => $variant->id,
             'image' => $variant->image,
             'sku' => $variant->sku,
             'price' => $variant->price,
             'stock' => $variant->stock,
-            'values' => $variant->values->map(fn ($val) => [
+            'values' => $variant->values->map(fn($val) => [
                 'id' => $val->id,
                 'label' => $val->label,
                 'option_id' => $val->product_option_id,

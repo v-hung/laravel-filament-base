@@ -14,10 +14,10 @@ export default function ForgotPassword({ status }: { status?: string }) {
 
     return (
         <AuthLayout
-            title={t('auth.forgotPasswordTitle')}
-            description={t('auth.forgotPasswordDescription')}
+            title={t('auth.forgotPassword.title')}
+            description={t('auth.forgotPassword.description')}
         >
-            <Head title={t('auth.forgotPasswordTitle')} />
+            <Head title={t('auth.forgotPassword.title')} />
 
             {status && (
                 <div className="mb-4 text-center text-sm font-medium text-green-600">
@@ -52,7 +52,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
                                     {processing && (
                                         <LoaderCircle className="h-4 w-4 animate-spin" />
                                     )}
-                                    {t('auth.emailResetLink')}
+                                    {t('auth.forgotPassword.submit')}
                                 </Button>
                             </div>
                         </>
@@ -60,7 +60,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
                 </Form>
 
                 <div className="space-x-1 text-center text-sm text-muted-foreground">
-                    <span>{t('auth.orReturnTo')}</span>
+                    <span>{t('auth.forgotPassword.returnTo')}</span>
                     <Link href={login()}>{t('auth.logIn')}</Link>
                 </div>
             </div>

@@ -18,14 +18,14 @@ class ContactConfirmationMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Xác nhận liên hệ - DUYANG VIETNAM',
+            subject: 'Xác nhận liên hệ - '.setting('shop.site_name'),
         );
     }
 
     public function content(): Content
     {
         return new Content(
-            view: 'mail.contact.confirmation',
+            markdown: 'mail.contact.confirmation',
         );
     }
 

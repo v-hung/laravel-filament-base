@@ -5,7 +5,11 @@ import chainedBackend from 'i18next-chained-backend';
 import httpBackend from 'i18next-http-backend';
 import localStorageBackend from 'i18next-localstorage-backend';
 import { localeManager } from './manager';
-import { CURRENT_LANGUAGE, SUPPORTED_LANGUAGES, type AppLocale } from './constants';
+import {
+    CURRENT_LANGUAGE,
+    SUPPORTED_LANGUAGES,
+    type AppLocale,
+} from './constants';
 
 i18n.use(languageDetector)
     .use(chainedBackend)
@@ -41,14 +45,16 @@ i18n.use(languageDetector)
                         : 7 * 24 * 60 * 60 * 1000, // 7 days
                 },
                 {
-                    loadPath: '/locale/{{lng}}.json',
+                    loadPath: `/locales/{{lng}}.json?t=${
+                        import.meta.env.DEV ? Date.now() : __BUILD_TIME__
+                    }`,
                 },
             ],
         },
 
-        react: {
-            useSuspense: false, // disable if you want self control
-        },
+        // react: {
+        //     useSuspense: false, // disable if you want self control
+        // },
     });
 
 i18n.on('languageChanged', async (lng: AppLocale) => {

@@ -6,6 +6,9 @@ import { defineConfig } from 'vite';
 import svgr from 'vite-plugin-svgr';
 
 export default defineConfig({
+    define: {
+        __BUILD_TIME__: JSON.stringify(Date.now()),
+    },
     plugins: [
         laravel({
             input: [

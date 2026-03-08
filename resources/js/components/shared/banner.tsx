@@ -17,8 +17,8 @@ export default function Banner({
     ...props
 }: BannerProps) {
     const { t } = useTranslation();
-    const resolvedTitle = title ?? t('banner.defaultTitle');
-    const resolvedDescription = description ?? t('banner.defaultDescription');
+    const resolvedTitle = title ?? t('home.banner.title');
+    const resolvedDescription = description ?? t('home.banner.description');
     return (
         <section
             className={cn(

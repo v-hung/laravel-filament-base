@@ -48,9 +48,7 @@ export default function ShopIndex({ products, featured_products }: ShopProps) {
                         {products.data.map((product) => (
                             <Link
                                 key={product.id}
-                                href={detail.url(
-                                    tv(product.slug) || '#',
-                                )}
+                                href={detail.url(tv(product.slug) || '#')}
                             >
                                 <ProductCard product={product} />
                             </Link>
@@ -67,7 +65,7 @@ export default function ShopIndex({ products, featured_products }: ShopProps) {
             </section>
 
             {/* Featured Products */}
-            <section className="surface-page pb-14 lg:pb-20">
+            <section className="pb-14 lg:pb-20">
                 <Container>
                     <h2 className="lg:text-h-40 text-h-32-bold text-duyang-black">
                         {t('shop.featuredProducts')}
@@ -77,9 +75,7 @@ export default function ShopIndex({ products, featured_products }: ShopProps) {
                         {featured_products.data.map((product) => (
                             <Link
                                 key={product.id}
-                                href={detail.url(
-                                    tv(product.slug) || '#',
-                                )}
+                                href={detail.url(tv(product.slug) || '#')}
                             >
                                 <PopularProductCard
                                     product={product}

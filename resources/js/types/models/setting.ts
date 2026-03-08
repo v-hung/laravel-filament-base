@@ -4,11 +4,11 @@ import type { Media } from './media';
 export type ShopSettings = {
     // Branding
     site_name?: Translatable | null;
-    site_logo?: Media | null;
+    site_logo?: Translatable<Media> | null;
 
     // Contact
-    site_email?: string | null;
-    site_phone?: string | null;
+    site_email?: Translatable<string> | null;
+    site_phone?: Translatable<string> | null;
     site_address?: Translatable | null;
 
     // Business info
@@ -19,7 +19,7 @@ export type ShopSettings = {
 
     // Content
     site_description?: Translatable | null;
-    site_map?: string | null;
+    site_map?: Translatable<string> | null;
 
     // FAQ
     faq?: Translatable<{ key: string; value: string }[]> | null;

@@ -1,7 +1,7 @@
 <x-mail::message>
 # Liên hệ mới từ website
 
-Bạn vừa nhận được một liên hệ mới từ website DUYANG VIETNAM.
+Bạn vừa nhận được một liên hệ mới từ website {{ setting('shop.site_name') }}.
 
 <x-mail::table>
 | Thông tin | Chi tiết |
@@ -13,8 +13,8 @@ Bạn vừa nhận được một liên hệ mới từ website DUYANG VIETNAM.
 
 **Nội dung liên hệ:**
 
-{{ $contact->message }}
+{{ $contact->content }}
 
-Trân trọng,<br>
-Hệ thống DUYANG VIETNAM
+Trân trọng,
+Hệ thống {{ setting('shop.site_name') }}
 </x-mail::message>

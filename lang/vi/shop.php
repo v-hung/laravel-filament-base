@@ -54,4 +54,8 @@ return [
             ],
         ],
     ],
+
+    'product' => [
+        'not_found' => 'Không tìm thấy sản phẩm',
+    ],
 ];

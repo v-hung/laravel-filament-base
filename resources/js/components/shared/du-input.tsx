@@ -27,7 +27,7 @@ const DuInput = forwardRef<HTMLInputElement, DuInputProps>(
                     <label
                         htmlFor={inputId}
                         className={cn(
-                            'text-p-14-semibold text-duyang-black lg:text-p-16-semibold',
+                            'mb-1 text-p-14-semibold text-duyang-black lg:text-p-16-semibold',
                         )}
                     >
                         {label}

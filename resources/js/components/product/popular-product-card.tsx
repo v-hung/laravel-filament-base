@@ -49,12 +49,7 @@ export function PopularProductCard({
     const reviewCount = (product as { review_count?: number }).review_count;
 
     return (
-        <div
-            className={cn(
-                'max-w-100 overflow-hidden bg-duyang-white',
-                className,
-            )}
-        >
+        <div className={cn('max-w-100 overflow-hidden', className)}>
             {/* Image (detailed: rating overlay badge) */}
             <div className="relative">
                 <ProductImage

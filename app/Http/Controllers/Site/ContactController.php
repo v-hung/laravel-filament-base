@@ -23,10 +23,12 @@ class ContactController extends Controller
 
         // Uncomment to enable email notifications:
 
-        // Mail::to($contact->email)->send(new ContactConfirmationMail($contact));
+        Mail::to($contact->email)->send(new ContactConfirmationMail($contact));
 
-        // Mail::to(config('mail.from.address'))->send(new ContactNotificationMail($contact));
+        Mail::to(config('mail.from.address'))->send(new ContactNotificationMail($contact));
 
-        return redirect()->back()->with('success', 'Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi sớm nhất có thể.');
+        $this->flash('toast', ['type' => 'success', 'message' => __('messages.contact.success')]);
+
+        return back();
     }
 }

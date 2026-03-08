@@ -4,30 +4,38 @@ import DuInput from '@/components/shared/du-input';
 import DuTextarea from '@/components/shared/du-textarea';
 import Section from '@/components/shared/section';
 import {
-    Collapsible,
-    CollapsibleContent,
-    CollapsibleTrigger,
-} from '@/components/ui/collapsible';
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+} from '@/components/ui/accordion';
 import AppLayout from '@/layouts/app-layout';
 import { useTransValue } from '@/lib/utils/trans-value';
 import { contact } from '@/routes';
 import { useSettingStore } from '@/stores/setting';
 import { useForm, usePage } from '@inertiajs/react';
 import { ChevronDownIcon } from 'lucide-react';
-import { useId, useState } from 'react';
+import { Accordion as AccordionPrimitive } from 'radix-ui';
+import { useEffect, useId } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function Contact() {
     const { t } = useTranslation();
     const tv = useTransValue();
     const formId = useId();
-    const [openFaq, setOpenFaq] = useState<string | null>(null);
     const { flash } = usePage<{ flash: { success?: string } }>().props;
     const { data, setData, post, processing, reset, errors } = useForm({
         name: '',
         email: '',
         content: '',
     });
+
+    useEffect(() => {
+        const searchParams = new URLSearchParams(window.location.search);
+        const emailParam = searchParams.get('email');
+        if (emailParam) {
+            setData('email', emailParam);
+        }
+    }, [setData]);
 
     const handleSubmit = (e: React.SubmitEvent) => {
         e.preventDefault();
@@ -73,9 +81,9 @@ export default function Contact() {
                             >
                                 <div className="flex flex-col gap-1">
                                     <DuInput
-                                        label={t('contact.fullName')}
+                                        label={t('contact.form.fullName')}
                                         placeholder={t(
-                                            'contact.fullNamePlaceholder',
+                                            'contact.form.fullNamePlaceholder',
                                         )}
                                         value={data.name}
                                         onChange={(e) =>
@@ -94,7 +102,7 @@ export default function Contact() {
                                         label={t('common.email')}
                                         type="email"
                                         placeholder={t(
-                                            'contact.emailPlaceholder',
+                                            'contact.form.emailPlaceholder',
                                         )}
                                         value={data.email}
                                         onChange={(e) =>
@@ -111,10 +119,10 @@ export default function Contact() {
                                 {/* Textarea styled like DuInput */}
                                 <div className="flex flex-col gap-1">
                                     <DuTextarea
-                                        label={t('contact.content')}
+                                        label={t('contact.form.content')}
                                         rows={3}
                                         placeholder={t(
-                                            'contact.contentPlaceholder',
+                                            'contact.form.contentPlaceholder',
                                         )}
                                         value={data.content}
                                         onChange={(e) =>
@@ -136,7 +144,7 @@ export default function Contact() {
                                         size="lg"
                                         disabled={processing}
                                     >
-                                        {t('contact.submitButton')}
+                                        {t('contact.form.submit')}
                                     </DuButton>
                                 </div>
                             </form>
@@ -149,14 +157,14 @@ export default function Contact() {
             <Section>
                 <Container>
                     <h2 className="text-h-24-bold text-duyang-black lg:text-h-40-bold">
-                        {t('contact.contactInfo')}
+                        {t('contact.info.title')}
                     </h2>
                     <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-3 lg:gap-12">
                         {/* Column 1 — Address, Tax, Representative */}
                         <div className="flex flex-col gap-8">
                             <div className="flex flex-col gap-2">
                                 <h3 className="text-p-18-semibold text-duyang-black lg:text-h-20-semibold">
-                                    {t('contact.officeAddress')}
+                                    {t('contact.info.address')}
                                 </h3>
                                 <p className="text-p-14-regular text-duyang-grey lg:text-p-16-regular">
                                     {tv(shopSettings.site_address)}
@@ -164,7 +172,7 @@ export default function Contact() {
                             </div>
                             <div className="flex flex-col gap-2">
                                 <h3 className="text-p-18-semibold text-duyang-black lg:text-h-20-semibold">
-                                    {t('contact.taxCode')}
+                                    {t('contact.info.taxCode')}
                                 </h3>
                                 <p className="text-p-14-regular text-duyang-grey lg:text-p-16-regular">
                                     {tv(shopSettings.tax_code)}
@@ -172,7 +180,7 @@ export default function Contact() {
                             </div>
                             <div className="flex flex-col gap-2">
                                 <h3 className="text-p-18-semibold text-duyang-black lg:text-h-20-semibold">
-                                    {t('contact.representative')}
+                                    {t('contact.info.representative')}
                                 </h3>
                                 <p className="text-p-14-regular text-duyang-grey lg:text-p-16-regular">
                                     {tv(shopSettings.representative)}
@@ -183,7 +191,7 @@ export default function Contact() {
                         <div className="flex flex-col gap-8">
                             <div className="flex flex-col gap-2">
                                 <h3 className="text-p-18-semibold text-duyang-black lg:text-h-20-semibold">
-                                    {t('contact.phone')}
+                                    {t('contact.info.phone')}
                                 </h3>
                                 <p className="text-p-14-regular text-duyang-grey lg:text-p-16-regular">
                                     {tv(shopSettings.site_phone)}
@@ -191,7 +199,7 @@ export default function Contact() {
                             </div>
                             <div className="flex flex-col gap-2">
                                 <h3 className="text-p-18-semibold text-duyang-black lg:text-h-20-semibold">
-                                    {t('contact.businessField')}
+                                    {t('contact.info.businessField')}
                                 </h3>
                                 <p className="text-p-14-regular text-duyang-grey lg:text-p-16-regular">
                                     {tv(shopSettings.business_field)}
@@ -209,7 +217,7 @@ export default function Contact() {
                         {/* Column 3 — Working Hours card */}
                         <div className="bg-duyang-black px-8 py-10 lg:px-10 lg:py-12">
                             <h3 className="text-h-20-bold text-duyang-white lg:text-h-22-bold">
-                                {t('contact.workingHours')}
+                                {t('contact.info.workingHours')}
                             </h3>
                             <div className="mt-8 flex flex-col gap-5">
                                 {tv(shopSettings.working_hours)?.map(
@@ -254,31 +262,24 @@ export default function Contact() {
                         {/* Left — Title & description */}
                         <div className="lg:col-span-4">
                             <h2 className="text-h-24-bold text-duyang-black lg:text-h-40-bold">
-                                {t('contact.faqTitle')}
+                                {t('contact.faq.title')}
                             </h2>
                             <p className="mt-6 text-p-14-regular text-duyang-grey lg:text-p-16-regular">
-                                {t('contact.faqDescription')}
+                                {t('contact.faq.description')}
                             </p>
                         </div>
                         {/* Right — Accordion */}
                         <div className="lg:col-span-8">
-                            {(tv(shopSettings?.faq) ?? []).map(
-                                (item, index) => {
-                                    const isOpen = item.key === openFaq;
-                                    return (
-                                        <Collapsible
+                            <Accordion type="single" collapsible>
+                                {(tv(shopSettings?.faq) ?? []).map(
+                                    (item, index) => (
+                                        <AccordionItem
                                             key={index}
-                                            open={isOpen}
-                                            onOpenChange={(open) =>
-                                                setOpenFaq(
-                                                    open ? item.key : null,
-                                                )
-                                            }
+                                            value={item.key}
+                                            className="border-b border-duyang-grey-light/20 transition-colors data-[state=open]:bg-duyang-cream"
                                         >
-                                            <div
-                                                className={`transition-colors ${isOpen ? 'bg-duyang-cream' : ''}`}
-                                            >
-                                                <CollapsibleTrigger className="flex w-full cursor-pointer items-center justify-between px-6 py-6 text-left">
+                                            <AccordionPrimitive.Header className="flex">
+                                                <AccordionPrimitive.Trigger className="group flex w-full cursor-pointer items-center justify-between px-6 py-6 text-left">
                                                     <div className="flex items-center gap-6">
                                                         <span className="text-p-16-regular text-duyang-grey-light lg:text-p-18-regular">
                                                             {String(
@@ -289,22 +290,18 @@ export default function Contact() {
                                                             {item.key}
                                                         </span>
                                                     </div>
-                                                    <ChevronDownIcon
-                                                        className={`size-5 shrink-0 text-duyang-black transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
-                                                    />
-                                                </CollapsibleTrigger>
-                                                <CollapsibleContent>
-                                                    <div className="px-6 pt-0 pb-6 pl-18">
-                                                        <p className="text-p-14-regular text-duyang-grey lg:text-p-16-regular">
-                                                            {item.value}
-                                                        </p>
-                                                    </div>
-                                                </CollapsibleContent>
-                                            </div>
-                                        </Collapsible>
-                                    );
-                                },
-                            )}
+                                                    <ChevronDownIcon className="size-5 shrink-0 text-duyang-black transition-transform duration-200 group-data-[state=open]:rotate-180" />
+                                                </AccordionPrimitive.Trigger>
+                                            </AccordionPrimitive.Header>
+                                            <AccordionContent className="px-6 pb-6 pl-18">
+                                                <p className="text-p-14-regular text-duyang-grey lg:text-p-16-regular">
+                                                    {item.value}
+                                                </p>
+                                            </AccordionContent>
+                                        </AccordionItem>
+                                    ),
+                                )}
+                            </Accordion>
                         </div>
                     </div>
                 </Container>

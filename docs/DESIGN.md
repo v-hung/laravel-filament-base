@@ -67,6 +67,7 @@ Must be loaded via Google Fonts or `@fontsource-variable/manrope`:
 
 | Class                 | Size | Weight       | Line Height | Use for                          |
 | --------------------- | ---- | ------------ | ----------- | -------------------------------- |
+| `.text-p-18-bold`     | 18px | bold 600     | 145%        | Prominent body copy, lead text   |
 | `.text-p-18-semibold` | 18px | SemiBold 600 | 145%        | Prominent body copy, lead text   |
 | `.text-p-18-medium`   | 18px | Medium 500   | 145%        | Body copy — medium emphasis      |
 | `.text-p-18-regular`  | 18px | Regular 400  | 145%        | Body copy — light                |

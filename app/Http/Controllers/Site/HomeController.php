@@ -12,7 +12,6 @@ use App\Repositories\CollectionRepository;
 use App\Repositories\PostRepository;
 use App\Repositories\ProductRepository;
 use App\Repositories\ShowcaseRepository;
-use Inertia\Inertia;
 
 class HomeController extends Controller
 {
@@ -44,20 +43,6 @@ class HomeController extends Controller
             'testimonials' => $testimonials,
             'partners' => $partners,
         ]);
-    }
-
-    public function about()
-    {
-        $testimonials = $this->showcaseRepository->search(new ShowcaseSearchParams(['perPage' => 6, 'type' => ShowcaseType::Testimonial]));
-
-        return $this->render('site/about', [
-            'testimonials' => $testimonials,
-        ]);
-    }
-
-    public function contact()
-    {
-        return $this->render('site/contact');
     }
 
     public function partner()

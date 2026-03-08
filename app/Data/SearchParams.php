@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 class SearchParams
 {
-    public int $perPage = 15;
+    public int $perPage = 8;
 
     public int $page = 1;
 

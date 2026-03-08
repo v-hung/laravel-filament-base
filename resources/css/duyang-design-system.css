@@ -84,6 +84,9 @@
 }
 
 /* --- PARAGRAPHS (P) --- */
+@utility text-p-18-bold {
+    @apply text-[18px] leading-[145%] font-bold;
+}
 @utility text-p-18-semibold {
     @apply text-[18px] leading-[145%] font-semibold;
 }
