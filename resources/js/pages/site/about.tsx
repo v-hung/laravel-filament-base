@@ -10,6 +10,7 @@ export default function About() {
 
     return (
         <AppLayout>
+            {/* Hero Section */}
             <Section className="pt-0 lg:pt-0">
                 <Container>
                     <div className="flex items-center justify-between py-8 lg:py-14">
@@ -19,14 +20,15 @@ export default function About() {
                             your personality
                         </p>
                     </div>
-                    <img
-                        src="/images/about.jpg"
-                        alt="About Us"
-                        className="h-60 w-full bg-duyang-cream md:h-90 lg:h-125"
-                    />
                 </Container>
+                <img
+                    src="/images/about.jpg"
+                    alt="About Us"
+                    className="h-60 w-full bg-duyang-cream md:h-90 lg:h-125"
+                />
             </Section>
 
+            {/* Company Overview, Vision, Mission Section */}
             <Section>
                 <Container className="flex flex-col gap-10 lg:gap-20">
                     <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-20">
@@ -92,18 +94,21 @@ export default function About() {
                 </Container>
             </Section>
 
+            {/* Team Carousel Section */}
             <Section>
                 <Container>
                     <TeamCarousel />
                 </Container>
             </Section>
 
+            {/* Core Values Section */}
             <Section>
                 <Container>
                     <CoreValues />
                 </Container>
             </Section>
 
+            {/* Development Section */}
             <Section className="mb-10 lg:mb-16">
                 <Container>
                     <div className="grid grid-cols-1 overflow-hidden rounded bg-duyang-white lg:grid-cols-2">

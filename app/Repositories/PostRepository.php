@@ -9,15 +9,22 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class PostRepository
 {
-    public function search(?SearchParams $params = null): LengthAwarePaginator
+    public function search(?SearchParams $params = null, ?array $excludeIds = []): LengthAwarePaginator
     {
         $params ??= new SearchParams;
 
-        return Post::query()
-            ->where('status', ContentStatus::Published)
+        $query = Post::query()
+            ->where('status', ContentStatus::Published);
+
+        if (!empty($excludeIds)) {
+            $query->whereNotIn('id', $excludeIds);
+        }
+
+        return $query
             ->with(['categories' => function ($q) {
                 $q->limit(1);
             }])
+            ->orderBy($params->sortBy, $params->sortDirection)
             ->paginate(
                 perPage: $params->perPage,
                 page: $params->page
@@ -26,6 +33,12 @@ class PostRepository
 
     public function findBySlug(string $slug): ?Post
     {
-        return Post::with('categories')->where('status', ContentStatus::Published)->where('slug', $slug)->firstOrFail();
+        $query = Post::with('categories')->where('status', ContentStatus::Published);
+
+        foreach (['vi', 'en'] as $locale) {
+            $query->orWhere("slug->$locale", $slug);
+        }
+
+        return $query->firstOrFail();
     }
 }

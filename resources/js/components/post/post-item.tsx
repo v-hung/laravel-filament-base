@@ -4,21 +4,23 @@ import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils/cn';
 import { useTransValue } from '@/lib/utils/trans-value';
 import type { Blog, Post } from '@/types';
+import { format } from '@/lib/utils/date';
+import { Link } from '@inertiajs/react';
+import posts from '@/routes/posts';
 
 export type PostItemProps = {
     post: Post;
-    date: string;
     className?: string;
 };
 
-const PostItem: FC<PostItemProps> = ({ post, date, className }) => {
+const PostItem: FC<PostItemProps> = ({ post, className }) => {
     const { t } = useTranslation();
     const tv = useTransValue();
     const image = post.image ?? post.images?.[0] ?? null;
 
     return (
         <article className={cn('flex flex-col', className)}>
-            <div className="aspect-[4/3] w-full overflow-hidden">
+            <div className="aspect-4/3 w-full overflow-hidden">
                 <img
                     src={image?.conversions?.['thumb']?.url ?? image?.url ?? ''}
                     alt={image?.custom_properties?.alt_text ?? ''}
@@ -39,7 +41,7 @@ const PostItem: FC<PostItemProps> = ({ post, date, className }) => {
                     ))}
 
                     <span className="bg-duyang-black px-4 py-2 text-p-14-semibold text-duyang-white">
-                        {date}
+                        {format(post.created_at, 'MMMM dd.yyyy')}
                     </span>
                 </div>
 
@@ -53,13 +55,13 @@ const PostItem: FC<PostItemProps> = ({ post, date, className }) => {
                     </p>
                 )}
 
-                <a
-                    href={`/blog/${tv(post.slug)}`}
+                <Link
+                    href={posts.detail(tv(post.slug) ?? '#')}
                     className="inline-flex items-center gap-3 text-p-16-semibold text-duyang-black hover:opacity-70"
                 >
                     {t('common.readMore')}
                     <span aria-hidden="true">&#8594;</span>
-                </a>
+                </Link>
             </div>
         </article>
     );

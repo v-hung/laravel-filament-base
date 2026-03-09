@@ -11,8 +11,8 @@ export type Post = {
     images?: Media[] | null;
     image?: Media | null;
     status?: ContentStatus | null;
-    created_at?: string;
-    updated_at?: string;
+    created_at: Date | string;
+    updated_at: Date | string;
     categories?: Blog[];
     [key: string]: unknown;
 };

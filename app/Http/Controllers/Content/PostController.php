@@ -34,9 +34,11 @@ class PostController extends Controller
     public function show(string $slug)
     {
         $post = $this->postRepository->findBySlug($slug);
+        $other_posts = $this->postRepository->search(new SearchParams(['perPage' => 3]), [$post->id]);
 
         return $this->render('content/post-detail', [
             'post' => $post,
+            'other_posts' => $other_posts,
         ]);
     }
 }

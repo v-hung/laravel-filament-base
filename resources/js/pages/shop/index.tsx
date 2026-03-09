@@ -9,6 +9,7 @@ import type { Paginator, Product } from '@/types';
 import { Link } from '@inertiajs/react';
 import { useTransValue } from '@/lib/utils/trans-value';
 import { useTranslation } from 'react-i18next';
+import { Section } from 'lucide-react';
 
 type ShopProps = {
     products: Paginator<Product>;
@@ -24,7 +25,7 @@ export default function ShopIndex({ products, featured_products }: ShopProps) {
             <AppHead title={t('shop.title')} />
 
             {/* Hero Banner */}
-            <section className="relative h-40 overflow-hidden md:h-64 lg:h-80">
+            <Section className="relative h-40 overflow-hidden md:h-64 lg:h-80">
                 <img
                     src="/images/shop-banner.jpg"
                     alt={t('shop.bannerAlt')}
@@ -35,10 +36,10 @@ export default function ShopIndex({ products, featured_products }: ShopProps) {
                         {t('shop.bannerTitle')}
                     </h1>
                 </div>
-            </section>
+            </Section>
 
             {/* All Products */}
-            <section className="py-14 lg:py-20">
+            <Section>
                 <Container>
                     <h2 className="text-h-32-bold text-duyang-black lg:text-h-40-bold">
                         {t('shop.allProducts')}
@@ -62,10 +63,10 @@ export default function ShopIndex({ products, featured_products }: ShopProps) {
                         className="mt-10"
                     />
                 </Container>
-            </section>
+            </Section>
 
             {/* Featured Products */}
-            <section className="pb-14 lg:pb-20">
+            <Section>
                 <Container>
                     <h2 className="lg:text-h-40 text-h-32-bold text-duyang-black">
                         {t('shop.featuredProducts')}
@@ -85,7 +86,7 @@ export default function ShopIndex({ products, featured_products }: ShopProps) {
                         ))}
                     </div>
                 </Container>
-            </section>
+            </Section>
         </AppLayout>
     );
 }

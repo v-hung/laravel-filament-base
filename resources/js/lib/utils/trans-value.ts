@@ -24,8 +24,8 @@ export type Translatable<T = string> = Partial<Record<AppLocale, T>>;
 export function transValue<T = string>(
     value: Translatable<T> | T | null | undefined,
     locale?: AppLocale,
-): T | undefined {
-    if (value === null || value === undefined) return undefined;
+): T {
+    if (value === null || value === undefined) return value as T;
     if (typeof value !== 'object' || Array.isArray(value)) return value as T;
 
     const obj = value as Translatable<T>;
@@ -33,11 +33,9 @@ export function transValue<T = string>(
 
     if (obj[currentLocale] !== undefined) return obj[currentLocale];
 
-    if (obj[CURRENT_LANGUAGE] !== undefined) return obj[CURRENT_LANGUAGE];
+    if (obj[CURRENT_LANGUAGE] !== undefined) return obj[CURRENT_LANGUAGE] as T;
 
-    return Object.values(obj).find((v) => v !== undefined && v !== null) as
-        | T
-        | undefined;
+    return Object.values(obj).find((v) => v !== undefined && v !== null) as T;
 }
 
 /**
@@ -47,12 +45,15 @@ export function transValue<T = string>(
 export function useTransValue() {
     const locale = useSyncExternalStore(
         (callback) => localeManager.subscribe(callback),
-        () => (localeManager.isInitialized ? localeManager.locale.appLocale : CURRENT_LANGUAGE),
+        () =>
+            localeManager.isInitialized
+                ? localeManager.locale.appLocale
+                : CURRENT_LANGUAGE,
         () => CURRENT_LANGUAGE,
     );
 
     return useCallback(
-        <T = string>(value: Translatable<T> | T | null | undefined): T | undefined => {
+        <T = string>(value: Translatable<T> | T | null | undefined): T => {
             return transValue(value, locale);
         },
         [locale],
