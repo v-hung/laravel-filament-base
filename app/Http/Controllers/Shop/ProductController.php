@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Shop;
 
 use App\Data\ProductSearchParams;
+use App\Data\SearchParams;
 use App\Enums\ProductOrderType;
 use App\Http\Controllers\Controller;
 use App\Repositories\CollectionRepository;
@@ -24,10 +25,12 @@ class ProductController extends Controller
     {
         $products = $this->productRepository->search(ProductSearchParams::fromRequest($request));
         $featured_products = $this->productRepository->search(new ProductSearchParams(['perPage' => 3, 'orderType' => ProductOrderType::FEATURED]));
+        $collections = $this->collectionRepository->search(new SearchParams(['perPage' => 6]));
 
         return $this->render('shop/index', [
             'products' => $products,
             'featured_products' => $featured_products,
+            'collections' => $collections,
         ]);
     }
 

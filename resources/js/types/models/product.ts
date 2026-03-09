@@ -8,7 +8,7 @@ export type Product = {
     slug: Translatable;
     description: Translatable | null;
     content: Translatable | null;
-    specifications: Translatable<Record<string, unknown>> | null;
+    specifications: Translatable<{ key: string; value: string }[]> | null;
     images: Media[] | null;
     price: string | number;
     has_variant: boolean;

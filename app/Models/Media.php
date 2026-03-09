@@ -49,7 +49,7 @@ class Media extends Model
      */
     public function getPath(?string $conversionName = null): ?string
     {
-        $basePath = $this->path.'/'.$this->id;
+        $basePath = $this->path . '/' . $this->id;
 
         if ($conversionName) {
             // Build key based on pivot context if available
@@ -58,14 +58,14 @@ class Media extends Model
             // Get conversion filename from generated_conversions
             $conversions = $this->generated_conversions ?? [];
             if (isset($conversions[$key]['file_name'])) {
-                return $basePath.'/conversions/'.$conversions[$key]['file_name'];
+                return $basePath . '/conversions/' . $conversions[$key]['file_name'];
             }
 
             // Return null if conversion doesn't exist
             return null;
         }
 
-        return $basePath.'/'.$this->file_name;
+        return $basePath . '/' . $this->file_name;
     }
 
     /**

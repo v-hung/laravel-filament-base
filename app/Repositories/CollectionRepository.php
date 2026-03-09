@@ -16,6 +16,7 @@ class CollectionRepository
 
         return Collection::query()
             ->where('status', CategoryStatus::Active)
+            ->orderBy($params->sortBy, $params->sortDirection)
             ->paginate(
                 perPage: $params->perPage,
                 page: $params->page

@@ -43,7 +43,7 @@ trait HasMedia
 
         /** @var EloquentCollection<int, Media> $media */
         $media = $this->getRelation('media')
-            ->filter(fn (Media $item): bool => $item->pivot?->collection === $collection)
+            ->filter(fn(Media $item): bool => $item->pivot?->collection === $collection)
             ->values();
 
         // Get conversions from collection definition

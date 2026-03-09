@@ -120,7 +120,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
                                                 href={item.href}
                                                 className={cn(
                                                     'border-duyang-grey-light py-2 text-p-14-semibold transition-colors lg:text-p-16-semibold',
-                                                    url == item.href
+                                                    url.split('?')[0] == item.href
                                                         ? 'border-b text-duyang-black'
                                                         : 'text-duyang-grey hover:text-duyang-black',
                                                 )}
@@ -152,7 +152,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
                                 href={item.href}
                                 className={cn(
                                     'px-1.5 py-2.5 text-btn-14 lg:text-btn-16',
-                                    url == item.href
+                                    url.split('?')[0] == item.href
                                         ? 'border-b border-duyang-grey-light text-duyang-black'
                                         : 'text-duyang-grey hover:text-duyang-black',
                                 )}

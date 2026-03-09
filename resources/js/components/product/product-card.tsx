@@ -1,6 +1,8 @@
 import { cn } from '@/lib/utils/cn';
 import { useTransValue } from '@/lib/utils/trans-value';
+import products from '@/routes/products';
 import type { Product } from '@/types';
+import { Link } from '@inertiajs/react';
 import React from 'react';
 
 export type ProductCardProps = React.HTMLAttributes<HTMLDivElement> & {
@@ -16,11 +18,16 @@ const ProductCard: React.FC<ProductCardProps> = (props) => {
     return (
         <div {...rest} className={cn('group relative max-w-100', className)}>
             <div className="relative aspect-square overflow-hidden bg-duyang-cream">
-                <img
-                    src={image?.conversions?.['thumb']?.url ?? image?.url}
-                    alt={image?.custom_properties?.alt_text ?? ''}
-                    className="h-full w-full object-cover"
-                />
+                <Link
+                    href={products.detail(tv(product.slug))}
+                    className="h-full w-full"
+                >
+                    <img
+                        src={image?.conversions?.['thumb']?.url ?? image?.url}
+                        alt={image?.custom_properties?.alt_text ?? ''}
+                        className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+                    />
+                </Link>
 
                 <div className="absolute top-2 left-2 flex items-center md:top-2 md:left-4">
                     <div className="flex items-center gap-2 rounded-sm bg-duyang-white p-1 text-p-14-medium lg:text-p-16-medium">
@@ -43,9 +50,14 @@ const ProductCard: React.FC<ProductCardProps> = (props) => {
 
             {/* Info */}
             <div>
-                <h3 className="mt-3 text-p-18-semibold text-duyang-black lg:text-h-20-semibold">
-                    {tv(product.name)}
-                </h3>
+                <Link
+                    href={products.detail(tv(product.slug))}
+                    className="h-full w-full"
+                >
+                    <h3 className="mt-3 text-p-18-semibold text-duyang-black lg:text-h-20-semibold">
+                        {tv(product.name)}
+                    </h3>
+                </Link>
 
                 <p
                     className={cn(

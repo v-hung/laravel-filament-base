@@ -35,6 +35,6 @@ class Post extends Model
 
     public function image(): Attribute
     {
-        return Attribute::get(fn () => $this->getFirstMedia('image'));
+        return Attribute::get(fn() => $this->getFirstMedia('image')?->toMediaData());
     }
 }

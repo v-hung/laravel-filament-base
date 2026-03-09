@@ -33,12 +33,12 @@ class PostRepository
 
     public function findBySlug(string $slug): ?Post
     {
-        $query = Post::with('categories')->where('status', ContentStatus::Published);
-
-        foreach (['vi', 'en'] as $locale) {
-            $query->orWhere("slug->$locale", $slug);
-        }
-
-        return $query->firstOrFail();
+        return Post::with('categories')
+            ->where('status', ContentStatus::Published)
+            ->where(function ($q) use ($slug) {
+                $q->where('slug->vi', $slug)
+                    ->orWhere('slug->en', $slug);
+            })
+            ->firstOrFail();
     }
 }

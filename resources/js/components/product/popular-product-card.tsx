@@ -2,6 +2,8 @@ import { cn } from '@/lib/utils/cn';
 import type { Product } from '@/types/models/product';
 import { Icons } from '../shared/Icons';
 import { useTransValue } from '@/lib/utils/trans-value';
+import { Link } from '@inertiajs/react';
+import products from '@/routes/products';
 
 interface PopularProductCardProps {
     product: Product;
@@ -22,11 +24,16 @@ function ProductImage({
     return (
         <div className={cn('overflow-hidden bg-duyang-cream', className)}>
             {imageUrl ? (
-                <img
-                    src={imageUrl}
-                    alt={tv(product.name)}
-                    className="h-full w-full object-cover"
-                />
+                <Link
+                    href={products.detail(tv(product.slug))}
+                    className="h-full w-full"
+                >
+                    <img
+                        src={imageUrl}
+                        alt={tv(product.name)}
+                        className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+                    />
+                </Link>
             ) : (
                 <div className="flex h-full w-full items-center justify-center">
                     <span className="text-p-14-regular text-duyang-grey-light lg:text-p-16-regular">
@@ -108,9 +115,14 @@ export function PopularProductCard({
 
             {/* Info */}
             <div>
-                <h3 className="mt-3 text-p-18-semibold text-duyang-black lg:text-h-20-semibold">
-                    {tv(product.name)}
-                </h3>
+                <Link
+                    href={products.detail(tv(product.slug))}
+                    className="h-full w-full"
+                >
+                    <h3 className="mt-3 text-p-18-semibold text-duyang-black lg:text-h-20-semibold">
+                        {tv(product.name)}
+                    </h3>
+                </Link>
                 {version === 'v2' && product.description && (
                     <p className="mt-3 line-clamp-2 text-p-14-regular text-duyang-grey lg:text-p-16-regular">
                         {tv(product.description)}

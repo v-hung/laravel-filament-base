@@ -44,13 +44,13 @@ class ProductRepository
 
     public function findBySlug(string $slug): ?Product
     {
-        $query = Product::with('collections')->where('status', ProductStatus::Active);
-
-        foreach (['vi', 'en'] as $locale) {
-            $query->orWhere("slug->$locale", $slug);
-        }
-
-        return $query->firstOrFail();
+        return Product::with('collections')
+            ->where('status', ProductStatus::Active)
+            ->where(function ($q) use ($slug) {
+                $q->where('slug->vi', $slug)
+                    ->orWhere('slug->en', $slug);
+            })
+            ->firstOrFail();
     }
 
     /**

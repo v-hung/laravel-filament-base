@@ -50,7 +50,7 @@ export default function Contact() {
     return (
         <AppLayout>
             {/* Contact Form Section */}
-            <Section className="lg:pt-10">
+            <Section className="pt-6 lg:pt-10">
                 <Container>
                     <div className="grid min-h-150 grid-cols-1 lg:grid-cols-2">
                         {/* Left — Factory image */}
@@ -256,7 +256,7 @@ export default function Contact() {
             )}
 
             {/* FAQ Section */}
-            <Section>
+            <Section className="mb-10 lg:mb-16">
                 <Container>
                     <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-12 lg:gap-16">
                         {/* Left — Title & description */}
