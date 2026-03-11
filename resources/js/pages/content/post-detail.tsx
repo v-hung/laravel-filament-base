@@ -2,7 +2,7 @@ import BlogListItem from '@/components/post/blog-list-item';
 import Container from '@/components/shared/container';
 import Section from '@/components/shared/section';
 import AppLayout from '@/layouts/app-layout';
-import { format } from '@/lib/utils/date';
+import { useFormat } from '@/lib/utils/date';
 import { useTransValue } from '@/lib/utils/trans-value';
 import type { Paginator, Post } from '@/types';
 import { useTranslation } from 'react-i18next';
@@ -13,7 +13,7 @@ type PostDetailProps = {
 };
 
 const PostDetail = ({ post, other_posts }: PostDetailProps) => {
-    const { t } = useTranslation();
+    const { format } = useFormat();
     const tv = useTransValue();
 
     return (

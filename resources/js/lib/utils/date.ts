@@ -1,3 +1,4 @@
+import { CURRENT_LANGUAGE } from '@/i18n/constants';
 import { localeManager } from '@/i18n/manager';
 import {
     type Duration,
@@ -11,6 +12,7 @@ import {
     type FormatDistanceOptions,
     type FormatDistanceStrictOptions,
 } from 'date-fns';
+import { useCallback, useSyncExternalStore } from 'react';
 
 export function format(
     date: DateArg<Date> & {},
@@ -18,8 +20,8 @@ export function format(
     options: FormatOptions = {},
 ): string {
     return formatDate(date, formatStr, {
-        locale: localeManager.locale.dateFnsLocale,
         ...options,
+        locale: options.locale ?? localeManager.locale.dateFnsLocale,
     });
 }
 
@@ -29,8 +31,8 @@ export function formatDistance(
     options: FormatDistanceOptions = {},
 ) {
     return formatDistanceDate(laterDate, earlierDate, {
-        locale: localeManager.locale.dateFnsLocale,
         ...options,
+        locale: options.locale ?? localeManager.locale.dateFnsLocale,
     });
 }
 
@@ -40,8 +42,8 @@ export function formatDistanceStrict(
     options: FormatDistanceStrictOptions = {},
 ) {
     return formatDistanceStrictDate(laterDate, earlierDate, {
-        locale: localeManager.locale.dateFnsLocale,
         ...options,
+        locale: options.locale ?? localeManager.locale.dateFnsLocale,
     });
 }
 
@@ -50,8 +52,8 @@ export function formatDuration(
     options: FormatDurationOptions = {},
 ) {
     return formatDurationDate(duration, {
-        locale: localeManager.locale.dateFnsLocale,
         ...options,
+        locale: options.locale ?? localeManager.locale.dateFnsLocale,
     });
 }
 export function formatSystem(
@@ -101,4 +103,56 @@ export function setTimeToDate(time: Date): Date {
         time.getMinutes(),
         time.getSeconds(),
     );
+}
+
+export function useFormat() {
+    const locale = useSyncExternalStore(
+        (callback) => localeManager.subscribe(callback),
+        () =>
+            localeManager.isInitialized
+                ? localeManager.locale.dateFnsLocale
+                : undefined,
+        () => undefined,
+    );
+
+    const formatCb = useCallback(
+        (
+            date: DateArg<Date> & {},
+            formatStr?: string,
+            options?: FormatOptions,
+        ) => format(date, formatStr, { ...options, locale }),
+        [locale],
+    );
+    const formatDistanceCb = useCallback(
+        (
+            laterDate: DateArg<Date> & {},
+            earlierDate: DateArg<Date> & {},
+            options?: FormatDistanceOptions,
+        ) => formatDistance(laterDate, earlierDate, { ...options, locale }),
+        [locale],
+    );
+    const formatDistanceStrictCb = useCallback(
+        (
+            laterDate: DateArg<Date> & {},
+            earlierDate: DateArg<Date> & {},
+            options?: FormatDistanceStrictOptions,
+        ) =>
+            formatDistanceStrict(laterDate, earlierDate, {
+                ...options,
+                locale,
+            }),
+        [locale],
+    );
+    const formatDurationCb = useCallback(
+        (duration: Duration, options?: FormatDurationOptions) =>
+            formatDuration(duration, { ...options, locale }),
+        [locale],
+    );
+
+    return {
+        format: formatCb,
+        formatDistance: formatDistanceCb,
+        formatDistanceStrict: formatDistanceStrictCb,
+        formatDuration: formatDurationCb,
+    };
 }

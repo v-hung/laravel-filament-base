@@ -17,6 +17,7 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
 
     return (
         <AppLayout>
+            {/* Product Images and Info */}
             <Section className="pt-6 lg:pt-10">
                 <Container>
                     <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16">
