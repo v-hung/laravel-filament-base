@@ -44,7 +44,7 @@ const PostItem: FC<PostItemProps> = ({ post, className }) => {
                         </span>
                     ))}
 
-                    <span className="bg-duyang-black px-4 py-2 text-p-14-semibold text-duyang-white">
+                    <span className="bg-duyang-black px-4 py-2 text-p-14-semibold text-duyang-white capitalize">
                         {format(post.created_at, 'MMMM dd.yyyy')}
                     </span>
                 </div>

@@ -1,3 +1,4 @@
+import AppHead from '@/components/shared/app-head';
 import Container from '@/components/shared/container';
 import Section from '@/components/shared/section';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -17,6 +18,8 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
 
     return (
         <AppLayout>
+            <AppHead title={tv(product.name)} />
+
             {/* Product Images and Info */}
             <Section className="pt-6 lg:pt-10">
                 <Container>

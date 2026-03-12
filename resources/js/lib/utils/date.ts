@@ -118,9 +118,9 @@ export function useFormat() {
     const formatCb = useCallback(
         (
             date: DateArg<Date> & {},
-            formatStr?: string,
+            formatStr: string = 'HH:mm:ss',
             options?: FormatOptions,
-        ) => format(date, formatStr, { ...options, locale }),
+        ) => formatDate(date, formatStr, { ...options, locale }),
         [locale],
     );
     const formatDistanceCb = useCallback(
@@ -128,7 +128,7 @@ export function useFormat() {
             laterDate: DateArg<Date> & {},
             earlierDate: DateArg<Date> & {},
             options?: FormatDistanceOptions,
-        ) => formatDistance(laterDate, earlierDate, { ...options, locale }),
+        ) => formatDistanceDate(laterDate, earlierDate, { ...options, locale }),
         [locale],
     );
     const formatDistanceStrictCb = useCallback(
@@ -137,7 +137,7 @@ export function useFormat() {
             earlierDate: DateArg<Date> & {},
             options?: FormatDistanceStrictOptions,
         ) =>
-            formatDistanceStrict(laterDate, earlierDate, {
+            formatDistanceStrictDate(laterDate, earlierDate, {
                 ...options,
                 locale,
             }),
@@ -145,7 +145,7 @@ export function useFormat() {
     );
     const formatDurationCb = useCallback(
         (duration: Duration, options?: FormatDurationOptions) =>
-            formatDuration(duration, { ...options, locale }),
+            formatDurationDate(duration, { ...options, locale }),
         [locale],
     );
 

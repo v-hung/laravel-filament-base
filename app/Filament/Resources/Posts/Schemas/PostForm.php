@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Posts\Schemas;
 use App\Concerns\Media\MediaConversionDefinition;
 use App\Enums\ContentStatus;
 use App\Filament\Forms\Components\MediaPicker;
+use App\Filament\Forms\Components\RichEditor\RichContentCustomBlocks\TwoColumnBlock;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -57,7 +58,10 @@ class PostForm
                             ->schema([
                                 RichEditor::make('content')
                                     ->label(__('filament.fields.content'))
-                                    ->extraInputAttributes(['style' => 'min-height: 20rem;']),
+                                    ->extraInputAttributes(['style' => 'min-height: 20rem;'])
+                                    ->customBlocks([
+                                        TwoColumnBlock::class,
+                                    ]),
                             ]),
 
                         Section::make(__('filament.sections.images'))

@@ -63,6 +63,7 @@ return [
 
     'sections' => [
         'basic' => 'Thông tin cơ bản',
+        'blocks' => 'Khối nội dung',
         'branding' => 'Thương hiệu',
         'contact' => 'Thông tin liên hệ',
         'content' => 'Nội dung',
@@ -77,6 +78,27 @@ return [
         'specifications' => 'Thông số kỹ thuật',
         'business_info' => 'Thông tin doanh nghiệp',
         'system_actions' => 'Thao tác hệ thống',
+    ],
+
+    'blocks' => [
+        'split' => 'Layout 2 cột',
+        'two_column' => [
+            'image_position' => 'Vị trí ảnh',
+            'position_left' => 'Bên trái',
+            'position_right' => 'Bên phải',
+            'title' => 'Tiêu đề',
+            'text' => 'Nội dung văn bản',
+            'image' => 'Hình ảnh',
+        ],
+    ],
+
+    'options' => [
+        'text' => 'Chữ',
+        'image' => 'Hình ảnh',
+    ],
+
+    'actions' => [
+        'add_split_block' => 'Thêm block 2 cột',
     ],
 
     'settings' => [
@@ -160,5 +182,11 @@ return [
         'contact_read_status' => 'Trạng thái đọc',
         'contact_read' => 'Đã đọc',
         'contact_unread' => 'Chưa đọc',
+        'left_type' => 'Loại cột trái',
+        'right_type' => 'Loại cột phải',
+        'left_text' => 'Chữ cột trái',
+        'right_text' => 'Chữ cột phải',
+        'left_image' => 'Ảnh cột trái',
+        'right_image' => 'Ảnh cột phải',
     ],
 ];

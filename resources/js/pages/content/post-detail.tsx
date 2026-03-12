@@ -1,11 +1,12 @@
 import BlogListItem from '@/components/post/blog-list-item';
 import Container from '@/components/shared/container';
+import HeroSection from '@/components/shared/hero-section';
 import Section from '@/components/shared/section';
 import AppLayout from '@/layouts/app-layout';
 import { useFormat } from '@/lib/utils/date';
 import { useTransValue } from '@/lib/utils/trans-value';
 import type { Paginator, Post } from '@/types';
-import { useTranslation } from 'react-i18next';
+import React, { useMemo } from 'react';
 
 type PostDetailProps = {
     post: Post;
@@ -16,55 +17,64 @@ const PostDetail = ({ post, other_posts }: PostDetailProps) => {
     const { format } = useFormat();
     const tv = useTransValue();
 
+    const content = useMemo(() => {
+        const html = tv(post.content);
+        const hasContent = /[^\s<>]/.test(html);
+        return hasContent ? html : null;
+    }, [post.content, tv]);
+
     return (
         <AppLayout>
             {/* Hero Section */}
-            <Section className="pt-0 lg:pt-0">
-                <Container>
-                    <div className="flex items-end justify-between py-8 lg:py-14">
-                        <h2 className="text-h-56-bold">{tv(post.title)}</h2>
-                        <p className="max-w-80 text-p-16-regular text-duyang-grey">
-                            {format(tv(post.created_at), 'MMMM dd.yyyy')}
-                        </p>
-                    </div>
-                </Container>
-                <img
-                    src={post.image?.url}
-                    alt="News"
-                    className="h-60 w-full bg-duyang-cream object-cover md:h-90 lg:h-125"
-                />
-            </Section>
+            <HeroSection
+                title={tv(post.title)}
+                date={post.created_at}
+                image={post.image?.url}
+            />
 
             {/* Post Content Section */}
             <Section className="py-8 lg:py-14">
                 <Container>
-                    <div
-                        className="prose max-w-none"
-                        dangerouslySetInnerHTML={{ __html: tv(post.content) }}
-                    ></div>
+                    {content ? (
+                        <div
+                            className="flex flex-col gap-6 text-p-16-regular whitespace-pre-line text-duyang-grey"
+                            dangerouslySetInnerHTML={{ __html: content }}
+                        ></div>
+                    ) : (
+                        <p className="text-center text-duyang-grey">
+                            Không có nội dung
+                        </p>
+                    )}
                 </Container>
             </Section>
 
             {/* Related Posts Section */}
-            <Section>
-                <Container>
-                    <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:gap-20">
-                        <div className="shrink-0 lg:w-50">
-                            <h2 className="text-h-32-bold text-duyang-black lg:text-h-56-bold">
-                                Tin tức khác
-                            </h2>
-                        </div>
+            <Container>
+                <div className="flex flex-col gap-10 border-t py-10 lg:flex-row lg:items-start lg:gap-20 lg:py-16">
+                    <div className="shrink-0 lg:w-80">
+                        <h2 className="text-h-32-bold text-duyang-black lg:text-h-56-bold">
+                            Tin tức khác
+                        </h2>
+                        <p className="pt-6 text-p-16-regular text-duyang-grey">
+                            Cập nhật các hoạt động sản xuất, tiến độ đơn hàng và
+                            thông tin xuất xưởng mới nhất từ nhà máy.
+                        </p>
+                    </div>
 
-                        <div className="flex grow flex-col">
-                            <div className="grid grid-cols-1 gap-10">
-                                {other_posts.data.map((value) => (
+                    <div className="flex grow flex-col">
+                        <div className="grid grid-cols-1 gap-10">
+                            {other_posts.data.map((value, index) => (
+                                <React.Fragment key={value.id}>
                                     <BlogListItem key={value.id} post={value} />
-                                ))}
-                            </div>
+                                    {index < other_posts.data.length - 1 && (
+                                        <div className="border-b"></div>
+                                    )}
+                                </React.Fragment>
+                            ))}
                         </div>
                     </div>
-                </Container>
-            </Section>
+                </div>
+            </Container>
         </AppLayout>
     );
 };

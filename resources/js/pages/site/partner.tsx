@@ -1,7 +1,7 @@
-import React from 'react';
+import AppLayout from '@/layouts/app-layout';
 
 const Partner = () => {
-    return <div>Partner</div>;
+    return <AppLayout>Partner</AppLayout>;
 };
 
 export default Partner;

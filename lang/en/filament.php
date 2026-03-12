@@ -63,6 +63,7 @@ return [
 
     'sections' => [
         'basic' => 'Basic Information',
+        'blocks' => 'Content Blocks',
         'branding' => 'Branding',
         'contact' => 'Contact Information',
         'content' => 'Content',
@@ -77,6 +78,27 @@ return [
         'specifications' => 'Technical Specifications',
         'business_info' => 'Business Information',
         'system_actions' => 'System Actions',
+    ],
+
+    'blocks' => [
+        'split' => 'Split Layout',
+        'two_column' => [
+            'image_position' => 'Image Position',
+            'position_left' => 'Left',
+            'position_right' => 'Right',
+            'title' => 'Title',
+            'text' => 'Content Text',
+            'image' => 'Image',
+        ],
+    ],
+
+    'options' => [
+        'text' => 'Text',
+        'image' => 'Image',
+    ],
+
+    'actions' => [
+        'add_split_block' => 'Add Split Block',
     ],
 
     'settings' => [
@@ -160,5 +182,11 @@ return [
         'contact_read_status' => 'Read Status',
         'contact_read' => 'Read',
         'contact_unread' => 'Unread',
+        'left_type' => 'Left Column Type',
+        'right_type' => 'Right Column Type',
+        'left_text' => 'Left Text',
+        'right_text' => 'Right Text',
+        'left_image' => 'Left Image',
+        'right_image' => 'Right Image',
     ],
 ];

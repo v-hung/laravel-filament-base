@@ -1,6 +1,7 @@
 import CoreValues from '@/components/about/core-values';
 import TeamCarousel from '@/components/about/team-carousel';
 import Container from '@/components/shared/container';
+import HeroSection from '@/components/shared/hero-section';
 import Section from '@/components/shared/section';
 import AppLayout from '@/layouts/app-layout';
 import { useTranslation } from 'react-i18next';
@@ -11,22 +12,12 @@ export default function About() {
     return (
         <AppLayout>
             {/* Hero Section */}
-            <Section className="pt-0 lg:pt-0">
-                <Container>
-                    <div className="flex items-center justify-between py-8 lg:py-14">
-                        <h2 className="text-h-56-bold">Về chúng tôi</h2>
-                        <p className="max-w-80 text-p-16-regular text-duyang-grey">
-                            From vision to reality, we craft homes that mirror
-                            your personality
-                        </p>
-                    </div>
-                </Container>
-                <img
-                    src="/images/about.jpg"
-                    alt="About Us"
-                    className="h-60 w-full bg-duyang-cream md:h-90 lg:h-125"
-                />
-            </Section>
+            <HeroSection
+                title="Về chúng tôi"
+                description="From vision to reality, we craft homes that mirror
+                            your personality"
+                image="/images/about.jpg"
+            />
 
             {/* Company Overview, Vision, Mission Section */}
             <Section>

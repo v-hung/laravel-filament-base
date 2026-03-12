@@ -1,3 +1,4 @@
+import AppHead from '@/components/shared/app-head';
 import Container from '@/components/shared/container';
 import DuButton from '@/components/shared/du-button';
 import DuInput from '@/components/shared/du-input';
@@ -49,6 +50,8 @@ export default function Contact() {
 
     return (
         <AppLayout>
+            <AppHead title={t('contact.title')} />
+
             {/* Contact Form Section */}
             <Section className="pt-6 lg:pt-10">
                 <Container>
