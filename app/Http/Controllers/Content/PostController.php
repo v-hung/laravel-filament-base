@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Repositories\PostRepository;
 use Filament\Forms\Components\RichEditor\RichContentRenderer;
 use Illuminate\Http\Request;
+use Throwable;
 
 class PostController extends Controller
 {
@@ -35,19 +36,26 @@ class PostController extends Controller
      */
     public function show(string $slug)
     {
-        $post = $this->postRepository->findBySlug($slug);
-        $other_posts = $this->postRepository->search(new SearchParams(['perPage' => 3]), [$post->id]);
+        try {
+            $post = $this->postRepository->findBySlug($slug);
+            $other_posts = $this->postRepository->search(new SearchParams(['perPage' => 3]), [$post->id]);
 
-        $renderedContent = collect($post->getTranslations('content'))
-            ->map(fn (string $html) => RichContentRenderer::make($html)
-                ->customBlocks([TwoColumnBlock::class])
-                ->toHtml()
-            )
-            ->toArray();
+            $renderedContent = collect($post->getTranslations('content'))
+                ->map(
+                    fn(string $html) => RichContentRenderer::make($html)
+                        ->customBlocks([TwoColumnBlock::class])
+                        ->toHtml()
+                )
+                ->toArray();
 
-        return $this->render('content/post-detail', [
-            'post' => array_merge($post->toArray(), ['content' => $renderedContent]),
-            'other_posts' => $other_posts,
-        ]);
+            return $this->render('content/post-detail', [
+                'post' => array_merge($post->toArray(), ['content' => $renderedContent]),
+                'other_posts' => $other_posts,
+            ]);
+        } catch (Throwable $e) {
+            $this->flash('toast', ['type' => 'error', 'message' => __('shop.post.not_found')]);
+
+            return back();
+        }
     }
 }

@@ -22,15 +22,9 @@ export default function About() {
             {/* Company Overview, Vision, Mission Section */}
             <Section>
                 <Container className="flex flex-col gap-10 lg:gap-20">
-                    <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-20">
-                        <div className="overflow-hidden rounded">
-                            <img
-                                src="/images/about.jpg"
-                                alt={t('about.factoryAlt')}
-                                className="h-full min-h-80 w-full bg-duyang-cream object-cover"
-                            />
-                        </div>
-                        <div className="flex flex-col gap-6">
+                    {/* Row 1: text-left, image-right on desktop */}
+                    <div className="flex flex-col gap-10 lg:flex-row lg:gap-20">
+                        <div className="flex flex-1 flex-col gap-6">
                             <h2 className="text-h-32-bold text-duyang-black lg:text-h-40-bold">
                                 Chúng tôi là ai
                             </h2>
@@ -39,10 +33,18 @@ export default function About() {
                                 Chúng tôi cam kết mang đến sản phẩm đạt tiêu chuẩn chất lượng, độ bền cao và tính đồng đều trong từng đơn hàng.`}
                             </p>
                         </div>
+                        <div className="flex-1 overflow-hidden rounded">
+                            <img
+                                src="/images/about.jpg"
+                                alt={t('about.factoryAlt')}
+                                className="h-full min-h-80 w-full bg-duyang-cream object-cover"
+                            />
+                        </div>
                     </div>
 
-                    <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-20">
-                        <div className="flex flex-col gap-6">
+                    {/* Row 2: image-left, text-right on desktop (lg:flex-row-reverse) */}
+                    <div className="flex flex-col gap-10 lg:flex-row-reverse lg:gap-20">
+                        <div className="flex flex-1 flex-col gap-6">
                             <h2 className="text-h-32-bold text-duyang-black lg:text-h-40-bold">
                                 Tầm Nhìn
                             </h2>
@@ -52,8 +54,7 @@ export default function About() {
                                 Trong tương lai, DUYANG VIETNAM tiếp tục mở rộng năng lực sản xuất, nâng cao tiêu chuẩn chất lượng, tối ưu hệ thống quản lý và phát triển các dòng sản phẩm có giá trị cao, góp phần khẳng định vị thế của doanh nghiệp trong lĩnh vực sản xuất công nghiệp và chuỗi cung ứng toàn cầu.`}
                             </p>
                         </div>
-
-                        <div className="overflow-hidden rounded">
+                        <div className="flex-1 overflow-hidden rounded">
                             <img
                                 src="/images/about.jpg"
                                 alt={t('about.factoryAlt')}
@@ -62,16 +63,9 @@ export default function About() {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-20">
-                        <div className="overflow-hidden rounded">
-                            <img
-                                src="/images/about.jpg"
-                                alt={t('about.factoryAlt')}
-                                className="h-full min-h-80 w-full bg-duyang-cream object-cover"
-                            />
-                        </div>
-
-                        <div className="flex flex-col gap-6">
+                    {/* Row 3: text-left, image-right on desktop */}
+                    <div className="flex flex-col gap-10 lg:flex-row lg:gap-20">
+                        <div className="flex flex-1 flex-col gap-6">
                             <h2 className="text-h-32-bold text-duyang-black lg:text-h-40-bold">
                                 Sứ Mệnh
                             </h2>
@@ -80,6 +74,13 @@ export default function About() {
                                 Chúng tôi không ngừng tối ưu quy trình sản xuất, cải tiến công nghệ và nâng cao năng suất nhằm giúp đối tác tối ưu chi phí, rút ngắn thời gian sản xuất và nâng cao hiệu quả kinh doanh. Với năng lực gia công linh hoạt theo yêu cầu (OEM / ODM), DUYANG VIETNAM đồng hành cùng khách hàng trong việc phát triển sản phẩm, hoàn thiện thiết kế và đưa vào sản xuất quy mô lớn một cách hiệu quả và chính xác.
                                 Bên cạnh đó, chúng tôi đề cao uy tín, trách nhiệm và sự minh bạch trong hợp tác. Mục tiêu của DUYANG VIETNAM không chỉ là cung cấp sản phẩm, mà còn xây dựng mối quan hệ hợp tác lâu dài, bền vững và cùng phát triển với đối tác trong chuỗi cung ứng toàn cầu.`}
                             </p>
+                        </div>
+                        <div className="flex-1 overflow-hidden rounded">
+                            <img
+                                src="/images/about.jpg"
+                                alt={t('about.factoryAlt')}
+                                className="h-full min-h-80 w-full bg-duyang-cream object-cover"
+                            />
                         </div>
                     </div>
                 </Container>

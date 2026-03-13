@@ -1,17 +1,24 @@
+import CardRelatedProduct from '@/components/product/card-related-product';
 import AppHead from '@/components/shared/app-head';
 import Container from '@/components/shared/container';
 import Section from '@/components/shared/section';
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+} from '@/components/ui/carousel';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AppLayout from '@/layouts/app-layout';
 import { useTransValue } from '@/lib/utils/trans-value';
-import type { Product } from '@/types';
+import type { Paginator, Product } from '@/types';
 import { useState } from 'react';
 
 type ProductDetailProps = {
     product: Product;
+    related_products: Paginator<Product>;
 };
 
-const ProductDetail = ({ product }: ProductDetailProps) => {
+const ProductDetail = ({ product, related_products }: ProductDetailProps) => {
     const [activeImage, setActiveImage] = useState(0);
     const tv = useTransValue();
     const specifications = tv(product.specifications);
@@ -143,6 +150,33 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
                             </Tabs>
                         </div>
                     </div>
+                </Container>
+            </Section>
+
+            {/* Related Products - Placeholder for future implementation */}
+            <Section>
+                <Container>
+                    <div className="mb-12 flex items-center justify-between lg:mb-16">
+                        <h2 className="text-h-32-bold text-duyang-black lg:text-h-40-bold">
+                            Bản cũng có thể thích
+                        </h2>
+                    </div>
+
+                    <Carousel
+                        opts={{ align: 'center' }}
+                        className="[&>div]:overflow-visible lg:[&>div]:overflow-hidden"
+                    >
+                        <CarouselContent className="-ml-6 lg:-ml-8">
+                            {related_products.data.map((product) => (
+                                <CarouselItem
+                                    key={product.id}
+                                    className="max-w-100 basis-[calc(100%-6rem)] pl-6 lg:max-w-max lg:basis-1/3 lg:pl-8"
+                                >
+                                    <CardRelatedProduct product={product} />
+                                </CarouselItem>
+                            ))}
+                        </CarouselContent>
+                    </Carousel>
                 </Container>
             </Section>
         </AppLayout>

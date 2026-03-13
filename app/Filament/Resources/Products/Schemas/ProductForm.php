@@ -57,12 +57,12 @@ class ProductForm
                                     ->rows(3),
                             ]),
 
-                        Section::make(__('filament.sections.content'))
-                            ->schema([
-                                RichEditor::make('content')
-                                    ->label(__('filament.fields.content'))
-                                    ->extraInputAttributes(['style' => 'min-height: 20rem;']),
-                            ]),
+                        // Section::make(__('filament.sections.content'))
+                        //     ->schema([
+                        //         RichEditor::make('content')
+                        //             ->label(__('filament.fields.content'))
+                        //             ->extraInputAttributes(['style' => 'min-height: 20rem;']),
+                        //     ]),
 
                         Section::make(__('filament.sections.images'))
                             ->schema([

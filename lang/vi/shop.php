@@ -58,4 +58,13 @@ return [
     'product' => [
         'not_found' => 'Không tìm thấy sản phẩm',
     ],
+    'post' => [
+        'not_found' => 'Không tìm thấy bài viết',
+    ],
+    'collection' => [
+        'not_found' => 'Không tìm thấy bộ sưu tập',
+    ],
+    'page' => [
+        'not_found' => 'Không tìm thấy trang',
+    ],
 ];

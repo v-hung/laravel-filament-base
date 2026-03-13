@@ -44,6 +44,20 @@ const ProductCard: React.FC<ProductCardProps> = (props) => {
                                 </span>
                             </span>
                         ))}
+                        {(product.collections?.length ?? 0) > 2 && (
+                            <span className="group/more relative flex items-center gap-2">
+                                <div className="h-1 w-1 rounded-full bg-duyang-grey" />
+                                <span className="cursor-default text-p-14-regular text-duyang-grey lg:text-p-16-regular">
+                                    +{(product.collections?.length ?? 0) - 2}
+                                </span>
+                                <div className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-1 -translate-x-1/2 rounded-sm bg-duyang-black px-2 py-1 text-p-14-regular whitespace-nowrap text-duyang-white opacity-0 shadow transition-opacity duration-200 group-hover/more:opacity-100">
+                                    {product.collections
+                                        ?.slice(2)
+                                        .map((col) => tv(col.title))
+                                        .join(', ')}
+                                </div>
+                            </span>
+                        )}
                     </div>
                 </div>
             </div>

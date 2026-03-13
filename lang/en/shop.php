@@ -58,4 +58,13 @@ return [
     'product' => [
         'not_found' => 'Product not found',
     ],
+    'post' => [
+        'not_found' => 'Post not found',
+    ],
+    'collection' => [
+        'not_found' => 'Collection not found',
+    ],
+    'page' => [
+        'not_found' => 'Page not found',
+    ],
 ];
