@@ -23,4 +23,7 @@ export type ShopSettings = {
 
     // FAQ
     faq?: Translatable<{ key: string; value: string }[]> | null;
+
+    // Gallery
+    gallery?: Translatable<Media[]> | null;
 };

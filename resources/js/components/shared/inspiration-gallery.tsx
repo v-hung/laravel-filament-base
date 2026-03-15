@@ -1,17 +1,19 @@
 import { cn } from '@/lib/utils/cn';
-import type { FC } from 'react';
-
-export type InspirationGalleryProps = {
-    images: string[];
-    className?: string;
-};
+import { useTransValue } from '@/lib/utils/trans-value';
+import { useSettingStore } from '@/stores/setting';
+import { type FC } from 'react';
 
 type ImagePanelProps = {
     images: string[];
     type?: 'horizontal' | 'vertical';
+    after?: boolean;
 };
 
-const ImagePanel: FC<ImagePanelProps> = ({ images, type = 'horizontal' }) => {
+const ImagePanel: FC<ImagePanelProps> = ({
+    images,
+    type = 'horizontal',
+    after,
+}) => {
     const count = images.length;
 
     return (
@@ -22,12 +24,18 @@ const ImagePanel: FC<ImagePanelProps> = ({ images, type = 'horizontal' }) => {
                 <div
                     key={i}
                     className={cn(
-                        'overflow-hidden rounded',
-                        count == 2 &&
-                            (type === 'vertical' ? 'row-span-2' : 'col-span-2'),
-                        count === 3 &&
-                            i === 3 &&
-                            (type === 'vertical' ? 'col-span-2' : 'row-span-2'),
+                        'aspect-square overflow-hidden rounded',
+                        count === 2
+                            ? type === 'horizontal'
+                                ? 'col-span-2 aspect-2/1'
+                                : 'row-span-2 aspect-1/2'
+                            : '',
+                        count === 3 && i === 0
+                            ? type === 'horizontal'
+                                ? 'col-span-2 aspect-auto'
+                                : 'row-span-2 aspect-auto'
+                            : '',
+                        after ? 'lg:aspect-auto' : '',
                     )}
                 >
                     <img
@@ -41,12 +49,14 @@ const ImagePanel: FC<ImagePanelProps> = ({ images, type = 'horizontal' }) => {
     );
 };
 
-const InspirationGallery: FC<InspirationGalleryProps> = ({
-    images,
-    className,
-}) => {
-    const n = Math.min(images.length, 8);
-    const imgs = images.slice(0, n);
+const InspirationGallery = () => {
+    const images = useSettingStore((state) => state.shopSettings?.gallery);
+    const tv = useTransValue();
+
+    const gallery = tv(images).map((media) => media.url);
+
+    const n = Math.min(gallery.length, 8);
+    const imgs = gallery.slice(0, n);
 
     if (n === 0) {
         return null;
@@ -54,9 +64,7 @@ const InspirationGallery: FC<InspirationGalleryProps> = ({
 
     if (n === 1) {
         return (
-            <div
-                className={cn('aspect-2/1 overflow-hidden rounded', className)}
-            >
+            <div className={cn('aspect-2/1 overflow-hidden rounded')}>
                 <img
                     src={imgs[0]}
                     alt="Ảnh 1"
@@ -66,19 +74,18 @@ const InspirationGallery: FC<InspirationGalleryProps> = ({
         );
     }
 
-    const leftCount = Math.ceil(n / 2);
+    const leftCount = n <= 4 ? Math.ceil(n / 2) : 4;
     const leftImages = imgs.slice(0, leftCount);
     const rightImages = imgs.slice(leftCount);
 
     return (
         <div
             className={cn(
-                'grid aspect-2/1 w-full grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-6',
-                className,
+                'grid w-full grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-6',
             )}
         >
             <ImagePanel images={leftImages} />
-            <ImagePanel images={rightImages} />
+            <ImagePanel images={rightImages} type="vertical" after />
         </div>
     );
 };

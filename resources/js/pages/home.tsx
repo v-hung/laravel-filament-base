@@ -23,17 +23,6 @@ export default function Home({
     posts,
     collections,
 }: HomeProps) {
-    const inspirationImages = [
-        '/assets/images/home/inspiration-1.jpg',
-        '/assets/images/home/inspiration-2.jpg',
-        '/assets/images/home/inspiration-3.jpg',
-        '/assets/images/home/inspiration-4.jpg',
-        '/assets/images/home/inspiration-5.jpg',
-        '/assets/images/home/inspiration-6.jpg',
-        '/assets/images/home/inspiration-7.jpg',
-        '/assets/images/home/inspiration-8.jpg',
-    ];
-
     return (
         <AppLayout>
             <AppHead />
@@ -162,13 +151,13 @@ Các dòng sản phẩm từ móc treo gỗ tiêu chuẩn, móc theo thiết k�
             {/* Decoration Inspiration */}
             <Section>
                 <Container>
-                    <div className="mb-12 flex items-center justify-between lg:mb-16">
-                        <h2 className="text-h-32-bold text-duyang-black lg:text-h-40-bold">
+                    <div className="mb-12 lg:mb-16">
+                        <h2 className="text-h-32-bold text-duyang-black lg:text-center lg:text-h-40-bold">
                             Cảm Hứng Trang Trí
                         </h2>
                     </div>
 
-                    <InspirationGallery images={inspirationImages} />
+                    <InspirationGallery />
                 </Container>
             </Section>
 
