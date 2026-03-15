@@ -59,7 +59,7 @@ export default function Contact() {
                         {/* Left — Factory image */}
                         <div className="relative hidden lg:block">
                             <img
-                                src={'/assets/images/contact_banner.jpg'}
+                                src={'/assets/images/banner/contact.jpg'}
                                 alt={t('contact.factoryAlt')}
                                 className="absolute inset-0 h-full w-full object-cover"
                             />

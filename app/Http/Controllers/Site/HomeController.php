@@ -24,24 +24,18 @@ class HomeController extends Controller
 
     public function index()
     {
-        $products = $this->productRepository->search(
-            new ProductSearchParams(['perPage' => 4, 'orderType' => ProductOrderType::BEST_SELLING])
+        $latestProducts = $this->productRepository->search(
+            new ProductSearchParams(['perPage' => 6, 'orderType' => ProductOrderType::LATEST])
         );
         $posts = $this->postRepository->search(
-            new SearchParams(['perPage' => 4])
+            new SearchParams(['perPage' => 3])
         );
-        $testimonials = $this->showcaseRepository->search(
-            new ShowcaseSearchParams(['perPage' => 6, 'type' => ShowcaseType::Testimonial])
-        );
-        $partners = $this->showcaseRepository->search(
-            new ShowcaseSearchParams(['perPage' => 6, 'type' => ShowcaseType::Partner])
-        );
+        $collections = $this->collectionRepository->search(new SearchParams(['perPage' => 3]));
 
         return $this->render('home', [
-            'products' => $products,
+            'latestProducts' => $latestProducts,
             'posts' => $posts,
-            'testimonials' => $testimonials,
-            'partners' => $partners,
+            'collections' => $collections
         ]);
     }
 

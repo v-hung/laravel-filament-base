@@ -33,8 +33,10 @@ class PostForm
                                         ->maxLength(255)
                                         ->required()
                                         ->live(onBlur: true)
-                                        ->afterStateUpdated(function (Set $set, $state) {
-                                            $set('slug', Str::slug($state));
+                                        ->afterStateUpdated(function (Set $set, $state, $record) {
+                                            if (! $record) {
+                                                $set('slug', Str::slug($state));
+                                            }
                                         }),
                                     TextInput::make('slug')
                                         ->label(__('filament.fields.slug'))

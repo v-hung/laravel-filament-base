@@ -4,7 +4,6 @@ import AppHead from '@/components/shared/app-head';
 import Container from '@/components/shared/container';
 import Pagination from '@/components/shared/pagination';
 import AppLayout from '@/layouts/app-layout';
-import { detail } from '@/routes/products';
 import type { Collection, Paginator, Product } from '@/types';
 import { useTransValue } from '@/lib/utils/trans-value';
 import { useTranslation } from 'react-i18next';
@@ -20,18 +19,17 @@ type ShopProps = {
     products: Paginator<Product>;
     featured_products: Paginator<Product>;
     collections: Paginator<Collection>;
+    active_collection: Collection | null;
 };
 
 export default function ShopIndex({
     products,
     featured_products,
     collections,
+    active_collection,
 }: ShopProps) {
     const { t } = useTranslation();
-
-    const categoryParam = new URLSearchParams(window.location.search).get(
-        'category',
-    );
+    const tv = useTransValue();
 
     return (
         <AppLayout>
@@ -42,13 +40,18 @@ export default function ShopIndex({
                 <Container>
                     <div className="relative h-40 overflow-hidden md:h-64 lg:h-80">
                         <img
-                            src="/images/shop-banner.jpg"
+                            src={
+                                active_collection?.image?.url ||
+                                '/assets/images/banner/shop.jpg'
+                            }
                             alt={t('shop.bannerAlt')}
                             className="h-full w-full object-cover"
                         />
                         <div className="absolute inset-0 flex items-center justify-center bg-black/40 px-5">
                             <h1 className="max-w-2xl text-center text-h-24-bold text-white lg:text-h-56-bold">
-                                {t('shop.bannerTitle')}
+                                {active_collection
+                                    ? tv(active_collection.title)
+                                    : t('shop.bannerTitle')}
                             </h1>
                         </div>
                     </div>
@@ -56,27 +59,33 @@ export default function ShopIndex({
             </Section>
 
             {/* Categories */}
-            {!categoryParam && (
+            {!active_collection && (
                 <Section>
                     <Container>
-                        <Carousel
-                            opts={{ align: 'center' }}
-                            className="[&>div]:overflow-visible lg:[&>div]:overflow-hidden"
-                        >
-                            <CarouselContent className="-ml-4 lg:-ml-6">
-                                {collections.data.map((collection) => (
-                                    <CarouselItem
-                                        key={collection.id}
-                                        className="basis-[calc(30%-4rem)] pl-4 lg:basis-1/5 lg:pl-6"
-                                    >
-                                        <CardCategory
+                        {collections.data.length > 0 ? (
+                            <Carousel
+                                opts={{ align: 'center' }}
+                                className="[&>div]:overflow-visible lg:[&>div]:overflow-hidden"
+                            >
+                                <CarouselContent className="-ml-4 lg:-ml-6">
+                                    {collections.data.map((collection) => (
+                                        <CarouselItem
                                             key={collection.id}
-                                            collection={collection}
-                                        />
-                                    </CarouselItem>
-                                ))}
-                            </CarouselContent>
-                        </Carousel>
+                                            className="basis-[calc(30%-4rem)] pl-4 lg:basis-1/5 lg:pl-6"
+                                        >
+                                            <CardCategory
+                                                key={collection.id}
+                                                collection={collection}
+                                            />
+                                        </CarouselItem>
+                                    ))}
+                                </CarouselContent>
+                            </Carousel>
+                        ) : (
+                            <p className="py-4 text-p-16-regular text-duyang-grey">
+                                {t('shop.noCategories')}
+                            </p>
+                        )}
                     </Container>
                 </Section>
             )}
@@ -88,11 +97,20 @@ export default function ShopIndex({
                         {t('shop.allProducts')}
                     </h2>
 
-                    <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4">
-                        {products.data.map((product) => (
-                            <ProductCard key={product.id} product={product} />
-                        ))}
-                    </div>
+                    {products.data.length > 0 ? (
+                        <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4">
+                            {products.data.map((product) => (
+                                <ProductCard
+                                    key={product.id}
+                                    product={product}
+                                />
+                            ))}
+                        </div>
+                    ) : (
+                        <p className="text-center text-p-16-regular text-duyang-grey">
+                            {t('shop.noProducts')}
+                        </p>
+                    )}
 
                     {/* Pagination */}
                     <Pagination
@@ -112,24 +130,30 @@ export default function ShopIndex({
                         </h2>
                     </div>
 
-                    <Carousel
-                        opts={{ align: 'center' }}
-                        className="[&>div]:overflow-visible lg:[&>div]:overflow-hidden"
-                    >
-                        <CarouselContent className="-ml-6 lg:-ml-8">
-                            {featured_products.data.map((product) => (
-                                <CarouselItem
-                                    key={product.id}
-                                    className="max-w-100 basis-[calc(100%-6rem)] pl-6 lg:max-w-max lg:basis-1/3 lg:pl-8"
-                                >
-                                    <PopularProductCard
-                                        product={product}
-                                        version="v2"
-                                    />
-                                </CarouselItem>
-                            ))}
-                        </CarouselContent>
-                    </Carousel>
+                    {featured_products.data.length > 0 ? (
+                        <Carousel
+                            opts={{ align: 'center' }}
+                            className="[&>div]:overflow-visible lg:[&>div]:overflow-hidden"
+                        >
+                            <CarouselContent className="-ml-6 lg:-ml-8">
+                                {featured_products.data.map((product) => (
+                                    <CarouselItem
+                                        key={product.id}
+                                        className="max-w-100 basis-[calc(100%-6rem)] pl-6 lg:max-w-max lg:basis-1/3 lg:pl-8"
+                                    >
+                                        <PopularProductCard
+                                            product={product}
+                                            version="v2"
+                                        />
+                                    </CarouselItem>
+                                ))}
+                            </CarouselContent>
+                        </Carousel>
+                    ) : (
+                        <p className="text-center text-p-16-regular text-duyang-grey">
+                            {t('shop.noFeaturedProducts')}
+                        </p>
+                    )}
                 </Container>
             </Section>
         </AppLayout>

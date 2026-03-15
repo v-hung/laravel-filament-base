@@ -8,6 +8,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Str;
@@ -30,8 +31,10 @@ class BlogForm
                                         ->maxLength(255)
                                         ->required()
                                         ->live(onBlur: true)
-                                        ->afterStateUpdated(function (Set $set, $state) {
-                                            $set('slug', Str::slug($state));
+                                        ->afterStateUpdated(function (Set $set, Get $get, $state, $record) {
+                                            if (! $record || ($record && empty($get('slug')))) {
+                                                $set('slug', Str::slug($state));
+                                            }
                                         }),
                                     TextInput::make('slug')
                                         ->label(__('filament.fields.slug'))

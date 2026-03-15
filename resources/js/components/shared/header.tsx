@@ -1,7 +1,7 @@
 import { Link, usePage, router } from '@inertiajs/react';
 import { CheckIcon } from 'lucide-react';
 import type { FC } from 'react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { cn } from '@/lib/utils/cn';
@@ -62,9 +62,30 @@ const Header: FC<HeaderProps> = ({ className }) => {
     const { t, i18n } = useTranslation();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [searchPopupOpen, setSearchPopupOpen] = useState(false);
+    const headerRef = useRef<HTMLElement>(null);
+
+    useEffect(() => {
+        const el = headerRef.current;
+        if (!el) return;
+
+        const updateHeaderHeight = () => {
+            const height = el.getBoundingClientRect().height;
+            document.documentElement.style.setProperty(
+                '--header-height',
+                `${height}px`,
+            );
+        };
+
+        updateHeaderHeight();
+
+        const observer = new ResizeObserver(updateHeaderHeight);
+        observer.observe(el);
+
+        return () => observer.disconnect();
+    }, []);
 
     const navItems = useNavItems();
-    const { url, component, props } = usePage();
+    const { url, props } = usePage();
     const appLocale = (props.appLocale as AppLocale) || CURRENT_LANGUAGE;
 
     const language =
@@ -85,7 +106,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
     };
 
     return (
-        <header className={cn('bg-duyang-white', className)}>
+        <header ref={headerRef} className={cn('bg-duyang-white', className)}>
             <Container>
                 <div className="flex items-center justify-between py-4 lg:py-8">
                     {/* Left: Menu Icon + Logo */}
@@ -120,7 +141,8 @@ const Header: FC<HeaderProps> = ({ className }) => {
                                                 href={item.href}
                                                 className={cn(
                                                     'border-duyang-grey-light py-2 text-p-14-semibold transition-colors lg:text-p-16-semibold',
-                                                    url.split('?')[0] == item.href
+                                                    url.split('?')[0] ==
+                                                        item.href
                                                         ? 'border-b text-duyang-black'
                                                         : 'text-duyang-grey hover:text-duyang-black',
                                                 )}
@@ -136,12 +158,9 @@ const Header: FC<HeaderProps> = ({ className }) => {
                             </SheetContent>
                         </Sheet>
 
-                        <Link
-                            href={home().url}
-                            className="flex items-center gap-2"
-                        >
+                        <span className="flex items-center gap-2">
                             <BrandLogo />
-                        </Link>
+                        </span>
                     </div>
 
                     {/* Center: Navigation Menu (Desktop) */}

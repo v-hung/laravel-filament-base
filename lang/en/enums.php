@@ -69,6 +69,17 @@ return [
         ],
     ],
 
+    'page_type' => [
+        'regular' => [
+            'label' => 'Regular',
+            'description' => 'Accessible by slug and shown in public lists.',
+        ],
+        'system' => [
+            'label' => 'System',
+            'description' => 'Special page (e.g. home, about). Not accessible by slug and hidden from public lists.',
+        ],
+    ],
+
     'status' => [
         'active' => [
             'label' => 'Active',

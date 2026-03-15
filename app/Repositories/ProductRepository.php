@@ -93,6 +93,16 @@ class ProductRepository
             $query->whereNotIn('id', $excludeIds);
         }
 
+        if (! empty($params->collections)) {
+            $query->whereHas('collections', function ($q) use ($params): void {
+                $q->where(function ($q2) use ($params): void {
+                    foreach ($params->collections as $slug) {
+                        $q2->orWhere('slug->vi', $slug)->orWhere('slug->en', $slug);
+                    }
+                });
+            });
+        }
+
         if ($params->order_type) {
             match ($params->order_type) {
                 ProductOrderType::FEATURED => $query->orderBy('is_featured', 'desc')
@@ -150,24 +160,24 @@ class ProductRepository
     {
         $sortedOptions = $product->options->sortBy('position');
 
-        $product->setAttribute('options_raw', $sortedOptions->map(fn($opt) => [
+        $product->setAttribute('options_raw', $sortedOptions->map(fn ($opt) => [
             'id' => $opt->id,
             'name' => $opt->name,
             'values' => $opt->values
                 ->sortBy('position')
-                ->map(fn($val) => [
+                ->map(fn ($val) => [
                     'id' => $val->id,
                     'label' => $val->label,
                 ])->toArray(),
         ])->toArray());
 
-        $product->setAttribute('variants_raw', $product->variants->map(fn($variant) => [
+        $product->setAttribute('variants_raw', $product->variants->map(fn ($variant) => [
             'id' => $variant->id,
             'image' => $variant->image,
             'sku' => $variant->sku,
             'price' => $variant->price,
             'stock' => $variant->stock,
-            'values' => $variant->values->map(fn($val) => [
+            'values' => $variant->values->map(fn ($val) => [
                 'id' => $val->id,
                 'label' => $val->label,
                 'option_id' => $val->product_option_id,

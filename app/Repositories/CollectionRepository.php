@@ -23,6 +23,16 @@ class CollectionRepository
             );
     }
 
+    public function findBySlug(string $slug): ?Collection
+    {
+        return Collection::query()
+            ->where('status', CategoryStatus::Active)
+            ->where(function ($q) use ($slug): void {
+                $q->where('slug->vi', $slug)->orWhere('slug->en', $slug);
+            })
+            ->first();
+    }
+
     public function getAll(): EloquentCollection
     {
         return Collection::query()

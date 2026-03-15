@@ -1,49 +1,39 @@
-import type { FC } from 'react';
-
-import { cn } from '@/lib/utils/cn';
-
-export type StoryProps = {
-    title: string;
-    content: string;
-    imageSrc: string;
+interface StoryProps {
+    title?: string;
+    description: string;
+    image: string;
     imageAlt?: string;
-    className?: string;
-};
+    reverse?: boolean;
+}
 
-const Story: FC<StoryProps> = ({
+export default function Story({
     title,
-    content,
-    imageSrc,
-    imageAlt = '',
-    className,
-}) => {
+    description,
+    image,
+    imageAlt,
+    reverse = false,
+}: StoryProps) {
     return (
-        <section
-            className={cn(
-                'bg-duyang-black px-6 py-10 md:px-10 md:py-14 lg:px-16 lg:py-16',
-                className,
-            )}
+        <div
+            className={`flex flex-col gap-10 lg:gap-20 ${reverse ? 'lg:flex-row-reverse' : 'lg:flex-row'}`}
         >
-            <div className="mx-auto grid max-w-400 grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
-                <div className="flex flex-col gap-6 lg:pr-6">
-                    <h2 className="text-h-56-bold text-duyang-black">
+            <div className="flex flex-1 flex-col gap-6">
+                {title && (
+                    <h2 className="text-h-32-bold text-duyang-black lg:text-h-40-bold">
                         {title}
                     </h2>
-                    <p className="text-p-18-semibold whitespace-pre-line text-duyang-grey">
-                        {content}
-                    </p>
-                </div>
-
-                <div className="overflow-hidden rounded-xl">
-                    <img
-                        src={imageSrc}
-                        alt={imageAlt}
-                        className="h-full w-full object-cover"
-                    />
-                </div>
+                )}
+                <p className="text-p-16-regular whitespace-pre-line text-duyang-grey">
+                    {description}
+                </p>
             </div>
-        </section>
+            <div className="flex-1 overflow-hidden rounded">
+                <img
+                    src={image}
+                    alt={imageAlt}
+                    className="h-80 min-h-full w-full bg-duyang-cream object-cover"
+                />
+            </div>
+        </div>
     );
-};
-
-export default Story;
+}

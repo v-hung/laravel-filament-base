@@ -65,7 +65,10 @@
         "bannerAlt": "Khám phá tất cả sản phẩm",
         "bannerTitle": "Khám phá tất cả sản phẩm",
         "allProducts": "Khám Phá Tất Cả Các Sản Phẩm Móc",
-        "featuredProducts": "Sản Phẩm Được Khách Hàng Yêu Thích Nhất"
+        "featuredProducts": "Sản Phẩm Được Khách Hàng Yêu Thích Nhất",
+        "noCategories": "Không có danh mục nào.",
+        "noProducts": "Không có sản phẩm nào.",
+        "noFeaturedProducts": "Không có sản phẩm nổi bật nào."
     },
     "about": {
         "whoWeAre": "Chúng Tôi Là Ai",

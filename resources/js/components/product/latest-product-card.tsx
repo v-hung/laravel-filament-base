@@ -5,31 +5,35 @@ import { Icons } from '@/components/shared/Icons';
 import { cn } from '@/lib/utils/cn';
 import type { Product } from '@/types/models/product';
 import { useTransValue } from '@/lib/utils/trans-value';
+import products from '@/routes/products';
 
 export type LatestProductCardProps = {
     product: Product;
-    href?: string;
     className?: string;
 };
 
 const LatestProductCard: FC<LatestProductCardProps> = ({
     product,
-    href,
     className,
 }) => {
     const tv = useTransValue();
-    const imageUrl = product.images?.[0]?.url ?? null;
+
     const collections = product.collections ?? [];
 
-    const inner = (
+    const image = product.images?.[0] ?? null;
+
+    return (
         <div className={cn('group relative bg-duyang-white', className)}>
             {/* Image */}
-            <div className="relative aspect-square overflow-hidden bg-duyang-cream">
-                {imageUrl ? (
+            <Link
+                href={products.detail(tv(product.slug))}
+                className="relative block aspect-square overflow-hidden rounded bg-duyang-cream"
+            >
+                {image ? (
                     <img
-                        src={imageUrl}
+                        src={image.conversions?.['thumb']?.url ?? image.url}
                         alt={tv(product.name)}
-                        className="h-full w-full object-cover"
+                        className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
                     />
                 ) : (
                     <div className="h-full w-full" />
@@ -48,33 +52,33 @@ const LatestProductCard: FC<LatestProductCardProps> = ({
                         ))}
                     </div>
                 )}
-            </div>
+            </Link>
 
             {/* Info */}
             <div className="relative pt-4">
-                <p className="text-h-24-bold text-duyang-black">
+                <Link
+                    href={products.detail(tv(product.slug))}
+                    className="text-p-18-semibold text-duyang-black lg:text-h-20-semibold"
+                >
                     {tv(product.name)}
-                </p>
-                <p className="mt-1 text-p-18-regular text-duyang-grey">
+                </Link>
+                <p className="mt-1 text-p-16-regular text-duyang-grey lg:text-p-18-regular">
                     ${Number(product.price).toLocaleString()}
                 </p>
 
                 {/* Arrow icon — visible on hover */}
-                <div className="absolute right-0 bottom-0 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                <Link
+                    href={products.detail(tv(product.slug))}
+                    className="absolute right-0 bottom-0 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+                >
                     <Icons.ArrowUpRight
                         size={24}
                         className="text-duyang-black"
                     />
-                </div>
+                </Link>
             </div>
         </div>
     );
-
-    if (href) {
-        return <Link href={href}>{inner}</Link>;
-    }
-
-    return inner;
 };
 
 export default LatestProductCard;

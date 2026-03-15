@@ -162,21 +162,27 @@ const ProductDetail = ({ product, related_products }: ProductDetailProps) => {
                         </h2>
                     </div>
 
-                    <Carousel
-                        opts={{ align: 'center' }}
-                        className="[&>div]:overflow-visible lg:[&>div]:overflow-hidden"
-                    >
-                        <CarouselContent className="-ml-6 lg:-ml-8">
-                            {related_products.data.map((product) => (
-                                <CarouselItem
-                                    key={product.id}
-                                    className="max-w-100 basis-[calc(100%-6rem)] pl-6 lg:max-w-max lg:basis-1/3 lg:pl-8"
-                                >
-                                    <CardRelatedProduct product={product} />
-                                </CarouselItem>
-                            ))}
-                        </CarouselContent>
-                    </Carousel>
+                    {related_products.data.length > 0 ? (
+                        <Carousel
+                            opts={{ align: 'center' }}
+                            className="[&>div]:overflow-visible lg:[&>div]:overflow-hidden"
+                        >
+                            <CarouselContent className="-ml-6 lg:-ml-8">
+                                {related_products.data.map((product) => (
+                                    <CarouselItem
+                                        key={product.id}
+                                        className="max-w-100 basis-[calc(100%-6rem)] pl-6 lg:max-w-max lg:basis-1/3 lg:pl-8"
+                                    >
+                                        <CardRelatedProduct product={product} />
+                                    </CarouselItem>
+                                ))}
+                            </CarouselContent>
+                        </Carousel>
+                    ) : (
+                        <p className="py-4 text-p-16-regular text-duyang-grey">
+                            Không có sản phẩm liên quan.
+                        </p>
+                    )}
                 </Container>
             </Section>
         </AppLayout>

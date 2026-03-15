@@ -4,30 +4,33 @@ namespace App\Models;
 
 use App\Concerns\Media\HasMedia;
 use App\Enums\ContentStatus;
+use App\Enums\PageType;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 
 class Page extends Model
 {
-	use HasMedia, HasTranslations;
+    use HasMedia, HasTranslations;
 
-	public array $translatable = [
-		'title',
-		'slug',
-		'description',
-	];
+    public array $translatable = [
+        'title',
+        'slug',
+        'description',
+        'content',
+    ];
 
-	protected $guarded = [];
+    protected $guarded = [];
 
-	protected $casts = [
-		'status' => ContentStatus::class,
-	];
+    protected $casts = [
+        'status' => ContentStatus::class,
+        'page_type' => PageType::class,
+    ];
 
-	protected $appends = ['image'];
+    protected $appends = ['image'];
 
-	public function image(): Attribute
-	{
-		return Attribute::get(fn() => $this->getFirstMedia('image')?->toMediaData());
-	}
+    public function image(): Attribute
+    {
+        return Attribute::get(fn () => $this->getFirstMedia('image')?->toMediaData());
+    }
 }

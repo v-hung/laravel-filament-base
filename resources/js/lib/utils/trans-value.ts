@@ -1,6 +1,7 @@
 import { useCallback, useSyncExternalStore } from 'react';
 import { getLocale, localeManager } from '@/i18n/manager';
 import { CURRENT_LANGUAGE, type AppLocale } from '@/i18n/constants';
+import { isEmpty } from './validate';
 
 /**
  * Represents a translatable field from Laravel's spatie/laravel-translatable.
@@ -31,9 +32,9 @@ export function transValue<T = string>(
     const obj = value as Translatable<T>;
     const currentLocale = locale ?? getLocale();
 
-    if (obj[currentLocale] !== undefined) return obj[currentLocale];
+    if (!isEmpty(obj[currentLocale])) return obj[currentLocale] as T;
 
-    if (obj[CURRENT_LANGUAGE] !== undefined) return obj[CURRENT_LANGUAGE] as T;
+    if (!isEmpty(obj[CURRENT_LANGUAGE])) return obj[CURRENT_LANGUAGE] as T;
 
     return Object.values(obj).find((v) => v !== undefined && v !== null) as T;
 }

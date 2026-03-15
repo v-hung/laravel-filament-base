@@ -18,6 +18,7 @@ return new class extends Migration
             $table->json('description')->nullable();
             $table->json('content')->nullable();
             $table->string('status')->default('draft')->comment('draft, reviewing, published, rejected');
+            $table->string('page_type')->default('regular');
             $table->timestamps();
         });
     }

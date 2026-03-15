@@ -32,6 +32,8 @@
             }
         },
 
+        statePath: '{{ $getStatePath() }}',
+
         init() {
             this.syncFromState(this.state);
 
@@ -40,8 +42,12 @@
             });
 
             Livewire.on('mediaSelected', (args) => {
-                const ids = args[0] || [];
-                const items = args[1] || [];
+                const targetStatePath = args[0] || null;
+                if (targetStatePath !== this.statePath) {
+                    return;
+                }
+                const ids = args[1] || [];
+                const items = args[2] || [];
                 this.mediaItems = items;
                 this.currentIndex = 0;
                 if (this.multiple) {
@@ -57,6 +63,7 @@
                 (Array.isArray(this.state) ? this.state : []) :
                 (this.state ? [this.state] : []);
             Livewire.dispatch('openMediaPicker', {
+                statePath: this.statePath,
                 selectedIds,
                 multiple: {{ $isMultiple() ? 'true' : 'false' }},
                 maxFiles: {{ $getMaxFiles() }},

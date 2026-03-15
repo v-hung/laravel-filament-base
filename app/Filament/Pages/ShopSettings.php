@@ -38,7 +38,7 @@ class ShopSettings extends PageSettingsTranslatable
 
     public array $translatableAttributes = ['faq', 'business_field', 'site_description', 'site_name', 'site_address', 'working_hours', 'tax_code', 'representative'];
 
-    public array $imageAttributes = ['site_logo'];
+    public array $imageAttributes = ['site_logo', 'gallery'];
 
     public function form(Schema $schema): Schema
     {
@@ -106,6 +106,17 @@ class ShopSettings extends PageSettingsTranslatable
                             ->label(__('filament.settings.fields.faq'))
                             ->keyLabel(__('filament.settings.fields.faq_question'))
                             ->valueLabel(__('filament.settings.fields.faq_answer')),
+                    ]),
+
+                Section::make(__('filament.sections.gallery'))
+                    ->schema([
+                        MediaPicker::make('gallery')
+                            ->label(__('filament.settings.fields.gallery'))
+                            ->multiple()
+                            ->maxFiles(8)
+                            ->dehydrated(true)
+                            ->folderPath('settings/gallery')
+                            ->acceptedFileTypes(['image/*']),
                     ]),
             ])->statePath('data');
     }

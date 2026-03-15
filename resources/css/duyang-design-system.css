@@ -70,6 +70,9 @@
 @utility text-h-24-bold {
     @apply text-[24px] leading-[120%] font-bold;
 }
+@utility text-h-24-semibold {
+    @apply text-[24px] leading-[120%] font-semibold;
+}
 @utility text-h-24-medium {
     @apply text-[24px] leading-[120%] font-medium;
 }

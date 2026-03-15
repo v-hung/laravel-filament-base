@@ -33,6 +33,8 @@ class MediaPickerModal extends Component
 
     public array $acceptedFileTypes = ['image/*'];
 
+    public ?string $statePath = null;
+
     public string $collection = 'default';
 
     public array $conversions = [];
@@ -114,6 +116,7 @@ class MediaPickerModal extends Component
         array $conversions = [],
         ?string $modelClass = null,
         ?string $folderPath = null,
+        ?string $statePath = null,
     ): void {
         $this->isOpen = true;
         $this->currentModal = 'browse';
@@ -125,6 +128,7 @@ class MediaPickerModal extends Component
         $this->collection = $collection;
         $this->conversions = $conversions;
         $this->modelClass = $modelClass;
+        $this->statePath = $statePath;
         $this->browsingFolderId = $folderPath
             ? $this->mediaRepository->getOrCreateFolderByPath($folderPath)->id
             : null;
@@ -135,7 +139,7 @@ class MediaPickerModal extends Component
         $this->isOpen = false;
         $this->currentModal = 'browse';
         $this->previousModal = null;
-        $this->reset(['selected', 'search', 'uploadedFiles', 'view', 'mode', 'newFolderName', 'currentFolder', 'browsingFolderId', 'detailMediaId', 'detailFileName', 'detailAltText', 'detailCaption', 'detailLocation', 'replacementFile', 'detailFolderId', 'detailFolderName', 'detailFolderLocation']);
+        $this->reset(['statePath', 'selected', 'search', 'uploadedFiles', 'view', 'mode', 'newFolderName', 'currentFolder', 'browsingFolderId', 'detailMediaId', 'detailFileName', 'detailAltText', 'detailCaption', 'detailLocation', 'replacementFile', 'detailFolderId', 'detailFolderName', 'detailFolderLocation']);
     }
 
     public function openCreateFolder(?int $folderId = null): void
@@ -298,7 +302,7 @@ class MediaPickerModal extends Component
     public function confirm(): void
     {
         if (empty($this->selected)) {
-            $this->dispatch('mediaSelected', [], []);
+            $this->dispatch('mediaSelected', $this->statePath, [], []);
             $this->close();
 
             return;
@@ -331,7 +335,7 @@ class MediaPickerModal extends Component
             ->values()
             ->toArray();
 
-        $this->dispatch('mediaSelected', $this->selected, $items);
+        $this->dispatch('mediaSelected', $this->statePath, $this->selected, $items);
         $this->close();
     }
 

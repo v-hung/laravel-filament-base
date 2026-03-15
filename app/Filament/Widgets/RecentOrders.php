@@ -11,15 +11,11 @@ use Illuminate\Database\Eloquent\Builder;
 
 class RecentOrders extends TableWidget
 {
-    protected function getHeading(): string
-    {
-        return __('widgets.recent_orders.heading');
-    }
-
     public function table(Table $table): Table
     {
         return $table
-            ->query(fn (): Builder => Order::latest())
+            ->heading(__('widgets.recent_orders.heading'))
+            ->query(fn(): Builder => Order::latest())
             ->columns([
                 TextColumn::make('id')->label(__('widgets.recent_orders.id')),
                 TextColumn::make('name')->label(__('widgets.recent_orders.customer')),

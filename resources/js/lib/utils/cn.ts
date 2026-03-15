@@ -17,6 +17,7 @@ const twMerge = extendTailwindMerge({
                 'text-h-32-bold',
                 'text-h-32-semibold',
                 'text-h-24-bold',
+                'text-h-24-semibold',
                 'text-h-24-medium',
                 'text-h-22-bold',
                 'text-h-20-bold',

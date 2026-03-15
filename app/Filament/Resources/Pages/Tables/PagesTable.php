@@ -20,6 +20,7 @@ class PagesTable
                 TextColumn::make('slug')->label(__('filament.fields.slug'))->searchable(),
                 MediaImageColumn::make('image')->label(__('filament.fields.image')),
                 TextColumn::make('status')->label(__('filament.fields.status'))->badge(),
+                TextColumn::make('page_type')->label(__('filament.fields.page_type'))->badge(),
                 TextColumn::make('created_at')
                     ->label(__('filament.fields.created_at'))
                     ->dateTime()

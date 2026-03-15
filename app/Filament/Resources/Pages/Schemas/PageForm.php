@@ -3,12 +3,14 @@
 namespace App\Filament\Resources\Pages\Schemas;
 
 use App\Enums\ContentStatus;
+use App\Enums\PageType;
 use App\Filament\Forms\Components\MediaPicker;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Str;
@@ -31,8 +33,10 @@ class PageForm
                                         ->maxLength(255)
                                         ->required()
                                         ->live(onBlur: true)
-                                        ->afterStateUpdated(function (Set $set, $state) {
-                                            $set('slug', Str::slug($state));
+                                        ->afterStateUpdated(function (Set $set, Get $get, $state, $record) {
+                                            if (! $record || ($record && empty($get('slug')))) {
+                                                $set('slug', Str::slug($state));
+                                            }
                                         }),
                                     TextInput::make('slug')
                                         ->label(__('filament.fields.slug'))
@@ -76,6 +80,11 @@ class PageForm
                                     ->label(__('filament.fields.status'))
                                     ->options(ContentStatus::class)
                                     ->default(ContentStatus::Published),
+                                Select::make('page_type')
+                                    ->label(__('filament.fields.page_type'))
+                                    ->options(PageType::class)
+                                    ->default(PageType::Regular)
+                                    ->helperText(__('filament.helpers.page_type')),
                             ]),
                     ]),
                 ]),

@@ -58,6 +58,7 @@ Must be loaded via Google Fonts or `@fontsource-variable/manrope`:
 | `.text-h-32-bold`     | 32px | Bold 700     | 120%        | Section headings — strong        |
 | `.text-h-32-semibold` | 32px | SemiBold 600 | 120%        | Section headings — regular       |
 | `.text-h-24-bold`     | 24px | Bold 700     | 120%        | Card titles, sub-headings        |
+| `.text-h-24-semibold` | 24px | SemiBold 600 | 120%        | Card titles, sub-headings        |
 | `.text-h-24-medium`   | 24px | Medium 500   | 120%        | Card titles — lighter variant    |
 | `.text-h-22-bold`     | 22px | Bold 700     | 120%        | Small section headings           |
 | `.text-h-20-bold`     | 20px | Bold 700     | 120%        | Labels, small headings — strong  |

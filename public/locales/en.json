@@ -65,7 +65,10 @@
         "bannerAlt": "Explore all products",
         "bannerTitle": "Explore All Products",
         "allProducts": "Explore All Hanger Products",
-        "featuredProducts": "Most Loved Products by Customers"
+        "featuredProducts": "Most Loved Products by Customers",
+        "noCategories": "No categories available.",
+        "noProducts": "No products available.",
+        "noFeaturedProducts": "No featured products available."
     },
     "about": {
         "whoWeAre": "Who We Are",

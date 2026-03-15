@@ -14,7 +14,7 @@
     <div class="flex-1 overflow-hidden rounded">
         @if ($imageUrl)
             <img src="{{ $imageUrl }}" alt="{{ $imageAlt }}"
-                class="h-full min-h-80 w-full bg-duyang-cream object-cover" />
+                class="min-h-full h-80 w-full bg-duyang-cream object-cover" />
         @endif
     </div>
 </div>

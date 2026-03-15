@@ -9,6 +9,8 @@ import { about, contact, posts as postsRoute, shop } from '@/routes';
 import BrandLogo from './brand-logo';
 import Container from './container';
 import DuButton from './du-button';
+import { useSettingStore } from '@/stores/setting';
+import { useTransValue } from '@/lib/utils/trans-value';
 
 type FooterLink = {
     label: string;
@@ -139,7 +141,9 @@ function NewsletterSection({ className }: { className?: string }) {
 
 export const Footer: FC = () => {
     const { t } = useTranslation();
+    const tv = useTransValue();
     const footerSections = useFooterSections();
+    const siteName = useSettingStore((state) => state.shopSettings.site_name);
 
     return (
         <footer className="bg-duyang-black">
@@ -174,9 +178,7 @@ export const Footer: FC = () => {
                         </div>
                         <div className="flex flex-wrap gap-4 md:gap-8 lg:gap-12">
                             <p className="text-p-14- text-center text-duyang-white lg:text-p-16-semibold">
-                                {t('common.allRightsReserved', {
-                                    year: new Date().getFullYear(),
-                                })}
+                                {`© ${new Date().getFullYear()} ${tv(siteName)}. All Rights Reserved`}
                             </p>
                             <a
                                 href="#"

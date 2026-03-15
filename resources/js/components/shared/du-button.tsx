@@ -56,7 +56,7 @@ const DuButton: FC<DuButtonProps> = ({
     return (
         <button
             className={clsx(
-                'inline-flex cursor-pointer items-center rounded-sm transition-colors',
+                'inline-flex cursor-pointer items-center rounded transition-colors',
                 colorVariantClasses[color][variant],
                 sizeClasses[size],
                 className,

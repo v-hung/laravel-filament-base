@@ -23,7 +23,17 @@ class ProductController extends Controller
      */
     public function shop(Request $request)
     {
-        $products = $this->productRepository->search(ProductSearchParams::fromRequest($request));
+        $params = ProductSearchParams::fromRequest($request);
+
+        $activeCollection = null;
+        if ($request->filled('category')) {
+            $activeCollection = $this->collectionRepository->findBySlug($request->input('category'));
+            if ($activeCollection) {
+                $params->collections = [$request->input('category')];
+            }
+        }
+
+        $products = $this->productRepository->search($params);
         $featured_products = $this->productRepository->search(new ProductSearchParams(['perPage' => 3, 'orderType' => ProductOrderType::FEATURED]));
         $collections = $this->collectionRepository->search(new SearchParams(['perPage' => 6]));
 
@@ -31,6 +41,7 @@ class ProductController extends Controller
             'products' => $products,
             'featured_products' => $featured_products,
             'collections' => $collections,
+            'active_collection' => $activeCollection,
         ]);
     }
 

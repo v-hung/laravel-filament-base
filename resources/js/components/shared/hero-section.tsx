@@ -26,7 +26,7 @@ const HeroSection: React.FC<HeroSectionProps> = (props) => {
                 <div
                     className={`flex flex-col items-start justify-between gap-6 py-8 lg:flex-row lg:py-14 ${date ? 'lg:items-end' : 'lg:items-center'}`}
                 >
-                    <h2 className="text-h-56-bold">{title}</h2>
+                    <h2 className="max-w-160 text-h-56-bold">{title}</h2>
                     <p className="max-w-80 text-p-16-regular text-duyang-grey capitalize">
                         {date ? format(date, 'MMMM dd.yyyy') : description}
                     </p>

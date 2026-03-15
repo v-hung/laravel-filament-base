@@ -32,7 +32,7 @@ class ProductsTable
                     ->sortable(),
                 TextColumn::make('status')
                     ->label(__('filament.fields.status'))
-                    ->searchable(),
+                    ->badge(),
                 TextColumn::make('created_at')
                     ->label(__('filament.fields.created_at'))
                     ->dateTime()

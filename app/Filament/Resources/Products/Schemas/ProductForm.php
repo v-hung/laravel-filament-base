@@ -36,8 +36,10 @@ class ProductForm
                                         ->maxLength(255)
                                         ->required()
                                         ->live(onBlur: true)
-                                        ->afterStateUpdated(function (Set $set, $state) {
-                                            $set('slug', Str::slug($state));
+                                        ->afterStateUpdated(function (Set $set, $state, $record) {
+                                            if (! $record) {
+                                                $set('slug', Str::slug($state));
+                                            }
                                         }),
                                     TextInput::make('slug')
                                         ->label(__('filament.fields.slug'))
@@ -127,7 +129,7 @@ class ProductForm
                                     ->label(__('filament.fields.featured_position'))
                                     ->numeric()
                                     ->default(0)
-                                    ->visible(fn(Get $get): bool => (bool) $get('is_featured')),
+                                    ->visible(fn (Get $get): bool => (bool) $get('is_featured')),
                             ]),
 
                         Section::make(__('filament.sections.specifications'))

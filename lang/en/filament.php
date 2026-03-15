@@ -77,6 +77,7 @@ return [
         'shipping' => 'Shipping Information',
         'specifications' => 'Technical Specifications',
         'business_info' => 'Business Information',
+        'gallery' => 'Gallery',
         'system_actions' => 'System Actions',
     ],
 
@@ -120,7 +121,12 @@ return [
             'faq' => 'FAQ',
             'faq_question' => 'Question',
             'faq_answer' => 'Answer',
+            'gallery' => 'Gallery Images',
         ],
+    ],
+
+    'helpers' => [
+        'page_type' => 'System pages are not accessible by slug and are hidden from public page lists.',
     ],
 
     'system_settings' => [
@@ -182,6 +188,7 @@ return [
         'contact_read_status' => 'Read Status',
         'contact_read' => 'Read',
         'contact_unread' => 'Unread',
+        'page_type' => 'Page Type',
         'left_type' => 'Left Column Type',
         'right_type' => 'Right Column Type',
         'left_text' => 'Left Text',

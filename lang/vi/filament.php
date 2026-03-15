@@ -77,6 +77,7 @@ return [
         'shipping' => 'Thông tin giao hàng',
         'specifications' => 'Thông số kỹ thuật',
         'business_info' => 'Thông tin doanh nghiệp',
+        'gallery' => 'Thư viện ảnh',
         'system_actions' => 'Thao tác hệ thống',
     ],
 
@@ -120,7 +121,12 @@ return [
             'faq' => 'Câu hỏi thường gặp',
             'faq_question' => 'Câu hỏi',
             'faq_answer' => 'Câu trả lời',
+            'gallery' => 'Ảnh thư viện',
         ],
+    ],
+
+    'helpers' => [
+        'page_type' => 'Trang hệ thống không thể truy cập qua slug và bị ẩn khỏi danh sách trang công khai.',
     ],
 
     'system_settings' => [
@@ -182,6 +188,7 @@ return [
         'contact_read_status' => 'Trạng thái đọc',
         'contact_read' => 'Đã đọc',
         'contact_unread' => 'Chưa đọc',
+        'page_type' => 'Loại trang',
         'left_type' => 'Loại cột trái',
         'right_type' => 'Loại cột phải',
         'left_text' => 'Chữ cột trái',

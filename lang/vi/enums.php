@@ -69,6 +69,17 @@ return [
         ],
     ],
 
+    'page_type' => [
+        'regular' => [
+            'label' => 'Thông thường',
+            'description' => 'Có thể truy cập qua slug và hiển thị trong danh sách công khai.',
+        ],
+        'system' => [
+            'label' => 'Hệ thống',
+            'description' => 'Trang đặc biệt (vd: trang chủ, giới thiệu). Không truy cập qua slug và ẩn khỏi danh sách công khai.',
+        ],
+    ],
+
     'status' => [
         'active' => [
             'label' => 'Hoạt động',
