@@ -19,7 +19,7 @@ const CardRelatedProduct: React.FC<CardRelatedProductProps> = (props) => {
         <div {...rest} className={cn('', className)}>
             <Link
                 href={products.detail(tv(product.slug))}
-                className="rounded-duyang-card block aspect-square overflow-hidden bg-duyang-cream"
+                className="rounded-duyang-card block aspect-square overflow-hidden rounded bg-duyang-cream"
             >
                 {image && (
                     <img

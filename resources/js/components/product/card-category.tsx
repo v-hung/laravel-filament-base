@@ -19,7 +19,7 @@ const CardCategory: React.FC<CardCategoryProps> = (props) => {
                 href={shop.url({ query: { category: tv(collection.slug) } })}
                 className="block"
             >
-                <div className="aspect-square overflow-hidden bg-duyang-cream">
+                <div className="aspect-square overflow-hidden rounded bg-duyang-cream">
                     {collection.image && (
                         <img
                             src={collection.image.url}

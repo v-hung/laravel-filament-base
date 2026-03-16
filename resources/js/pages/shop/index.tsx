@@ -71,7 +71,7 @@ export default function ShopIndex({
                                     {collections.data.map((collection) => (
                                         <CarouselItem
                                             key={collection.id}
-                                            className="basis-[calc(30%-4rem)] pl-4 lg:basis-1/5 lg:pl-6"
+                                            className="basis-1/3 pl-4 lg:basis-1/5 lg:pl-6"
                                         >
                                             <CardCategory
                                                 key={collection.id}

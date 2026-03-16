@@ -47,6 +47,14 @@ return [
             'label' => 'Liên hệ',
             'plural_label' => 'Danh sách liên hệ',
         ],
+        'menu' => [
+            'label' => 'Menu',
+            'plural_label' => 'Danh sách Menu',
+        ],
+        'menu_item' => [
+            'label' => 'Mục menu',
+            'plural_label' => 'Các mục menu',
+        ],
     ],
 
     'pages' => [
@@ -96,6 +104,12 @@ return [
     'options' => [
         'text' => 'Chữ',
         'image' => 'Hình ảnh',
+        'menu_target_self' => 'Tab hiện tại',
+        'menu_target_blank' => 'Tab mới',
+    ],
+
+    'placeholders' => [
+        'no_parent' => 'Không có cha (cấp cao nhất)',
     ],
 
     'actions' => [
@@ -127,12 +141,34 @@ return [
 
     'helpers' => [
         'page_type' => 'Trang hệ thống không thể truy cập qua slug và bị ẩn khỏi danh sách trang công khai.',
+        'menu_slug' => 'Định danh duy nhất để gọi menu này trong code (ví dụ: "header", "footer").',
     ],
 
     'system_settings' => [
         'description' => 'Các thao tác hệ thống. Nhấn nút tương ứng để thực hiện.',
         'clear_cache_tooltip' => 'Xóa toàn bộ cache',
         'cache_cleared' => 'Đã xóa cache',
+    ],
+
+    'menu_builder' => [
+        'custom_link' => 'Liên kết tùy chỉnh',
+        'label' => 'Nhãn',
+        'label_placeholder' => 'Tên mục menu',
+        'search_placeholder' => 'Tìm kiếm...',
+        'add_to_menu' => 'Thêm vào menu',
+        'no_results' => 'Không tìm thấy mục nào',
+        'structure_title' => 'Cấu trúc menu',
+        'items_count' => 'mục',
+        'empty_title' => 'Chưa có mục nào',
+        'empty_hint' => 'Thêm mục từ bảng bên trái',
+        'drop_here' => 'Thả vào đây',
+        'indent' => 'Thụt vào',
+        'outdent' => 'Thụt ra',
+        'edit' => 'Sửa',
+        'remove' => 'Xóa',
+        'inactive' => 'Ẩn',
+        'cancel' => 'Hủy',
+        'save' => 'Lưu',
     ],
 
     'fields' => [
@@ -189,6 +225,12 @@ return [
         'contact_read' => 'Đã đọc',
         'contact_unread' => 'Chưa đọc',
         'page_type' => 'Loại trang',
+        'url' => 'URL',
+        'icon' => 'Biểu tượng',
+        'is_active' => 'Hoạt động',
+        'menu_target' => 'Mở trong',
+        'menu_parent' => 'Mục cha',
+        'menu_items_count' => 'Số mục',
         'left_type' => 'Loại cột trái',
         'right_type' => 'Loại cột phải',
         'left_text' => 'Chữ cột trái',

@@ -53,7 +53,7 @@ const InspirationGallery = () => {
     const images = useSettingStore((state) => state.shopSettings?.gallery);
     const tv = useTransValue();
 
-    const gallery = tv(images).map((media) => media.url);
+    const gallery = tv(images)?.map((media) => media.url) ?? [];
 
     const n = Math.min(gallery.length, 8);
     const imgs = gallery.slice(0, n);

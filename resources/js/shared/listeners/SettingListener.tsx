@@ -11,6 +11,8 @@ export default function SettingListener({
     initialSettings = null,
 }: SettingListenerProps) {
     const setShopSettings = useSettingStore((state) => state.setShopSettings);
+
+    console.log({ initialSettings });
     useEffect(() => {
         setShopSettings(initialSettings);
 

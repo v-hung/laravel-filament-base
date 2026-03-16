@@ -47,6 +47,14 @@ return [
             'label' => 'Contact',
             'plural_label' => 'Contacts',
         ],
+        'menu' => [
+            'label' => 'Menu',
+            'plural_label' => 'Menus',
+        ],
+        'menu_item' => [
+            'label' => 'Menu Item',
+            'plural_label' => 'Menu Items',
+        ],
     ],
 
     'pages' => [
@@ -96,6 +104,12 @@ return [
     'options' => [
         'text' => 'Text',
         'image' => 'Image',
+        'menu_target_self' => 'Same Tab',
+        'menu_target_blank' => 'New Tab',
+    ],
+
+    'placeholders' => [
+        'no_parent' => 'No parent (top-level)',
     ],
 
     'actions' => [
@@ -127,12 +141,34 @@ return [
 
     'helpers' => [
         'page_type' => 'System pages are not accessible by slug and are hidden from public page lists.',
+        'menu_slug' => 'Unique identifier used to retrieve this menu in code (e.g. "header", "footer").',
     ],
 
     'system_settings' => [
         'description' => 'System actions. Press the corresponding button to execute.',
         'clear_cache_tooltip' => 'Clear all cache',
         'cache_cleared' => 'Cache cleared',
+    ],
+
+    'menu_builder' => [
+        'custom_link' => 'Custom Link',
+        'label' => 'Label',
+        'label_placeholder' => 'Menu item label',
+        'search_placeholder' => 'Search...',
+        'add_to_menu' => 'Add to Menu',
+        'no_results' => 'No items found',
+        'structure_title' => 'Menu Structure',
+        'items_count' => 'items',
+        'empty_title' => 'No items yet',
+        'empty_hint' => 'Add items from the left panel',
+        'drop_here' => 'Drop here',
+        'indent' => 'Indent',
+        'outdent' => 'Outdent',
+        'edit' => 'Edit',
+        'remove' => 'Remove',
+        'inactive' => 'Inactive',
+        'cancel' => 'Cancel',
+        'save' => 'Save',
     ],
 
     'fields' => [
@@ -189,6 +225,12 @@ return [
         'contact_read' => 'Read',
         'contact_unread' => 'Unread',
         'page_type' => 'Page Type',
+        'url' => 'URL',
+        'icon' => 'Icon',
+        'is_active' => 'Active',
+        'menu_target' => 'Open In',
+        'menu_parent' => 'Parent Item',
+        'menu_items_count' => 'Items',
         'left_type' => 'Left Column Type',
         'right_type' => 'Right Column Type',
         'left_text' => 'Left Text',

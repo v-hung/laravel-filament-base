@@ -22,7 +22,9 @@ function ProductImage({
     const imageUrl = product.images?.[0]?.url ?? null;
 
     return (
-        <div className={cn('overflow-hidden bg-duyang-cream', className)}>
+        <div
+            className={cn('overflow-hidden rounded bg-duyang-cream', className)}
+        >
             {imageUrl ? (
                 <Link
                     href={products.detail(tv(product.slug))}

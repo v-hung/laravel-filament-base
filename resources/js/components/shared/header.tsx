@@ -1,5 +1,5 @@
 import { Link, usePage, router } from '@inertiajs/react';
-import { CheckIcon } from 'lucide-react';
+import { CheckIcon, ChevronDownIcon } from 'lucide-react';
 import type { FC } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -29,7 +29,7 @@ import BrandLogo from './brand-logo';
 type NavItem = {
     label: string;
     href: string;
-    active?: boolean;
+    children?: NavItem[];
 };
 
 type Language = {
@@ -43,7 +43,24 @@ function useNavItems(): NavItem[] {
     return [
         { label: t('nav.home'), href: home().url },
         { label: t('nav.partner'), href: partner().url },
-        { label: t('nav.shop'), href: shop().url },
+        {
+            label: t('nav.shop'),
+            href: shop().url,
+            children: [
+                {
+                    label: t('footer.woodenHangers'),
+                    href: shop().url + '?category=wooden-hangers',
+                },
+                {
+                    label: t('footer.plasticHangers'),
+                    href: shop().url + '?category=plastic-hangers',
+                },
+                {
+                    label: t('footer.metalRacks'),
+                    href: shop().url + '?category=metal-racks',
+                },
+            ],
+        },
         { label: t('nav.about'), href: about().url },
         { label: t('nav.contact'), href: contact().url },
     ];
@@ -54,6 +71,131 @@ const LANGUAGES: Language[] = [
     { value: 'en', label: 'EN', icon: Icons.En },
 ];
 
+// Desktop: dùng DropdownMenu của Radix (tự quản lý state & animation)
+const DesktopNavItem: FC<{ item: NavItem; currentUrl: string }> = ({
+    item,
+    currentUrl,
+}) => {
+    const isActive = currentUrl.split('?')[0] === item.href;
+    const baseLinkCls = cn(
+        'px-1.5 py-2.5 text-btn-14 lg:text-btn-16 transition-colors',
+        isActive
+            ? 'border-b border-duyang-grey-light text-duyang-black'
+            : 'text-duyang-grey hover:text-duyang-black',
+    );
+
+    if (!item.children) {
+        return (
+            <Link href={item.href} className={baseLinkCls}>
+                {item.label}
+            </Link>
+        );
+    }
+
+    return (
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <button type="button" className={cn(baseLinkCls, 'flex items-center gap-1')}>
+                    {item.label}
+                    <ChevronDownIcon className="size-4 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+                </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+                align="start"
+                sideOffset={8}
+                className="min-w-44 rounded-none border border-duyang-grey-light bg-duyang-white p-1 shadow-sm"
+            >
+                {item.children.map((child) => (
+                    <DropdownMenuItem key={child.label} asChild>
+                        <Link
+                            href={child.href}
+                            className="rounded-none px-3 py-2 text-p-14-medium text-duyang-grey transition-colors hover:bg-duyang-cream hover:text-duyang-black focus:bg-duyang-cream focus:text-duyang-black"
+                        >
+                            {child.label}
+                        </Link>
+                    </DropdownMenuItem>
+                ))}
+            </DropdownMenuContent>
+        </DropdownMenu>
+    );
+};
+
+// Mobile: accordion với CSS grid animation (không mount/unmount)
+const MobileNavItem: FC<{
+    item: NavItem;
+    currentUrl: string;
+    expanded: boolean;
+    onToggle: () => void;
+    onClose: () => void;
+}> = ({ item, currentUrl, expanded, onToggle, onClose }) => {
+    const isActive = currentUrl.split('?')[0] === item.href;
+    const baseCls = 'py-2.5 text-p-14-semibold transition-colors';
+    const activeCls = 'text-duyang-black';
+    const inactiveCls = 'text-duyang-grey hover:text-duyang-black';
+
+    if (!item.children) {
+        return (
+            <Link
+                href={item.href}
+                className={cn(
+                    baseCls,
+                    isActive
+                        ? cn(activeCls, 'border-b border-duyang-grey-light')
+                        : inactiveCls,
+                )}
+                onClick={onClose}
+            >
+                {item.label}
+            </Link>
+        );
+    }
+
+    return (
+        <div>
+            <button
+                type="button"
+                className={cn(
+                    baseCls,
+                    'flex w-full items-center justify-between',
+                    isActive ? activeCls : inactiveCls,
+                )}
+                onClick={onToggle}
+            >
+                {item.label}
+                <ChevronDownIcon
+                    className={cn(
+                        'size-4 transition-transform duration-300',
+                        expanded && 'rotate-180',
+                    )}
+                />
+            </button>
+
+            {/* CSS grid trick: animates height without knowing exact px */}
+            <div
+                className={cn(
+                    'grid transition-all duration-300 ease-in-out',
+                    expanded ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0',
+                )}
+            >
+                <div className="overflow-hidden">
+                    <div className="ml-3 flex flex-col border-l border-duyang-grey-light pl-3 pb-1">
+                        {item.children.map((child) => (
+                            <Link
+                                key={child.label}
+                                href={child.href}
+                                className="py-2 text-p-14-medium text-duyang-grey transition-colors hover:text-duyang-black"
+                                onClick={onClose}
+                            >
+                                {child.label}
+                            </Link>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
 export type HeaderProps = {
     className?: string;
 };
@@ -62,6 +204,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
     const { t, i18n } = useTranslation();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [searchPopupOpen, setSearchPopupOpen] = useState(false);
+    const [expandedMobileItem, setExpandedMobileItem] = useState<string | null>(null);
     const headerRef = useRef<HTMLElement>(null);
 
     useEffect(() => {
@@ -94,16 +237,19 @@ const Header: FC<HeaderProps> = ({ className }) => {
         LANGUAGES.find((item) => item.value === language) ?? LANGUAGES[0];
 
     const handleLanguageChange = async (locale: AppLocale) => {
-        // Change language on server
         router.visit(`/greeting/${locale}`, {
             method: 'get',
             preserveState: true,
             onSuccess: () => {
-                // Change language on client after server confirms
                 i18n.changeLanguage(locale);
             },
         });
     };
+
+    const handleMobileClose = () => setMobileMenuOpen(false);
+
+    const toggleMobileItem = (label: string) =>
+        setExpandedMobileItem((prev) => (prev === label ? null : label));
 
     return (
         <header ref={headerRef} className={cn('bg-duyang-white', className)}>
@@ -134,24 +280,16 @@ const Header: FC<HeaderProps> = ({ className }) => {
                                         {t('common.menu')}
                                     </SheetTitle>
 
-                                    <nav className="flex flex-col gap-4">
+                                    <nav className="flex flex-col">
                                         {navItems.map((item) => (
-                                            <Link
+                                            <MobileNavItem
                                                 key={item.label}
-                                                href={item.href}
-                                                className={cn(
-                                                    'border-duyang-grey-light py-2 text-p-14-semibold transition-colors lg:text-p-16-semibold',
-                                                    url.split('?')[0] ==
-                                                        item.href
-                                                        ? 'border-b text-duyang-black'
-                                                        : 'text-duyang-grey hover:text-duyang-black',
-                                                )}
-                                                onClick={() =>
-                                                    setMobileMenuOpen(false)
-                                                }
-                                            >
-                                                {item.label}
-                                            </Link>
+                                                item={item}
+                                                currentUrl={url}
+                                                expanded={expandedMobileItem === item.label}
+                                                onToggle={() => toggleMobileItem(item.label)}
+                                                onClose={handleMobileClose}
+                                            />
                                         ))}
                                     </nav>
                                 </div>
@@ -166,18 +304,11 @@ const Header: FC<HeaderProps> = ({ className }) => {
                     {/* Center: Navigation Menu (Desktop) */}
                     <nav className="hidden items-center gap-8 lg:flex">
                         {navItems.map((item) => (
-                            <Link
+                            <DesktopNavItem
                                 key={item.label}
-                                href={item.href}
-                                className={cn(
-                                    'px-1.5 py-2.5 text-btn-14 lg:text-btn-16',
-                                    url.split('?')[0] == item.href
-                                        ? 'border-b border-duyang-grey-light text-duyang-black'
-                                        : 'text-duyang-grey hover:text-duyang-black',
-                                )}
-                            >
-                                {item.label}
-                            </Link>
+                                item={item}
+                                currentUrl={url}
+                            />
                         ))}
                     </nav>
 

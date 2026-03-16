@@ -16,7 +16,7 @@ class ShieldSeeder extends Seeder
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         // 1. Định nghĩa các resources
-        $resources = ['Role', 'User', 'Blog', 'Post', 'Page', 'Order', 'OrderItem', 'Collection', 'Product', 'Showcase'];
+        $resources = ['Role', 'User', 'Blog', 'Post', 'Page', 'Order', 'OrderItem', 'Collection', 'Product', 'Showcase', 'Contact', 'Menu', 'MenuItem'];
 
         // 2. Định nghĩa các actions
         $actions = ['View', 'ViewAny', 'Create', 'Update', 'Delete', 'Restore', 'ForceDelete', 'ForceDeleteAny', 'RestoreAny', 'Replicate', 'Reorder'];

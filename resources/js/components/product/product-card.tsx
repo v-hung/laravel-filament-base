@@ -17,7 +17,7 @@ const ProductCard: React.FC<ProductCardProps> = (props) => {
 
     return (
         <div {...rest} className={cn('group relative max-w-100', className)}>
-            <div className="relative aspect-square overflow-hidden bg-duyang-cream">
+            <div className="relative aspect-square overflow-hidden rounded bg-duyang-cream">
                 <Link
                     href={products.detail(tv(product.slug))}
                     className="h-full w-full"
