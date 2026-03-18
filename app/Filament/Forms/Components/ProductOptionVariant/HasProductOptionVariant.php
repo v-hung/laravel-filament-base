@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Forms\Components;
+namespace App\Filament\Forms\Components\ProductOptionVariant;
 
 use App\Repositories\ProductRepository;
 use App\Services\ProductService;

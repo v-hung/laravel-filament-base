@@ -2,6 +2,8 @@
 
 namespace App\Filament\Forms\Components;
 
+use App\Repositories\MenuItemRepository;
+use Closure;
 use Filament\Forms\Components\Field;
 
 class MenuBuilder extends Field
@@ -19,7 +21,8 @@ class MenuBuilder extends Field
         $this->dehydrated(false);
 
         $this->loadStateFromRelationshipsUsing(function (MenuBuilder $component, mixed $record): void {
-            $items = $component->flattenItems($record->rootItems()->with('children')->get());
+            $locale = $component->getActiveLocale();
+            $items = app(MenuItemRepository::class)->flatForBuilder($record, $locale);
             $component->state($items);
         });
 
@@ -49,83 +52,78 @@ class MenuBuilder extends Field
         ?callable $urlResolver = null,
         string $icon = 'heroicon-o-document',
     ): static {
-        $locale = app()->getLocale();
-
-        $items = $modelClass::query()
-            ->get()
-            ->map(function ($record) use ($titleField, $urlResolver, $locale) {
-                $rawTitle = $record->{$titleField};
-                $title = is_array($rawTitle)
-                    ? ($rawTitle[$locale] ?? (reset($rawTitle) ?: ''))
-                    : (string) $rawTitle;
-
-                return [
-                    'id' => $record->id,
-                    'title' => $title,
-                    'url' => $urlResolver ? $urlResolver($record) : '',
-                ];
-            })
-            ->values()
-            ->toArray();
-
-        return $this->addItemType($key, [
+        $this->itemTypes[$key] = [
             'type' => 'model',
             'label' => $label,
             'icon' => $icon,
-            'items' => $items,
-        ]);
+            'linkable_type' => $modelClass,
+            'items_resolver' => function (string $locale) use ($modelClass, $titleField, $urlResolver): array {
+                return $modelClass::query()
+                    ->get()
+                    ->map(function ($record) use ($titleField, $urlResolver, $locale) {
+                        $rawTitle = $record->{$titleField};
+                        $title = is_array($rawTitle)
+                            ? ($rawTitle[$locale] ?? (reset($rawTitle) ?: ''))
+                            : (string) $rawTitle;
+
+                        return [
+                            'id' => $record->id,
+                            'title' => $title,
+                            'title_translations' => is_array($rawTitle) ? $rawTitle : [],
+                            'url' => $urlResolver ? $urlResolver($record) : '',
+                        ];
+                    })
+                    ->values()
+                    ->toArray();
+            },
+        ];
+
+        return $this;
     }
 
     /** @return array<string, array<string, mixed>> */
     public function getItemTypes(): array
     {
-        return array_merge(
-            [
-                'custom' => [
-                    'type' => 'custom',
-                    'label' => __('filament.menu_builder.custom_link'),
-                    'items' => [],
-                ],
+        $locale = $this->getActiveLocale();
+
+        $types = [
+            'custom' => [
+                'type' => 'custom',
+                'label' => __('filament.menu_builder.custom_link'),
+                'items' => [],
             ],
-            $this->itemTypes
-        );
-    }
+        ];
 
-    /** @param  iterable<mixed>  $items */
-    private function flattenItems(iterable $items, int $depth = 0): array
-    {
-        $flat = [];
-        $locale = app()->getLocale();
-
-        foreach ($items as $item) {
-            $rawTitle = $item->title;
-            $title = is_array($rawTitle)
-                ? ($rawTitle[$locale] ?? (reset($rawTitle) ?: ''))
-                : (string) $rawTitle;
-
-            $flat[] = [
-                'id' => $item->id,
-                'temp_id' => 'item_'.$item->id,
-                'title' => $title,
-                'url' => $item->url ?? '',
-                'target' => $item->target ?? '_self',
-                'icon' => $item->icon ?? '',
-                'depth' => $depth,
-                'is_active' => (bool) $item->is_active,
-            ];
-
-            if ($item->children->isNotEmpty()) {
-                $flat = array_merge($flat, $this->flattenItems($item->children, $depth + 1));
+        foreach ($this->itemTypes as $key => $config) {
+            if (isset($config['items_resolver']) && $config['items_resolver'] instanceof Closure) {
+                $config['items'] = ($config['items_resolver'])($locale);
+                unset($config['items_resolver']);
             }
+
+            $types[$key] = $config;
         }
 
-        return $flat;
+        return $types;
+    }
+
+    public function getActiveLocale(): string
+    {
+        try {
+            $livewire = $this->getLivewire();
+            if ($livewire && property_exists($livewire, 'activeLocale') && ! blank($livewire->activeLocale)) {
+                return $livewire->activeLocale;
+            }
+        } catch (\Throwable) {
+            // fall through
+        }
+
+        return session('spatie_translatable_active_locale', app()->getLocale());
     }
 
     /** @param  array<int, array<string, mixed>>  $flatItems */
     private function persistItems(array $flatItems, mixed $record): void
     {
-        $locale = app()->getLocale();
+        $locale = $this->getActiveLocale();
 
         $record->items()->delete();
 
@@ -135,18 +133,35 @@ class MenuBuilder extends Field
         foreach ($flatItems as $index => $item) {
             $parentId = null;
 
-            if ($item['depth'] > 0) {
+            // Prefer explicit parent_temp_id; fallback to depth-based resolution
+            if (! empty($item['parent_temp_id'])) {
+                $parentId = $idMap[$item['parent_temp_id']] ?? null;
+            } elseif (($item['depth'] ?? 0) > 0) {
                 for ($i = $index - 1; $i >= 0; $i--) {
-                    if ($flatItems[$i]['depth'] === $item['depth'] - 1) {
+                    if (($flatItems[$i]['depth'] ?? 0) === ($item['depth'] - 1)) {
                         $parentId = $idMap[$flatItems[$i]['temp_id']] ?? null;
                         break;
                     }
                 }
             }
 
+            // Merge translations: only update the current locale if `title` belongs to it.
+            // `title_locale` tracks which locale the `title` field was set for,
+            // so we avoid overwriting other locales' data when saving from a different locale.
+            $titleTranslations = is_array($item['title_translations'] ?? null)
+                ? $item['title_translations']
+                : [];
+            $titleLocale = $item['title_locale'] ?? $locale;
+            if ($titleLocale === $locale) {
+                $titleTranslations[$locale] = $item['title'];
+            }
+
             $newItem = $record->items()->create([
                 'parent_id' => $parentId,
-                'title' => [$locale => $item['title']],
+                'title' => $titleTranslations,
+                'type' => $item['type'] ?? 'custom',
+                'linkable_type' => $item['linkable_type'] ?: null,
+                'linkable_id' => $item['linkable_id'] ?: null,
                 'url' => $item['url'] ?: null,
                 'target' => $item['target'] ?? '_self',
                 'icon' => $item['icon'] ?: null,

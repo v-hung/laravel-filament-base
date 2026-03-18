@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Spatie\Translatable\HasTranslations;
 
 class MenuItem extends Model
@@ -20,7 +21,13 @@ class MenuItem extends Model
     {
         return [
             'is_active' => 'boolean',
+            'linkable_id' => 'integer',
         ];
+    }
+
+    public function linkable(): MorphTo
+    {
+        return $this->morphTo();
     }
 
     public function menu(): BelongsTo

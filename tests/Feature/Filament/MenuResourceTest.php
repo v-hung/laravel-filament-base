@@ -124,7 +124,13 @@ it('saves menu items via the menu builder when editing', function () {
         [
             'id' => null,
             'temp_id' => 'new_001',
+            'parent_temp_id' => null,
             'title' => 'Home',
+            'title_locale' => 'en',
+            'title_translations' => ['en' => 'Home', 'vi' => 'Trang chủ'],
+            'type' => 'custom',
+            'linkable_type' => null,
+            'linkable_id' => null,
             'url' => '/',
             'target' => '_self',
             'icon' => '',
@@ -134,7 +140,13 @@ it('saves menu items via the menu builder when editing', function () {
         [
             'id' => null,
             'temp_id' => 'new_002',
+            'parent_temp_id' => null,
             'title' => 'About',
+            'title_locale' => 'en',
+            'title_translations' => ['en' => 'About'],
+            'type' => 'custom',
+            'linkable_type' => null,
+            'linkable_id' => null,
             'url' => '/about',
             'target' => '_blank',
             'icon' => '',
@@ -144,7 +156,13 @@ it('saves menu items via the menu builder when editing', function () {
         [
             'id' => null,
             'temp_id' => 'new_003',
+            'parent_temp_id' => 'new_002',
             'title' => 'Team',
+            'title_locale' => 'en',
+            'title_translations' => [],
+            'type' => 'custom',
+            'linkable_type' => null,
+            'linkable_id' => null,
             'url' => '/about/team',
             'target' => '_self',
             'icon' => '',
@@ -164,12 +182,17 @@ it('saves menu items via the menu builder when editing', function () {
     expect($home)->not->toBeNull();
     expect($home->parent_id)->toBeNull();
     expect($home->sort_order)->toBe(0);
+    expect($home->getTranslation('title', 'en'))->toBe('Home');
+    expect($home->getTranslation('title', 'vi'))->toBe('Trang chủ');
 
     $about = $menu->items()->where('url', '/about')->first();
     expect($about->target)->toBe('_blank');
+    expect($about->getTranslation('title', 'en'))->toBe('About');
 
     $team = $menu->items()->where('url', '/about/team')->first();
     expect($team->parent_id)->toBe($about->id);
+    // title_translations was empty; active locale (en) title should be saved
+    expect($team->getTranslation('title', 'en'))->toBe('Team');
 });
 
 it('loads existing menu items into the menu builder on edit', function () {
@@ -192,8 +215,14 @@ it('loads existing menu items into the menu builder on edit', function () {
 
     expect($state)->toHaveCount(2);
     expect($state[0]['depth'])->toBe(0);
+    expect($state[0]['parent_temp_id'])->toBeNull();
+    expect($state[0]['title_translations'])->toBe(['en' => 'Home', 'vi' => 'Trang chủ']);
+    expect($state[0]['title_locale'])->toBe('en');
     expect($state[1]['depth'])->toBe(1);
     expect($state[1]['url'])->toBe('/sub');
+    expect($state[1]['parent_temp_id'])->toBe('item_'.$parent->id);
+    expect($state[1]['title_translations'])->toBe(['en' => 'Sub Page', 'vi' => 'Trang con']);
+    expect($state[1]['title_locale'])->toBe('en');
 });
 
 it('can store a child menu item directly', function () {

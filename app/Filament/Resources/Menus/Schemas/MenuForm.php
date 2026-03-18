@@ -4,6 +4,9 @@ namespace App\Filament\Resources\Menus\Schemas;
 
 use App\Enums\CategoryStatus;
 use App\Filament\Forms\Components\MenuBuilder;
+use App\Models\Page;
+use App\Models\Post;
+use App\Models\Product;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Grid;
@@ -61,7 +64,32 @@ class MenuForm
                 Section::make(__('filament.resources.menu_item.plural_label'))
                     ->columnSpanFull()
                     ->schema([
-                        MenuBuilder::make('menu_items'),
+                        MenuBuilder::make('menu_items')
+                            ->label(__('filament.resources.menu_item.plural_label'))
+                            ->withModel(
+                                key: 'posts',
+                                label: __('filament.resources.post.plural_label'),
+                                modelClass: Post::class,
+                                titleField: 'title',
+                                urlResolver: fn (Post $record): string => '/posts/'.$record->slug,
+                                icon: 'heroicon-o-newspaper',
+                            )
+                            ->withModel(
+                                key: 'pages',
+                                label: __('filament.resources.page.plural_label'),
+                                modelClass: Page::class,
+                                titleField: 'title',
+                                urlResolver: fn (Page $record): string => '/pages/'.$record->slug,
+                                icon: 'heroicon-o-document-text',
+                            )
+                            ->withModel(
+                                key: 'products',
+                                label: __('filament.resources.product.plural_label'),
+                                modelClass: Product::class,
+                                titleField: 'name',
+                                urlResolver: fn (Product $record): string => '/products/'.$record->slug,
+                                icon: 'heroicon-o-shopping-bag',
+                            ),
                     ]),
             ]);
     }

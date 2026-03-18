@@ -152,6 +152,12 @@ return [
 
     'menu_builder' => [
         'custom_link' => 'Custom Link',
+        'add_link' => 'Add to Menu',
+        'link_type' => 'Link Type',
+        'select_item' => 'Select Item',
+        'select_placeholder' => 'Choose...',
+        'parent_item' => 'Parent Item',
+        'no_parent' => 'No parent (root)',
         'label' => 'Label',
         'label_placeholder' => 'Menu item label',
         'search_placeholder' => 'Search...',

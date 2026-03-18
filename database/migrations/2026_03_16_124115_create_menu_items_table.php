@@ -16,6 +16,9 @@ return new class extends Migration
             $table->string('url')->nullable();
             $table->string('target')->default('_self');
             $table->string('icon')->nullable();
+            $table->string('type')->default('custom');
+            $table->string('linkable_type')->nullable();
+            $table->unsignedBigInteger('linkable_id')->nullable();
             $table->unsignedInteger('sort_order')->default(0);
             $table->boolean('is_active')->default(true);
             $table->timestamps();

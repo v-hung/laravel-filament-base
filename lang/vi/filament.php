@@ -152,6 +152,12 @@ return [
 
     'menu_builder' => [
         'custom_link' => 'Liên kết tùy chỉnh',
+        'add_link' => 'Thêm vào menu',
+        'link_type' => 'Loại liên kết',
+        'select_item' => 'Chọn mục',
+        'select_placeholder' => 'Chọn...',
+        'parent_item' => 'Mục cha',
+        'no_parent' => 'Không có cha (gốc)',
         'label' => 'Nhãn',
         'label_placeholder' => 'Tên mục menu',
         'search_placeholder' => 'Tìm kiếm...',
