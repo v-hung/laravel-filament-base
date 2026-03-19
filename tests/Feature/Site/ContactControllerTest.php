@@ -3,11 +3,11 @@
 use App\Models\Contact;
 
 test('contact page renders', function () {
-    $this->get('/contact-us')->assertOk();
+    $this->get('/contact')->assertOk();
 });
 
 test('submitting contact form saves to database', function () {
-    $this->post('/contact-us', [
+    $this->post('/contact', [
         'name' => 'Nguyễn Văn A',
         'email' => 'test@example.com',
         'content' => 'Tôi muốn hỏi về sản phẩm.',
@@ -24,7 +24,7 @@ test('submitting contact form saves to database', function () {
 });
 
 test('submitting contact form redirects with success message', function () {
-    $this->post('/contact-us', [
+    $this->post('/contact', [
         'name' => 'Nguyễn Văn A',
         'email' => 'test@example.com',
         'content' => 'Tôi muốn hỏi về sản phẩm.',
@@ -32,7 +32,7 @@ test('submitting contact form redirects with success message', function () {
 });
 
 test('contact form requires name', function () {
-    $this->post('/contact-us', [
+    $this->post('/contact', [
         'email' => 'test@example.com',
         'content' => 'Nội dung.',
     ])->assertSessionHasErrors(['name']);
@@ -41,7 +41,7 @@ test('contact form requires name', function () {
 });
 
 test('contact form requires valid email', function () {
-    $this->post('/contact-us', [
+    $this->post('/contact', [
         'name' => 'Test',
         'email' => 'not-an-email',
         'content' => 'Nội dung.',
@@ -49,14 +49,14 @@ test('contact form requires valid email', function () {
 });
 
 test('contact form requires content', function () {
-    $this->post('/contact-us', [
+    $this->post('/contact', [
         'name' => 'Test',
         'email' => 'test@example.com',
     ])->assertSessionHasErrors(['content']);
 });
 
 test('new contact is unread by default', function () {
-    $this->post('/contact-us', [
+    $this->post('/contact', [
         'name' => 'Test',
         'email' => 'test@example.com',
         'content' => 'Nội dung.',

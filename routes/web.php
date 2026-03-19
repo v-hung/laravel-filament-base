@@ -12,9 +12,9 @@ use Illuminate\Support\Facades\Route;
 
 // home & pages
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/about-us', [AboutController::class, 'index'])->name('about');
-Route::get('/contact-us', [ContactController::class, 'index'])->name('contact');
-Route::post('/contact-us', [ContactController::class, 'store'])->name('contact.store');
+Route::get('/about', [AboutController::class, 'index'])->name('about');
+Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 Route::get('/partner', [HomeController::class, 'partner'])->name('partner');
 
 // products
@@ -50,4 +50,4 @@ Route::get('/greeting/{locale}', function (string $locale) {
     return redirect()->back()->cookie('locale', $locale, 60 * 24 * 365);
 })->name('lang.switch');
 
-require __DIR__.'/settings.php';
+require __DIR__ . '/settings.php';

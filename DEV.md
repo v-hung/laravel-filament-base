@@ -169,3 +169,17 @@ php artisan optimize
 
 - [Organic Theme Reference](https://jthemes.net/themes/html/organic/index.html)
 - [Jenka Design Reference](https://jenka.info/)
+
+## zip file
+
+- With .env file
+
+```
+zip -r deploy.zip . -x ".claude/*" ".ddev/*" ".git/*" ".github/*" ".vscode/*" "node_modules/*" "storage/logs/*" "storage/framework/cache/*" "bootstrap/cache/*"
+```
+
+- Without .env file
+
+```
+zip -r deploy2.zip . -x ".env" ".claude/*" ".ddev/*" ".git/*" ".github/*" ".vscode/*" "node_modules/* "storage/logs/*" "storage/framework/cache/*" "bootstrap/cache/*"
+```
