@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Pages;
 
+use App\Enums\PageType;
 use App\Filament\Resources\Pages\Pages\CreatePage;
 use App\Filament\Resources\Pages\Pages\EditPage;
 use App\Filament\Resources\Pages\Pages\ListPages;
@@ -15,6 +16,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 use LaraZeus\SpatieTranslatable\Resources\Concerns\Translatable;
 use UnitEnum;
 
@@ -78,6 +80,11 @@ class PageResource extends Resource
             // 'view' => ViewPage::route('/{record}'),
             'edit' => EditPage::route('/{record}/edit'),
         ];
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        return $record->page_type !== PageType::System;
     }
 
     public static function getDefaultTranslatableLocale(): string

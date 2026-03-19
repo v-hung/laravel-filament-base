@@ -78,7 +78,7 @@ const DesktopNavItem: FC<{ item: NavItem; currentUrl: string }> = ({
 }) => {
     const isActive = currentUrl.split('?')[0] === item.href;
     const baseLinkCls = cn(
-        'px-1.5 py-2.5 text-btn-14 lg:text-btn-16 transition-colors',
+        'px-1.5 py-2.5 text-btn-14 transition-colors lg:text-btn-16',
         isActive
             ? 'border-b border-duyang-grey-light text-duyang-black'
             : 'text-duyang-grey hover:text-duyang-black',
@@ -95,7 +95,10 @@ const DesktopNavItem: FC<{ item: NavItem; currentUrl: string }> = ({
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <button type="button" className={cn(baseLinkCls, 'flex items-center gap-1')}>
+                <button
+                    type="button"
+                    className={cn(baseLinkCls, 'flex items-center gap-1')}
+                >
                     {item.label}
                     <ChevronDownIcon className="size-4 transition-transform duration-200 group-data-[state=open]:rotate-180" />
                 </button>
@@ -109,7 +112,7 @@ const DesktopNavItem: FC<{ item: NavItem; currentUrl: string }> = ({
                     <DropdownMenuItem key={child.label} asChild>
                         <Link
                             href={child.href}
-                            className="rounded-none px-3 py-2 text-p-14-medium text-duyang-grey transition-colors hover:bg-duyang-cream hover:text-duyang-black focus:bg-duyang-cream focus:text-duyang-black"
+                            className="cursor-pointer rounded-none px-3 py-2 text-p-14-medium text-duyang-grey transition-colors hover:bg-duyang-cream hover:text-duyang-black focus:bg-duyang-cream focus:text-duyang-black"
                         >
                             {child.label}
                         </Link>
@@ -174,11 +177,13 @@ const MobileNavItem: FC<{
             <div
                 className={cn(
                     'grid transition-all duration-300 ease-in-out',
-                    expanded ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0',
+                    expanded
+                        ? 'grid-rows-[1fr] opacity-100'
+                        : 'grid-rows-[0fr] opacity-0',
                 )}
             >
                 <div className="overflow-hidden">
-                    <div className="ml-3 flex flex-col border-l border-duyang-grey-light pl-3 pb-1">
+                    <div className="ml-3 flex flex-col border-l border-duyang-grey-light pb-1 pl-3">
                         {item.children.map((child) => (
                             <Link
                                 key={child.label}
@@ -204,7 +209,9 @@ const Header: FC<HeaderProps> = ({ className }) => {
     const { t, i18n } = useTranslation();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [searchPopupOpen, setSearchPopupOpen] = useState(false);
-    const [expandedMobileItem, setExpandedMobileItem] = useState<string | null>(null);
+    const [expandedMobileItem, setExpandedMobileItem] = useState<string | null>(
+        null,
+    );
     const headerRef = useRef<HTMLElement>(null);
 
     useEffect(() => {
@@ -286,8 +293,13 @@ const Header: FC<HeaderProps> = ({ className }) => {
                                                 key={item.label}
                                                 item={item}
                                                 currentUrl={url}
-                                                expanded={expandedMobileItem === item.label}
-                                                onToggle={() => toggleMobileItem(item.label)}
+                                                expanded={
+                                                    expandedMobileItem ===
+                                                    item.label
+                                                }
+                                                onToggle={() =>
+                                                    toggleMobileItem(item.label)
+                                                }
                                                 onClose={handleMobileClose}
                                             />
                                         ))}

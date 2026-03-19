@@ -25,6 +25,7 @@ class Page extends Model
     protected $casts = [
         'status' => ContentStatus::class,
         'page_type' => PageType::class,
+        'sections' => 'array',
     ];
 
     protected $appends = ['image'];

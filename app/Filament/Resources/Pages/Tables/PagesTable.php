@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources\Pages\Tables;
 
+use App\Enums\PageType;
 use App\Filament\Tables\Columns\MediaImageColumn;
+use App\Models\Page;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -32,6 +34,7 @@ class PagesTable
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->checkIfRecordIsSelectableUsing(fn (Page $record) => $record->page_type !== PageType::System)
             ->filters([
                 //
             ])

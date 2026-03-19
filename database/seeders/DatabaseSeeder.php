@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             \Database\Seeders\ShieldSeeder::class,
+            \Database\Seeders\SystemPagesSeeder::class,
         ]);
     }
 }

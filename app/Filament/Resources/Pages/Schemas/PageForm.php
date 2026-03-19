@@ -13,6 +13,7 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
@@ -82,7 +83,10 @@ class PageForm
                                     ->default(ContentStatus::Published),
                                 Select::make('page_type')
                                     ->label(__('filament.fields.page_type'))
-                                    ->options(PageType::class)
+                                    ->options(fn () => Collection::make(PageType::cases())
+                                        ->reject(fn (PageType $type) => $type === PageType::System)
+                                        ->mapWithKeys(fn (PageType $type) => [$type->value => $type->getLabel()])
+                                    )
                                     ->default(PageType::Regular)
                                     ->helperText(__('filament.helpers.page_type')),
                             ]),

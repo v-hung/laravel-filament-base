@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Content\PageController;
 use App\Http\Controllers\Content\PostController;
 use App\Http\Controllers\Purchase\CartController;
 use App\Http\Controllers\Purchase\PaymentController;
@@ -24,7 +25,7 @@ Route::get('/products/{product_slug}', [ProductController::class, 'detail'])->na
 // content
 Route::get('/posts', [PostController::class, 'index'])->name('posts');
 Route::get('/posts/{post_slug}', [PostController::class, 'show'])->name('posts.detail');
-Route::get('/pages/{page_slug}', [HomeController::class, 'index'])->name('pages.detail');
+Route::get('/pages/{page_slug}', [PageController::class, 'show'])->name('pages.detail');
 
 // cart
 Route::get('/cart', [CartController::class, 'index'])->name('cart');
@@ -50,4 +51,4 @@ Route::get('/greeting/{locale}', function (string $locale) {
     return redirect()->back()->cookie('locale', $locale, 60 * 24 * 365);
 })->name('lang.switch');
 
-require __DIR__ . '/settings.php';
+require __DIR__.'/settings.php';
