@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Menus\Schemas;
 
 use App\Enums\CategoryStatus;
 use App\Filament\Forms\Components\MenuBuilder;
+use App\Models\Collection;
 use App\Models\Page;
 use App\Models\Post;
 use App\Models\Product;
@@ -66,28 +67,40 @@ class MenuForm
                     ->schema([
                         MenuBuilder::make('menu_items')
                             ->label(__('filament.resources.menu_item.plural_label'))
-                            ->withModel(
-                                key: 'posts',
-                                label: __('filament.resources.post.plural_label'),
-                                modelClass: Post::class,
-                                titleField: 'title',
-                                urlResolver: fn (Post $record): string => '/posts/'.$record->slug,
-                                icon: 'heroicon-o-newspaper',
-                            )
+                            // ->withFixedLinks(
+                            //     key: 'fixed_pages',
+                            //     label: __('filament.menu_builder.fixed_pages'),
+                            //     icon: 'heroicon-o-home',
+                            //     links: [
+                            //         ['title' => ['en' => 'Home', 'vi' => 'Trang chủ'], 'url' => '/'],
+                            //         ['title' => ['en' => 'About', 'vi' => 'Về chúng tôi'], 'url' => '/about'],
+                            //         ['title' => ['en' => 'Contact', 'vi' => 'Liên hệ'], 'url' => '/contact'],
+                            //         ['title' => ['en' => 'Partners', 'vi' => 'Đối tác Tin cậy'], 'url' => '/partners'],
+                            //         ['title' => ['en' => 'Shop', 'vi' => 'Sản phẩm'], 'url' => '/shop'],
+                            //     ],
+                            // )
                             ->withModel(
                                 key: 'pages',
                                 label: __('filament.resources.page.plural_label'),
                                 modelClass: Page::class,
                                 titleField: 'title',
-                                urlResolver: fn (Page $record): string => '/pages/'.$record->slug,
+                                urlResolver: fn(Page $record): string => '/pages/' . $record->slug,
                                 icon: 'heroicon-o-document-text',
+                            )
+                            ->withModel(
+                                key: 'collections',
+                                label: __('filament.resources.collection.plural_label'),
+                                modelClass: Collection::class,
+                                titleField: 'title',
+                                urlResolver: fn(Collection $record): string => '/shop?category=' . $record->slug,
+                                icon: 'heroicon-o-squares-2x2',
                             )
                             ->withModel(
                                 key: 'products',
                                 label: __('filament.resources.product.plural_label'),
                                 modelClass: Product::class,
                                 titleField: 'name',
-                                urlResolver: fn (Product $record): string => '/products/'.$record->slug,
+                                urlResolver: fn(Product $record): string => '/products/' . $record->slug,
                                 icon: 'heroicon-o-shopping-bag',
                             ),
                     ]),

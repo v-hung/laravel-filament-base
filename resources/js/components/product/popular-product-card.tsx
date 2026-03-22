@@ -130,7 +130,7 @@ export function PopularProductCard({
                         {tv(product.description)}
                     </p>
                 )}
-                <p
+                {/* <p
                     className={cn(
                         'mt-1',
                         version === 'v2'
@@ -139,7 +139,7 @@ export function PopularProductCard({
                     )}
                 >
                     ${Number(product.price).toLocaleString()}
-                </p>
+                </p> */}
             </div>
         </div>
     );

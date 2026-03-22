@@ -60,7 +60,7 @@ export default function ShopIndex({
 
             {/* Categories */}
             {!active_collection && (
-                <Section>
+                <Section className="overflow-hidden">
                     <Container>
                         {collections.data.length > 0 ? (
                             <Carousel

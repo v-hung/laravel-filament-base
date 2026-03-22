@@ -2,12 +2,70 @@
 
 namespace App\Repositories;
 
+use App\Enums\CategoryStatus;
 use App\Models\Menu;
 use App\Models\MenuItem;
 use Illuminate\Support\Collection;
 
 class MenuItemRepository
 {
+    /**
+     * Return a nested tree of active menu items for a given slug.
+     * Title is returned as a translations map { locale: value } so the
+     * frontend can switch languages without a new request.
+     * Returns an empty array if the menu does not exist or is inactive.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    public function forFrontend(string $slug): array
+    {
+        $menu = Menu::query()
+            ->where('slug', $slug)
+            ->where('status', CategoryStatus::Active)
+            ->first();
+
+        if (! $menu) {
+            return [];
+        }
+
+        $allItems = $menu->items()
+            ->where('is_active', true)
+            ->orderBy('sort_order')
+            ->get();
+
+        return $this->buildTree($allItems);
+    }
+
+    /**
+     * Build a nested tree from a flat Collection ordered by sort_order.
+     *
+     * @param  Collection<int, MenuItem>  $allItems
+     * @return array<int, array<string, mixed>>
+     */
+    private function buildTree(Collection $allItems, ?int $parentId = null): array
+    {
+        $tree = [];
+        $children = $allItems->where('parent_id', $parentId)->sortBy('sort_order')->values();
+
+        foreach ($children as $item) {
+            $translations = method_exists($item, 'getTranslations')
+                ? $item->getTranslations('title')
+                : ['default' => (string) $item->title];
+
+            $tree[] = [
+                'id' => $item->id,
+                'title' => $translations,
+                'url' => $item->url,
+                'target' => $item->target ?? '_self',
+                'icon' => $item->icon,
+                'type' => $item->type ?? 'custom',
+                'children' => $this->buildTree($allItems, $item->id),
+            ];
+        }
+
+        return $tree;
+    }
+
     /**
      * Fetch all menu items for a menu in a single query,
      * then build a flat array (with depth) in memory — no nested DB queries.

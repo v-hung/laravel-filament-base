@@ -175,6 +175,7 @@ return [
         'inactive' => 'Inactive',
         'cancel' => 'Cancel',
         'save' => 'Save',
+        'fixed_pages' => 'Fixed Pages',
     ],
 
     'fields' => [
@@ -225,6 +226,8 @@ return [
         'specifications' => 'Technical Specifications',
         'spec_key' => 'Specification',
         'spec_value' => 'Value',
+        'features' => 'Features',
+        'policies' => 'Policies',
         'contact_message' => 'Message',
         'contact_is_read' => 'Read',
         'contact_read_status' => 'Read Status',

@@ -52,7 +52,7 @@ export default function Home({
                             <h3 className="text-h-32-bold lg:text-h-40-bold">
                                 Sản Phẩm Mới Nhất Từ Nhà Máy
                             </h3>
-                            <p className="mt-auto line-clamp-3 text-p-14-regular text-duyang-grey lg:line-clamp-none lg:text-p-16-regular">
+                            <p className="mt-auto line-clamp-3 text-justify text-p-14-regular text-duyang-grey lg:line-clamp-none lg:text-p-16-regular">
                                 {`Chúng tôi liên tục nghiên cứu, cải tiến và đưa vào sản xuất các dòng sản phẩm mới nhằm đáp ứng nhu cầu đa dạng của thị trường. Với hệ thống máy móc hiện đại và quy trình kiểm soát chất lượng chặt chẽ, mỗi sản phẩm đều đạt độ hoàn thiện cao, bền bỉ và phù hợp cho sử dụng thực tế cũng như sản xuất số lượng lớn.
 Các dòng sản phẩm từ móc treo gỗ tiêu chuẩn, móc theo thiết kế riêng đến các chi tiết gia công gỗ – nhựa kỹ thuật đều được sản xuất đồng bộ, đảm bảo tính ổn định và độ chính xác trước khi xuất xưởng.`}
                             </p>

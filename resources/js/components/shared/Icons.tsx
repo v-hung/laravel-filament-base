@@ -37,6 +37,7 @@ import XLogo from '@/assets/icons/XLogo.svg?react';
 import Vi from '@/assets/icons/countries/vi.svg?react';
 import En from '@/assets/icons/countries/en.svg?react';
 import Jp from '@/assets/icons/countries/jp.svg?react';
+import Cn from '@/assets/icons/countries/cn.svg?react';
 
 export const Icons = {
     ArrowDownRight: createIcon(ArrowDownRight),
@@ -76,6 +77,7 @@ export const Icons = {
     Vi: createIcon(Vi),
     En: createIcon(En),
     Jp: createIcon(Jp),
+    Cn: createIcon(Cn),
 };
 
 export function createIcon(Component: React.FC<SVGProps<SVGSVGElement>>) {

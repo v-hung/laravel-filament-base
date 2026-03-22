@@ -39,7 +39,7 @@ const CardRelatedProduct: React.FC<CardRelatedProductProps> = (props) => {
                 </h3>
             </Link>
 
-            <div className="mt-3 flex items-center gap-6">
+            {/* <div className="mt-3 flex items-center gap-6">
                 <p className="text-p-16-semibold text-duyang-black lg:text-p-18-semibold">
                     ${Number(product.price).toLocaleString()}
                 </p>
@@ -54,7 +54,7 @@ const CardRelatedProduct: React.FC<CardRelatedProductProps> = (props) => {
                             </span>
                         ))}
                 </p>
-            </div>
+            </div> */}
         </div>
     );
 };

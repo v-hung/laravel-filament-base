@@ -81,6 +81,45 @@ class MenuBuilder extends Field
         return $this;
     }
 
+    /**
+     * Register a fixed-links item type (static pages like Home, About, Contact).
+     *
+     * @param  array<int, array{title: string|array<string, string>, url: string}>  $links
+     */
+    public function withFixedLinks(
+        string $key,
+        string $label,
+        array $links,
+        string $icon = 'heroicon-o-link',
+    ): static {
+        $this->itemTypes[$key] = [
+            'type' => 'fixed_links',
+            'label' => $label,
+            'icon' => $icon,
+            'items_resolver' => function (string $locale) use ($links): array {
+                return array_values(array_map(
+                    function (int $index, array $link) use ($locale): array {
+                        $rawTitle = $link['title'];
+                        $title = is_array($rawTitle)
+                            ? ($rawTitle[$locale] ?? (reset($rawTitle) ?: ''))
+                            : (string) $rawTitle;
+
+                        return [
+                            'id' => $index + 1,
+                            'title' => $title,
+                            'title_translations' => is_array($rawTitle) ? $rawTitle : [],
+                            'url' => $link['url'],
+                        ];
+                    },
+                    array_keys($links),
+                    array_values($links),
+                ));
+            },
+        ];
+
+        return $this;
+    }
+
     /** @return array<string, array<string, mixed>> */
     public function getItemTypes(): array
     {
@@ -161,7 +200,7 @@ class MenuBuilder extends Field
                 'title' => $titleTranslations,
                 'type' => $item['type'] ?? 'custom',
                 'linkable_type' => $item['linkable_type'] ?: null,
-                'linkable_id' => $item['linkable_id'] ?: null,
+                'linkable_id' => ($item['linkable_type'] && $item['linkable_id']) ? (int) $item['linkable_id'] : null,
                 'url' => $item['url'] ?: null,
                 'target' => $item['target'] ?? '_self',
                 'icon' => $item['icon'] ?: null,

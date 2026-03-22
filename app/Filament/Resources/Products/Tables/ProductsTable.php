@@ -22,14 +22,14 @@ class ProductsTable
                     ->label(__('filament.fields.images'))
                     ->limit(3)
                     ->limitedRemainingText(),
-                TextColumn::make('price')
-                    ->label(__('filament.fields.price'))
-                    ->money('VND')
-                    ->sortable(),
-                TextColumn::make('stock_quantity')
-                    ->label(__('filament.fields.stock_quantity'))
-                    ->numeric()
-                    ->sortable(),
+                // TextColumn::make('price')
+                //     ->label(__('filament.fields.price'))
+                //     ->money('VND')
+                //     ->sortable(),
+                // TextColumn::make('stock_quantity')
+                //     ->label(__('filament.fields.stock_quantity'))
+                //     ->numeric()
+                //     ->sortable(),
                 TextColumn::make('status')
                     ->label(__('filament.fields.status'))
                     ->badge(),

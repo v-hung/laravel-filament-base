@@ -73,13 +73,13 @@ const ProductCard: React.FC<ProductCardProps> = (props) => {
                     </h3>
                 </Link>
 
-                <p
+                {/* <p
                     className={cn(
                         'mt-3 text-p-16-regular text-duyang-grey lg:text-p-18-regular',
                     )}
                 >
                     ${Number(product.price).toLocaleString()}
-                </p>
+                </p> */}
             </div>
         </div>
     );

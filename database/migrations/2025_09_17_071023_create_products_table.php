@@ -25,6 +25,8 @@ return new class extends Migration
             $table->integer('stock_quantity')->default(0);
             $table->integer('sales_count')->default(0);
             $table->json('specifications')->nullable();
+            $table->text('features')->nullable();
+            $table->text('policies')->nullable();
             $table->string('status')->default('active')->comment('active, inactive, out_of_stock, coming_soon, discontinued');
             $table->timestamps();
         });

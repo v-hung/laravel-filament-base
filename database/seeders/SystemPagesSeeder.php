@@ -15,7 +15,7 @@ class SystemPagesSeeder extends Seeder
             ['slug' => 'home', 'title' => 'Trang Chủ'],
             ['slug' => 'about', 'title' => 'Giới Thiệu'],
             ['slug' => 'contact', 'title' => 'Liên Hệ'],
-            ['slug' => 'partner', 'title' => 'Đối Tác'],
+            ['slug' => 'partner', 'title' => 'Đối Tác Liên Hệ'],
         ];
 
         foreach ($pages as $page) {

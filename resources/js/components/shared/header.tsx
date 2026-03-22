@@ -5,8 +5,8 @@ import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { cn } from '@/lib/utils/cn';
-import { about, contact, home, partner, shop } from '@/routes';
 import { CURRENT_LANGUAGE, type AppLocale } from '@/i18n/constants';
+import type { MenuNavItem } from '@/types/models';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import {
     Sheet,
@@ -26,57 +26,30 @@ import { Icons } from './Icons';
 import DuInput from './du-input';
 import BrandLogo from './brand-logo';
 
-type NavItem = {
-    label: string;
-    href: string;
-    children?: NavItem[];
-};
-
 type Language = {
     value: AppLocale;
     label: string;
     icon: FC<{ size?: number; className?: string }>;
 };
 
-function useNavItems(): NavItem[] {
-    const { t } = useTranslation();
-    return [
-        { label: t('nav.home'), href: home().url },
-        { label: t('nav.partner'), href: partner().url },
-        {
-            label: t('nav.shop'),
-            href: shop().url,
-            children: [
-                {
-                    label: t('footer.woodenHangers'),
-                    href: shop().url + '?category=wooden-hangers',
-                },
-                {
-                    label: t('footer.plasticHangers'),
-                    href: shop().url + '?category=plastic-hangers',
-                },
-                {
-                    label: t('footer.metalRacks'),
-                    href: shop().url + '?category=metal-racks',
-                },
-            ],
-        },
-        { label: t('nav.about'), href: about().url },
-        { label: t('nav.contact'), href: contact().url },
-    ];
-}
-
 const LANGUAGES: Language[] = [
     { value: 'vi', label: 'VI', icon: Icons.Vi },
     { value: 'en', label: 'EN', icon: Icons.En },
 ];
 
+function resolveTitle(title: Record<string, string>, locale: string): string {
+    return title[locale] ?? Object.values(title)[0] ?? '';
+}
+
 // Desktop: dùng DropdownMenu của Radix (tự quản lý state & animation)
-const DesktopNavItem: FC<{ item: NavItem; currentUrl: string }> = ({
-    item,
-    currentUrl,
-}) => {
-    const isActive = currentUrl.split('?')[0] === item.href;
+const DesktopNavItem: FC<{
+    item: MenuNavItem;
+    locale: string;
+    currentUrl: string;
+}> = ({ item, locale, currentUrl }) => {
+    const title = resolveTitle(item.title, locale);
+    const href = item.url ?? '#';
+    const isActive = item.url ? currentUrl.split('?')[0] === item.url : false;
     const baseLinkCls = cn(
         'px-1.5 py-2.5 text-btn-14 transition-colors lg:text-btn-16',
         isActive
@@ -84,10 +57,10 @@ const DesktopNavItem: FC<{ item: NavItem; currentUrl: string }> = ({
             : 'text-duyang-grey hover:text-duyang-black',
     );
 
-    if (!item.children) {
+    if (item.children.length === 0) {
         return (
-            <Link href={item.href} className={baseLinkCls}>
-                {item.label}
+            <Link href={href} className={baseLinkCls}>
+                {title}
             </Link>
         );
     }
@@ -95,26 +68,44 @@ const DesktopNavItem: FC<{ item: NavItem; currentUrl: string }> = ({
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <button
-                    type="button"
-                    className={cn(baseLinkCls, 'flex items-center gap-1')}
-                >
-                    {item.label}
-                    <ChevronDownIcon className="size-4 transition-transform duration-200 group-data-[state=open]:rotate-180" />
-                </button>
+                <div className="flex cursor-default items-center gap-0.5">
+                    <span
+                        role="link"
+                        tabIndex={0}
+                        className={cn(baseLinkCls, 'cursor-pointer')}
+                        onPointerDown={(e) => e.stopPropagation()}
+                        onClick={() => router.visit(href)}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') router.visit(href);
+                        }}
+                    >
+                        {title}
+                    </span>
+                    <button
+                        type="button"
+                        className={cn(
+                            'group py-2.5 transition-colors',
+                            isActive
+                                ? 'text-duyang-black'
+                                : 'text-duyang-grey hover:text-duyang-black',
+                        )}
+                    >
+                        <ChevronDownIcon className="size-4 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+                    </button>
+                </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent
                 align="start"
                 sideOffset={8}
-                className="min-w-44 rounded-none border border-duyang-grey-light bg-duyang-white p-1 shadow-sm"
+                className="min-w-44 rounded-none border border-duyang-grey-light/10 bg-duyang-white p-1 shadow-lg shadow-duyang-grey/30"
             >
                 {item.children.map((child) => (
-                    <DropdownMenuItem key={child.label} asChild>
+                    <DropdownMenuItem key={child.id} asChild>
                         <Link
-                            href={child.href}
+                            href={child.url ?? '#'}
                             className="cursor-pointer rounded-none px-3 py-2 text-p-14-medium text-duyang-grey transition-colors hover:bg-duyang-cream hover:text-duyang-black focus:bg-duyang-cream focus:text-duyang-black"
                         >
-                            {child.label}
+                            {resolveTitle(child.title, locale)}
                         </Link>
                     </DropdownMenuItem>
                 ))}
@@ -125,21 +116,24 @@ const DesktopNavItem: FC<{ item: NavItem; currentUrl: string }> = ({
 
 // Mobile: accordion với CSS grid animation (không mount/unmount)
 const MobileNavItem: FC<{
-    item: NavItem;
+    item: MenuNavItem;
+    locale: string;
     currentUrl: string;
     expanded: boolean;
     onToggle: () => void;
     onClose: () => void;
-}> = ({ item, currentUrl, expanded, onToggle, onClose }) => {
-    const isActive = currentUrl.split('?')[0] === item.href;
+}> = ({ item, locale, currentUrl, expanded, onToggle, onClose }) => {
+    const title = resolveTitle(item.title, locale);
+    const href = item.url ?? '#';
+    const isActive = item.url ? currentUrl.split('?')[0] === item.url : false;
     const baseCls = 'py-2.5 text-p-14-semibold transition-colors';
     const activeCls = 'text-duyang-black';
     const inactiveCls = 'text-duyang-grey hover:text-duyang-black';
 
-    if (!item.children) {
+    if (item.children.length === 0) {
         return (
             <Link
-                href={item.href}
+                href={href}
                 className={cn(
                     baseCls,
                     isActive
@@ -148,30 +142,32 @@ const MobileNavItem: FC<{
                 )}
                 onClick={onClose}
             >
-                {item.label}
+                {title}
             </Link>
         );
     }
 
     return (
         <div>
-            <button
-                type="button"
+            <div
                 className={cn(
                     baseCls,
                     'flex w-full items-center justify-between',
                     isActive ? activeCls : inactiveCls,
                 )}
-                onClick={onToggle}
             >
-                {item.label}
-                <ChevronDownIcon
-                    className={cn(
-                        'size-4 transition-transform duration-300',
-                        expanded && 'rotate-180',
-                    )}
-                />
-            </button>
+                <Link href={href} className="flex-1" onClick={onClose}>
+                    {title}
+                </Link>
+                <button type="button" onClick={onToggle} className="p-1">
+                    <ChevronDownIcon
+                        className={cn(
+                            'size-4 transition-transform duration-300',
+                            expanded && 'rotate-180',
+                        )}
+                    />
+                </button>
+            </div>
 
             {/* CSS grid trick: animates height without knowing exact px */}
             <div
@@ -186,12 +182,12 @@ const MobileNavItem: FC<{
                     <div className="ml-3 flex flex-col border-l border-duyang-grey-light pb-1 pl-3">
                         {item.children.map((child) => (
                             <Link
-                                key={child.label}
-                                href={child.href}
+                                key={child.id}
+                                href={child.url ?? '#'}
                                 className="py-2 text-p-14-medium text-duyang-grey transition-colors hover:text-duyang-black"
                                 onClick={onClose}
                             >
-                                {child.label}
+                                {resolveTitle(child.title, locale)}
                             </Link>
                         ))}
                     </div>
@@ -209,7 +205,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
     const { t, i18n } = useTranslation();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [searchPopupOpen, setSearchPopupOpen] = useState(false);
-    const [expandedMobileItem, setExpandedMobileItem] = useState<string | null>(
+    const [expandedMobileItem, setExpandedMobileItem] = useState<number | null>(
         null,
     );
     const headerRef = useRef<HTMLElement>(null);
@@ -234,29 +230,30 @@ const Header: FC<HeaderProps> = ({ className }) => {
         return () => observer.disconnect();
     }, []);
 
-    const navItems = useNavItems();
     const { url, props } = usePage();
     const appLocale = (props.appLocale as AppLocale) || CURRENT_LANGUAGE;
-
-    const language =
+    const locale =
         (i18n.language as AppLocale) || appLocale || CURRENT_LANGUAGE;
-    const selectedLanguage =
-        LANGUAGES.find((item) => item.value === language) ?? LANGUAGES[0];
 
-    const handleLanguageChange = async (locale: AppLocale) => {
-        router.visit(`/greeting/${locale}`, {
+    const headerMenu = props.menus.header;
+
+    const selectedLanguage =
+        LANGUAGES.find((item) => item.value === locale) ?? LANGUAGES[0];
+
+    const handleLanguageChange = async (newLocale: AppLocale) => {
+        router.visit(`/greeting/${newLocale}`, {
             method: 'get',
             preserveState: true,
             onSuccess: () => {
-                i18n.changeLanguage(locale);
+                i18n.changeLanguage(newLocale);
             },
         });
     };
 
     const handleMobileClose = () => setMobileMenuOpen(false);
 
-    const toggleMobileItem = (label: string) =>
-        setExpandedMobileItem((prev) => (prev === label ? null : label));
+    const toggleMobileItem = (id: number) =>
+        setExpandedMobileItem((prev) => (prev === id ? null : id));
 
     return (
         <header ref={headerRef} className={cn('bg-duyang-white', className)}>
@@ -288,17 +285,18 @@ const Header: FC<HeaderProps> = ({ className }) => {
                                     </SheetTitle>
 
                                     <nav className="flex flex-col">
-                                        {navItems.map((item) => (
+                                        {headerMenu.map((item) => (
                                             <MobileNavItem
-                                                key={item.label}
+                                                key={item.id}
                                                 item={item}
+                                                locale={locale}
                                                 currentUrl={url}
                                                 expanded={
                                                     expandedMobileItem ===
-                                                    item.label
+                                                    item.id
                                                 }
                                                 onToggle={() =>
-                                                    toggleMobileItem(item.label)
+                                                    toggleMobileItem(item.id)
                                                 }
                                                 onClose={handleMobileClose}
                                             />
@@ -315,10 +313,11 @@ const Header: FC<HeaderProps> = ({ className }) => {
 
                     {/* Center: Navigation Menu (Desktop) */}
                     <nav className="hidden items-center gap-8 lg:flex">
-                        {navItems.map((item) => (
+                        {headerMenu.map((item) => (
                             <DesktopNavItem
-                                key={item.label}
+                                key={item.id}
                                 item={item}
+                                locale={locale}
                                 currentUrl={url}
                             />
                         ))}
@@ -341,7 +340,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
                                 </button>
                             </DialogTrigger>
 
-                            <DialogContent className="top-16! translate-y-0! rounded-none border border-duyang-grey-light bg-duyang-white p-6 shadow-none sm:top-20! sm:max-w-4xl">
+                            <DialogContent className="top-16! translate-y-0! rounded-none border border-duyang-grey-light/10 bg-duyang-white p-6 shadow-lg shadow-duyang-grey/30 sm:top-20! sm:max-w-4xl">
                                 <div className="relative">
                                     <DuInput
                                         autoFocus
@@ -365,7 +364,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
                                     <selectedLanguage.icon size={24} />
                                 </button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent>
+                            <DropdownMenuContent className="min-w-28 rounded-none border border-duyang-grey-light/40 bg-duyang-white shadow-lg shadow-black/5">
                                 {LANGUAGES.map((item) => (
                                     <DropdownMenuItem
                                         key={item.value}
@@ -379,7 +378,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
                                                 <item.icon size={20} />
                                                 <span>{item.label}</span>
                                             </span>
-                                            {language === item.value && (
+                                            {locale === item.value && (
                                                 <CheckIcon
                                                     className="size-4 text-duyang-black"
                                                     aria-hidden="true"

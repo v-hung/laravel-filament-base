@@ -62,9 +62,9 @@ const LatestProductCard: FC<LatestProductCardProps> = ({
                 >
                     {tv(product.name)}
                 </Link>
-                <p className="mt-1 text-p-16-regular text-duyang-grey lg:text-p-18-regular">
+                {/* <p className="mt-1 text-p-16-regular text-duyang-grey lg:text-p-18-regular">
                     ${Number(product.price).toLocaleString()}
-                </p>
+                </p> */}
 
                 {/* Arrow icon — visible on hover */}
                 <Link

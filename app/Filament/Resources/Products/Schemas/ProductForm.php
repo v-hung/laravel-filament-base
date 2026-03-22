@@ -81,26 +81,41 @@ class ProductForm
                                     ]),
                             ]),
 
-                        Section::make(__('filament.sections.pricing'))
+                        Section::make(__('filament.sections.specifications'))
                             ->schema([
-                                Grid::make(3)->schema([
-                                    TextInput::make('price')
-                                        ->label(__('filament.fields.price'))
-                                        ->required()
-                                        ->numeric()
-                                        ->default(0)
-                                        ->prefix('VND'),
-                                    TextInput::make('compare_at_price')
-                                        ->label(__('filament.fields.compare_at_price'))
-                                        ->numeric()
-                                        ->prefix('VND'),
-                                    TextInput::make('stock_quantity')
-                                        ->label(__('filament.fields.stock_quantity'))
-                                        ->required()
-                                        ->numeric()
-                                        ->default(0),
-                                ]),
+                                KeyValue::make('specifications')
+                                    ->label(__('filament.fields.specifications'))
+                                    ->keyLabel(__('filament.fields.spec_key'))
+                                    ->valueLabel(__('filament.fields.spec_value'))
+                                    ->reorderable(),
+                                Textarea::make('features')
+                                    ->label(__('filament.fields.features'))
+                                    ->rows(4),
+                                Textarea::make('policies')
+                                    ->label(__('filament.fields.policies'))
+                                    ->rows(4),
                             ]),
+
+                        // Section::make(__('filament.sections.pricing'))
+                        //     ->schema([
+                        //         Grid::make(3)->schema([
+                        //             TextInput::make('price')
+                        //                 ->label(__('filament.fields.price'))
+                        //                 ->required()
+                        //                 ->numeric()
+                        //                 ->default(0)
+                        //                 ->prefix('VND'),
+                        //             TextInput::make('compare_at_price')
+                        //                 ->label(__('filament.fields.compare_at_price'))
+                        //                 ->numeric()
+                        //                 ->prefix('VND'),
+                        //             TextInput::make('stock_quantity')
+                        //                 ->label(__('filament.fields.stock_quantity'))
+                        //                 ->required()
+                        //                 ->numeric()
+                        //                 ->default(0),
+                        //         ]),
+                        //     ]),
                     ]),
 
                     // Sidebar (right, 1/3)
@@ -132,14 +147,6 @@ class ProductForm
                                     ->visible(fn (Get $get): bool => (bool) $get('is_featured')),
                             ]),
 
-                        Section::make(__('filament.sections.specifications'))
-                            ->schema([
-                                KeyValue::make('specifications')
-                                    ->label(__('filament.fields.specifications'))
-                                    ->keyLabel(__('filament.fields.spec_key'))
-                                    ->valueLabel(__('filament.fields.spec_value'))
-                                    ->reorderable(),
-                            ]),
                     ]),
                 ]),
             ]);

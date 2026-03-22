@@ -175,6 +175,7 @@ return [
         'inactive' => 'Ẩn',
         'cancel' => 'Hủy',
         'save' => 'Lưu',
+        'fixed_pages' => 'Trang cố định',
     ],
 
     'fields' => [
@@ -225,6 +226,8 @@ return [
         'specifications' => 'Thông số kỹ thuật',
         'spec_key' => 'Thông số',
         'spec_value' => 'Giá trị',
+        'features' => 'Đặc trưng',
+        'policies' => 'Chính sách',
         'contact_message' => 'Nội dung',
         'contact_is_read' => 'Đã đọc',
         'contact_read_status' => 'Trạng thái đọc',
