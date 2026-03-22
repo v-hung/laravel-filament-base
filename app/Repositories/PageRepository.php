@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Data\SearchParams;
 use App\Enums\ContentStatus;
+use App\Enums\PageType;
 use App\Models\Page;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -14,7 +15,8 @@ class PageRepository
         $params ??= new SearchParams;
 
         $query = Page::query()
-            ->where('status', ContentStatus::Published);
+            ->where('status', ContentStatus::Published)
+            ->where('page_type', PageType::Regular);
 
         if (!empty($excludeIds)) {
             $query->whereNotIn('id', $excludeIds);

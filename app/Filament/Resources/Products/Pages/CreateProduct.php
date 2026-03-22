@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Products\Pages;
 
+use App\Filament\Actions\AutoTranslateAction;
 use App\Filament\Resources\Products\ProductResource;
 use Filament\Resources\Pages\CreateRecord;
 use LaraZeus\SpatieTranslatable\Actions\LocaleSwitcher;
@@ -17,7 +18,7 @@ class CreateProduct extends CreateRecord
     {
         return [
             LocaleSwitcher::make(),
-            // ...
+            AutoTranslateAction::make(),
         ];
     }
 }

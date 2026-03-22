@@ -92,6 +92,7 @@ return [
     'blocks' => [
         'split' => 'Split Layout',
         'two_column' => [
+            'label' => 'Two Column Layout',
             'image_position' => 'Image Position',
             'position_left' => 'Left',
             'position_right' => 'Right',
@@ -114,6 +115,12 @@ return [
 
     'actions' => [
         'add_split_block' => 'Add Split Block',
+        'auto_translate' => 'Auto Translate',
+        'auto_translate_description' => 'Translate all multilingual fields from the current locale to other locales using Gemini AI.',
+        'auto_translate_confirm' => 'Start Translating',
+        'auto_translate_success' => 'Translation successful!',
+        'auto_translate_failed' => 'Translation failed. Please check your API key.',
+        'auto_translate_no_targets' => 'No other locales to translate to.',
     ],
 
     'settings' => [

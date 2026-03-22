@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Products\Pages;
 
+use App\Filament\Actions\AutoTranslateAction;
 use App\Filament\Resources\Products\ProductResource;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ViewAction;
@@ -19,6 +20,7 @@ class EditProduct extends EditRecord
     {
         return [
             LocaleSwitcher::make(),
+            AutoTranslateAction::make(),
             ViewAction::make(),
             DeleteAction::make(),
         ];

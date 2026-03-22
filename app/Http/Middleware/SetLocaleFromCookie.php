@@ -18,7 +18,7 @@ class SetLocaleFromCookie
     {
         $locale = $request->cookie('locale') ?? config('app.locale');
 
-        if (in_array($locale, ['en', 'vi'])) {
+        if (in_array($locale, config('app.available_locales'))) {
             App::setLocale($locale);
             $request->session()->put('locale', $locale);
         }

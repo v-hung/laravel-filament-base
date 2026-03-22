@@ -19,6 +19,8 @@ class ShowcaseResource extends Resource
 {
     protected static ?string $model = Showcase::class;
 
+    protected static bool $shouldRegisterNavigation = false;
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::CircleStack;
 
     public static function getNavigationGroup(): string|UnitEnum|null

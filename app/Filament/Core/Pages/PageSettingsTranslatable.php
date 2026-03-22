@@ -24,7 +24,7 @@ class PageSettingsTranslatable extends Page implements HasForms
 
     public function getTranslatableLocales(): array
     {
-        return ['en', 'vi'];
+        return config('app.available_locales');
     }
 
     protected function getHeaderActions(): array

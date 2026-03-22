@@ -21,7 +21,7 @@ class TwoColumnBlock extends RichContentCustomBlock
 
     public static function getLabel(): string
     {
-        return 'Two Column Layout';
+        return __('filament.blocks.two_column.label');
     }
 
     public static function getIcon(): string

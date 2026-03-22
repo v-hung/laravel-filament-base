@@ -47,7 +47,7 @@ class AppServiceProvider extends ServiceProvider
             // });
 
             LanguageSwitch::configureUsing(function (LanguageSwitch $switch) {
-                $switch->locales(['en', 'vi']); // also accepts a closure
+                $switch->locales(config('app.available_locales')); // also accepts a closure
             });
 
             app()->instance('settings', app(SettingRepository::class)->getAll());
@@ -63,13 +63,13 @@ class AppServiceProvider extends ServiceProvider
         );
 
         Password::defaults(
-            fn (): ?Password => app()->isProduction()
+            fn(): ?Password => app()->isProduction()
                 ? Password::min(12)
-                    ->mixedCase()
-                    ->letters()
-                    ->numbers()
-                    ->symbols()
-                    ->uncompromised()
+                ->mixedCase()
+                ->letters()
+                ->numbers()
+                ->symbols()
+                ->uncompromised()
                 : null
         );
     }

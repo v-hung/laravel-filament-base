@@ -40,7 +40,7 @@ Route::post('/checkout', [PaymentController::class, 'process'])->name('checkout.
 
 // Common routes
 Route::get('/greeting/{locale}', function (string $locale) {
-    if (! in_array($locale, ['en', 'vi'])) {
+    if (! in_array($locale, config('app.available_locales'))) {
         abort(400, 'Unsupported locale');
     }
 
@@ -51,4 +51,4 @@ Route::get('/greeting/{locale}', function (string $locale) {
     return redirect()->back()->cookie('locale', $locale, 60 * 24 * 365);
 })->name('lang.switch');
 
-require __DIR__.'/settings.php';
+require __DIR__ . '/settings.php';

@@ -76,17 +76,17 @@ class AdminPanelProvider extends PanelProvider
                         'sm' => 2,
                     ]),
                 SpatieTranslatablePlugin::make()
-                    ->defaultLocales(['vi', 'en']),
+                    ->defaultLocales(config('app.available_locales')),
             ])
             ->navigationGroups([
-                'shop' => NavigationGroup::make(fn () => __('filament.navigation.shop')),
-                'content' => NavigationGroup::make(fn () => __('filament.navigation.content')),
-                'user' => NavigationGroup::make(fn () => __('filament-shield::filament-shield.nav.group')),
-                'settings' => NavigationGroup::make(fn () => __('filament.navigation.settings')),
+                'shop' => NavigationGroup::make(fn() => __('filament.navigation.shop')),
+                'content' => NavigationGroup::make(fn() => __('filament.navigation.content')),
+                'user' => NavigationGroup::make(fn() => __('filament-shield::filament-shield.nav.group')),
+                'settings' => NavigationGroup::make(fn() => __('filament.navigation.settings')),
             ])
             ->renderHook(
                 PanelsRenderHook::BODY_END,
-                fn () => Blade::render('@livewire(\'media-picker-modal\')')
+                fn() => Blade::render('@livewire(\'media-picker-modal\')')
             )
             ->authMiddleware([
                 Authenticate::class,
