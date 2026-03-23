@@ -61,11 +61,24 @@ class PageRepository
             return null;
         }
 
-        $sections = $page->sections ?? [];
-        $imageIds = $this->collectImageIds($sections);
-        $mediaMap = $this->mediaRepository->getMediaByIds($imageIds)->keyBy('id');
+        $translations = $page->getTranslations('sections');
 
-        return $this->resolveImages($sections, $mediaMap);
+        $allImageIds = [];
+        foreach ($translations as $localeSections) {
+            $sections = is_array($localeSections) ? $localeSections : [];
+            $allImageIds = array_merge($allImageIds, $this->collectImageIds($sections));
+        }
+        $mediaMap = $this->mediaRepository->getMediaByIds(
+            array_values(array_unique(array_filter($allImageIds)))
+        )->keyBy('id');
+
+        $result = [];
+        foreach ($translations as $locale => $localeSections) {
+            $sections = is_array($localeSections) ? $localeSections : [];
+            $result[$locale] = $this->resolveImages($sections, $mediaMap);
+        }
+
+        return $result;
     }
 
     private function collectImageIds(array $data): array

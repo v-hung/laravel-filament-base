@@ -23,6 +23,8 @@ class MediaPicker extends Field
 
     protected array $conversions = [];
 
+    protected bool $compact = false;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -136,6 +138,18 @@ class MediaPicker extends Field
         $this->conversions = $conversions;
 
         return $this;
+    }
+
+    public function compact(bool $condition = true): static
+    {
+        $this->compact = $condition;
+
+        return $this;
+    }
+
+    public function isCompact(): bool
+    {
+        return $this->compact;
     }
 
     public function isMultiple(): bool

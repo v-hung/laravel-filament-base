@@ -109,20 +109,8 @@
     @endif
 
     @if ($mediaItems->hasPages())
-        <div class="mt-6 flex justify-center">
-            {{ $mediaItems->links() }}
-        </div>
-    @endif
-
-    @if ($mediaItems->count() > 0)
-        <div class="mt-6 border-t border-gray-200 pt-6 text-sm text-gray-600 dark:border-gray-700 dark:text-gray-400">
-            {{ __('media.manager.showing') }} <span
-                class="font-medium text-gray-900 dark:text-white">{{ $mediaItems->firstItem() ?? 0 }}</span>
-            {{ __('media.manager.to') }}
-            <span class="font-medium text-gray-900 dark:text-white">{{ $mediaItems->lastItem() ?? 0 }}</span>
-            {{ __('media.manager.of') }}
-            <span class="font-medium text-gray-900 dark:text-white">{{ $mediaItems->total() }}</span>
-            {{ __('media.manager.results') }}
+        <div class="mt-4 border-t border-gray-200 pt-4 dark:border-gray-700">
+            {{ $mediaItems->links('components.media-picker.pagination') }}
         </div>
     @endif
 </div>

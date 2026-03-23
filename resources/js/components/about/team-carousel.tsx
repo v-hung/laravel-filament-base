@@ -7,10 +7,16 @@ import {
     useCarousel,
 } from '../ui/carousel';
 
+type SocialLink = {
+    label?: string;
+    url?: string;
+};
+
 type TeamMember = {
     name?: string;
     role?: string;
     image?: Media;
+    social_links?: SocialLink[];
 };
 
 type TeamCarouselProps = {
@@ -102,42 +108,51 @@ const TeamCarousel: React.FC<TeamCarouselProps> = ({ title, members = [] }) => {
             </div>
 
             <CarouselContent className="-ml-6 lg:-ml-8">
-                {members.map((member: TeamMember, i: number) => (
-                    <CarouselItem
-                        key={i}
-                        className="basis-full pl-6 md:basis-1/2 lg:basis-1/4 lg:pl-8"
-                    >
-                        <div className="relative flex flex-col gap-3">
-                            <div className="relative aspect-295/320 w-full transition-all hover:static">
-                                <div className="group absolute top-0 left-0 h-full w-full overflow-hidden transition-all">
-                                    <img
-                                        src={member.image?.url}
-                                        alt={member.name}
-                                        className="h-full w-full bg-duyang-cream object-cover object-top transition-all"
-                                    />
-                                    <div className="absolute bottom-3 left-3 flex gap-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                                        {['IG', 'IN', 'FB'].map((platform) => (
-                                            <button
-                                                key={platform}
-                                                className="bg-duyang-white px-2.5 py-1.5 text-btn-14 text-duyang-black"
-                                            >
-                                                {platform}
-                                            </button>
-                                        ))}
+                {members.map((member: TeamMember, i: number) => {
+                    const socialLinks = (member.social_links ?? []).filter((s) => s.label && s.url);
+
+                    return (
+                        <CarouselItem
+                            key={i}
+                            className="basis-full pl-6 md:basis-1/2 lg:basis-1/4 lg:pl-8"
+                        >
+                            <div className="relative flex flex-col gap-3">
+                                <div className="relative aspect-295/320 w-full transition-all hover:static">
+                                    <div className="group absolute top-0 left-0 h-full w-full overflow-hidden transition-all">
+                                        <img
+                                            src={member.image?.url}
+                                            alt={member.name}
+                                            className="h-full w-full bg-duyang-cream object-cover object-top transition-all"
+                                        />
+                                        {socialLinks.length > 0 && (
+                                            <div className="absolute bottom-3 left-3 flex gap-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                                                {socialLinks.map((social) => (
+                                                    <a
+                                                        key={social.label}
+                                                        href={social.url}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="bg-duyang-white px-2.5 py-1.5 text-btn-14 text-duyang-black"
+                                                    >
+                                                        {social.label}
+                                                    </a>
+                                                ))}
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
+                                <div className="flex flex-col gap-2">
+                                    <span className="text-p-14-regular text-duyang-grey">
+                                        {member.role}
+                                    </span>
+                                    <span className="text-p-18-bold text-duyang-black lg:text-h-22-bold">
+                                        {member.name}
+                                    </span>
+                                </div>
                             </div>
-                            <div className="flex flex-col gap-2">
-                                <span className="text-p-14-regular text-duyang-grey">
-                                    {member.role}
-                                </span>
-                                <span className="text-p-18-bold text-duyang-black lg:text-h-22-bold">
-                                    {member.name}
-                                </span>
-                            </div>
-                        </div>
-                    </CarouselItem>
-                ))}
+                        </CarouselItem>
+                    );
+                })}
             </CarouselContent>
 
             <CarouselDots />

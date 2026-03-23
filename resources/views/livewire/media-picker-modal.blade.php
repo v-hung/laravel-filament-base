@@ -20,7 +20,7 @@
                 <x-media-picker.modals.create-folder-modal :newFolderName="$newFolderName" :breadcrumbs="$breadcrumbs" />
             @elseif($currentModal === 'upload')
                 <!-- Upload Modal -->
-                <x-media-picker.modals.upload-modal :uploadedFiles="$uploadedFiles" :currentFolder="$currentFolder" :breadcrumbs="$breadcrumbs" />
+                <x-media-picker.modals.upload-modal :uploadedFiles="$uploadedFiles" :currentFolder="$currentFolder" :breadcrumbs="$breadcrumbs" :acceptedFileTypes="$acceptedFileTypes" />
             @endif
         </div>
     @endif

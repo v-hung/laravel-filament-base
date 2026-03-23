@@ -1,4 +1,4 @@
-@props(['uploadedFiles', 'currentFolder', 'breadcrumbs' => []])
+@props(['uploadedFiles', 'currentFolder', 'breadcrumbs' => [], 'acceptedFileTypes' => ['image/*']])
 
 <x-media-picker.base-modal title="{{ __('media.upload.title') }}" maxWidth="2xl">
     <div class="text-center mb-6">
@@ -21,7 +21,7 @@
     </div>
 
     <!-- File Upload Area -->
-    <x-media-picker.form.file-input name="uploadedFiles" wire:model="uploadedFiles" multiple accept="image/*" />
+    <x-media-picker.form.file-input name="uploadedFiles" wire:model="uploadedFiles" multiple accept="{{ implode(',', $acceptedFileTypes) }}" />
 
     <!-- Selected Files Preview -->
     @if ($uploadedFiles)

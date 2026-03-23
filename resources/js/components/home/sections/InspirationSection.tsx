@@ -1,23 +1,28 @@
 import InspirationGallery from '@/components/shared/inspiration-gallery';
 import Container from '@/components/shared/container';
 import Section from '@/components/shared/section';
+import type { Media } from '@/types';
 import type { FC } from 'react';
 
 type InspirationSectionProps = {
-    data?: { title?: string };
+    data?: { title?: string; images?: { image?: Media }[] };
 };
 
-const InspirationSection: FC<InspirationSectionProps> = ({ data }) => (
-    <Section>
-        <Container>
-            <div className="mb-12 lg:mb-16">
-                <h2 className="text-h-32-bold text-duyang-black lg:text-center lg:text-h-40-bold">
-                    {data?.title}
-                </h2>
-            </div>
-            <InspirationGallery />
-        </Container>
-    </Section>
-);
+const InspirationSection: FC<InspirationSectionProps> = ({ data }) => {
+    const images = data?.images?.map((item) => item.image).filter((img): img is Media => !!img);
+
+    return (
+        <Section>
+            <Container>
+                <div className="mb-12 lg:mb-16">
+                    <h2 className="text-h-32-bold text-duyang-black lg:text-center lg:text-h-40-bold">
+                        {data?.title}
+                    </h2>
+                </div>
+                <InspirationGallery images={images} />
+            </Container>
+        </Section>
+    );
+};
 
 export default InspirationSection;

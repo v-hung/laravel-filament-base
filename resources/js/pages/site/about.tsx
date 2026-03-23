@@ -23,7 +23,7 @@ type AboutProps = {
         development?: SectionData;
         team?: {
             title?: string;
-            members?: { name?: string; role?: string; image?: Media }[];
+            members?: { name?: string; role?: string; image?: Media; social_links?: { label?: string; url?: string }[] }[];
         };
         core_values?: {
             title?: string;

@@ -1,10 +1,8 @@
-import { Icons } from '../shared/Icons';
 import type { Media } from '@/types';
-
-const featureIcons = [Icons.Leaf, Icons.Couch, Icons.Hammer, Icons.Truck];
 
 type ProcessFeature = {
     title?: string;
+    image?: Media;
 };
 
 type ProcessProps = {
@@ -42,22 +40,25 @@ const Process = ({ title, description, image, features = [] }: ProcessProps) => 
 
             {features.length > 0 && (
                 <div className="grid grid-cols-2 gap-8 lg:grid-cols-4">
-                    {features.map((feature, index) => {
-                        const Icon = featureIcons[index % featureIcons.length];
-                        return (
-                            <div
-                                key={index}
-                                className="flex flex-col items-center gap-3 text-center lg:flex-row lg:gap-6 lg:text-start"
-                            >
-                                <div className="flex h-14 w-14 flex-none items-center justify-center rounded bg-duyang-white text-duyang-black">
-                                    <Icon size={28} />
+                    {features.map((feature, index) => (
+                        <div
+                            key={index}
+                            className="flex flex-col items-center gap-3 text-center lg:flex-row lg:gap-6 lg:text-start"
+                        >
+                            {feature.image && (
+                                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded bg-duyang-white text-duyang-black">
+                                    <img
+                                        src={feature.image.url}
+                                        alt={feature.title ?? ''}
+                                        className="h-7 w-7 object-contain"
+                                    />
                                 </div>
-                                <span className="text-p-14-medium text-duyang-black lg:text-p-18-medium">
-                                    {feature.title}
-                                </span>
-                            </div>
-                        );
-                    })}
+                            )}
+                            <span className="text-p-14-medium text-duyang-black lg:text-p-18-medium">
+                                {feature.title}
+                            </span>
+                        </div>
+                    ))}
                 </div>
             )}
         </div>

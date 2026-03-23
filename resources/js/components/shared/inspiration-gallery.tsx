@@ -1,6 +1,7 @@
 import { cn } from '@/lib/utils/cn';
 import { useTransValue } from '@/lib/utils/trans-value';
 import { useSettingStore } from '@/stores/setting';
+import type { Media } from '@/types';
 import { type FC } from 'react';
 
 type ImagePanelProps = {
@@ -49,11 +50,13 @@ const ImagePanel: FC<ImagePanelProps> = ({
     );
 };
 
-const InspirationGallery = () => {
-    const images = useSettingStore((state) => state.shopSettings?.gallery);
-    const tv = useTransValue();
+type InspirationGalleryProps = {
+    images?: Media[];
+};
 
-    const gallery = tv(images)?.map((media) => media.url) ?? [];
+const InspirationGallery: FC<InspirationGalleryProps> = ({ images = [] }) => {
+    const tv = useTransValue();
+    const gallery = images.map((media) => media.url);
 
     const n = Math.min(gallery.length, 8);
     const imgs = gallery.slice(0, n);
