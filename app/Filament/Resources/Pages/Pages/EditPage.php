@@ -2,9 +2,11 @@
 
 namespace App\Filament\Resources\Pages\Pages;
 
-use App\Enums\PageType;
+use App\Filament\Actions\AutoTranslateAction;
 use App\Filament\Resources\Pages\PageResource;
+use App\Filament\Resources\Pages\Schemas\AboutPageForm;
 use App\Filament\Resources\Pages\Schemas\HomePageForm;
+use App\Filament\Resources\Pages\Schemas\PartnerPageForm;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
@@ -18,34 +20,38 @@ class EditPage extends EditRecord
 
     protected static string $resource = PageResource::class;
 
+    /**
+     * Maps a slug value to a dedicated form schema class.
+     * Add entries here when a page needs its own custom form.
+     *
+     * @var array<string, class-string>
+     */
+    protected array $pageFormMap = [
+        'home' => HomePageForm::class,
+        'about' => AboutPageForm::class,
+        'partner' => PartnerPageForm::class,
+    ];
+
     public function form(Schema $schema): Schema
     {
-        return match ($this->record->slug) {
-            'home' => HomePageForm::configure($schema),
-            default => parent::form($schema),
-        };
-    }
+        $slugs = $this->record->getTranslations('slug');
 
-    protected function mutateFormDataBeforeFill(array $data): array
-    {
-        return match ($this->record->slug) {
-            'home' => HomePageForm::mutateDataBeforeFill($data),
-            default => $data,
-        };
-    }
+        foreach ($this->pageFormMap as $slug => $formClass) {
+            if (in_array($slug, $slugs, true)) {
+                return $formClass::configure($schema);
+            }
+        }
 
-    protected function mutateFormDataBeforeSave(array $data): array
-    {
-        return match ($this->record->slug) {
-            'home' => HomePageForm::mutateDataBeforeSave($data),
-            default => $data,
-        };
+        return parent::form($schema);
     }
 
     protected function getHeaderActions(): array
     {
         return [
             LocaleSwitcher::make(),
+            AutoTranslateAction::make()
+                ->htmlFields(['content'])
+                ->jsonFields(['sections']),
             ViewAction::make(),
             DeleteAction::make(),
         ];

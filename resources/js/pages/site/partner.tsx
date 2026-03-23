@@ -7,96 +7,146 @@ import Section from '@/components/shared/section';
 import Story from '@/components/shared/story';
 import Story2 from '@/components/shared/story2';
 import AppLayout from '@/layouts/app-layout';
+import type { Media } from '@/types';
 
-const Partner = () => {
+type SectionData = {
+    title?: string;
+    description?: string;
+    image?: Media;
+};
+
+type PartnerProps = {
+    sections?: {
+        hero?: SectionData;
+        innovation?: SectionData;
+        stats?: {
+            items?: { value?: string; unit?: string; label?: string }[];
+        };
+        direction?: SectionData;
+        core_values?: {
+            title?: string;
+            values?: { title?: string; description?: string }[];
+        };
+        design?: SectionData;
+        improvement?: SectionData & { button_text?: string };
+        materials?: SectionData;
+        process?: SectionData & {
+            features?: { title?: string }[];
+        };
+    };
+};
+
+const Partner = ({ sections }: PartnerProps) => {
+    const hero = sections?.hero;
+    const innovation = sections?.innovation;
+    const stats = sections?.stats;
+    const direction = sections?.direction;
+    const coreValues = sections?.core_values;
+    const design = sections?.design;
+    const improvement = sections?.improvement;
+    const materials = sections?.materials;
+    const process = sections?.process;
+
     return (
         <AppLayout>
-            {/* Hero Section */}
-            <HeroSection
-                title="Vì sao lên chọn chúng tôi làm đơn vị sản xuất"
-                description="Từ tầm nhìn đến thực tế, chúng tôi tạo ra những ngôi nhà phản ánh cá tính của bạn"
-                image="/assets/images/banner/partner.jpg"
-            />
+            {hero?.title && (
+                <HeroSection
+                    title={hero.title}
+                    description={hero.description}
+                    image={hero.image?.url}
+                />
+            )}
 
-            {/* SỰ ĐỔI MỚI */}
-            <Section>
-                <Container>
-                    <Story
-                        title="SỰ ĐỔI MỚI"
-                        description={`Tại DUYANG VIETNAM, đổi mới là nền tảng trong quá trình phát triển và sản xuất. Chúng tôi không ngừng đầu tư vào công nghệ, máy móc hiện đại và cải tiến quy trình nhằm nâng cao hiệu quả sản xuất, độ chính xác và chất lượng sản phẩm.\nVới đội ngũ kỹ thuật giàu kinh nghiệm cùng tư duy cải tiến liên tục, chúng tôi hướng đến việc tạo ra các giải pháp sản xuất tối ưu, đáp ứng yêu cầu ngày càng cao của thị trường trong nước và quốc tế. Đổi mới không chỉ là chiến lược, mà là cam kết lâu dài của DUYANG VIETNAM trong việc mang đến giá trị bền vững cho đối tác.`}
-                        image="/assets/images/partner/partner-story.jpg"
-                    />
-                </Container>
-            </Section>
+            {innovation?.title && innovation?.description && innovation?.image && (
+                <Section>
+                    <Container>
+                        <Story
+                            title={innovation.title}
+                            description={innovation.description}
+                            image={innovation.image.url}
+                        />
+                    </Container>
+                </Section>
+            )}
 
-            {/* Stats */}
-            <Section>
-                <Container>
-                    <Stats />
-                </Container>
-            </Section>
+            {stats?.items && stats.items.length > 0 && (
+                <Section>
+                    <Container>
+                        <Stats items={stats.items} />
+                    </Container>
+                </Section>
+            )}
 
-            {/* Định Hướng Phát Triển */}
-            <Section>
-                <Container>
-                    <Story
-                        title="Định Hướng Phát Triển"
-                        description={`Tại DUYANG VIETNAM, chúng tôi tập trung xây dựng năng lực sản xuất bền vững thông qua việc đầu tư công nghệ, tối ưu quy trình và nâng cao chất lượng sản phẩm. Mọi hoạt động đều hướng đến mục tiêu tăng hiệu suất, đảm bảo độ chính xác và duy trì tính ổn định trong sản xuất quy mô lớn.
-Chúng tôi không ngừng nghiên cứu vật liệu, cải tiến kỹ thuật và mở rộng khả năng gia công nhằm đáp ứng yêu cầu ngày càng cao của đối tác trong và ngoài nước. Với định hướng phát triển lâu dài, DUYANG VIETNAM cam kết mang đến giải pháp sản xuất hiệu quả, tin cậy và bền vững cho khách hàng.`}
-                        image="/assets/images/partner/partner-vision.jpg"
-                    />
-                </Container>
-            </Section>
+            {direction?.title && direction?.description && direction?.image && (
+                <Section>
+                    <Container>
+                        <Story
+                            title={direction.title}
+                            description={direction.description}
+                            image={direction.image.url}
+                        />
+                    </Container>
+                </Section>
+            )}
 
-            {/* Core Values Section */}
-            <Section>
-                <Container>
-                    <CoreValues />
-                </Container>
-            </Section>
+            {(coreValues?.title || (coreValues?.values && coreValues.values.length > 0)) && (
+                <Section>
+                    <Container>
+                        <CoreValues title={coreValues?.title} values={coreValues?.values} />
+                    </Container>
+                </Section>
+            )}
 
-            {/* Thiết Kế & Phát Triển Sản Phẩm */}
-            <Section>
-                <Container>
-                    <Story
-                        title="Thiết Kế & Phát Triển Sản Phẩm"
-                        description={`Tại DUYANG VIETNAM, chúng tôi tập trung vào thiết kế tối ưu cho sản xuất và ứng dụng thực tế. Đội ngũ kỹ thuật phối hợp chặt chẽ với khách hàng để phát triển sản phẩm phù hợp về kết cấu, vật liệu và tiêu chuẩn kỹ thuật.
-Chúng tôi cung cấp giải pháp thiết kế và gia công theo yêu cầu (OEM / ODM), từ sản phẩm tiêu chuẩn đến tùy chỉnh riêng, đảm bảo tính đồng bộ, độ chính xác và khả năng sản xuất quy mô lớn. Mỗi sản phẩm đều được nghiên cứu kỹ nhằm tối ưu hiệu quả sử dụng, độ bền và chi phí sản xuất.`}
-                        image="/assets/images/partner/partner-vision2.jpg"
-                    />
-                </Container>
-            </Section>
+            {design?.title && design?.description && design?.image && (
+                <Section>
+                    <Container>
+                        <Story
+                            title={design.title}
+                            description={design.description}
+                            image={design.image.url}
+                        />
+                    </Container>
+                </Section>
+            )}
 
-            {/* Tinh Thần Cải Tiến */}
-            <Section>
-                <Container>
-                    <Story2
-                        title="Tinh Thần Cải Tiến"
-                        description="Tại DUYANG VIETNAM, chúng tôi luôn hướng đến việc cải tiến không ngừng về nghề, tay nghề nghiệp, quy trình sản xuất, chất lượng tối ưu và yêu cầu chuẩn mực tốt nhất. Mục tiêu chúng tôi là xây dựng nhà sản xuất kết tinh, liên tục cải tiến quy trình sản xuất theo yêu cầu OEM/ODM và các tiêu chuẩn công nghiệp trong yêu cầu kinh doanh."
-                        buttonText="Tìm hiểu năng lực sản xuất"
-                        image="/assets/images/partner/partner-cta.jpg"
-                    />
-                </Container>
-            </Section>
+            {improvement?.title && improvement?.description && improvement?.image && (
+                <Section>
+                    <Container>
+                        <Story2
+                            title={improvement.title}
+                            description={improvement.description}
+                            buttonText={improvement.button_text}
+                            image={improvement.image.url}
+                        />
+                    </Container>
+                </Section>
+            )}
 
-            {/* Vật liệu bền vững */}
-            <Section>
-                <Container>
-                    <Story
-                        title="Vật liệu bền vững"
-                        description="Tại DUYANG VIETNAM, chúng tôi cam kết sử dụng các nguyên vật liệu đầu vào bền vững và kiểm định đạt chuẩn trong toàn bộ quy trình sản xuất. Mỗi nguồn vật liệu đều được lựa chọn kỹ càng, đáp ứng tiêu chí chất lượng, tính ổn định và thân thiện với môi trường.\nChúng tôi không ngừng đầu tư vào việc nghiên cứu và ứng dụng các giải pháp vật liệu mới, góp phần tối ưu hoá chất lượng sản phẩm, giảm thiểu lãng phí trong quá trình sản xuất, giúp đối tác phát triển sản phẩm bền vững và hiệu quả hơn."
-                        image="/assets/images/partner/partner-vision3.jpg"
-                        reverse
-                    />
-                </Container>
-            </Section>
+            {materials?.title && materials?.description && materials?.image && (
+                <Section>
+                    <Container>
+                        <Story
+                            title={materials.title}
+                            description={materials.description}
+                            image={materials.image.url}
+                            reverse
+                        />
+                    </Container>
+                </Section>
+            )}
 
-            {/* Quy Trình Sản Xuất Tuần Hoàn */}
-            <Section className="mb-10 lg:mb-16">
-                <Container>
-                    <Process />
-                </Container>
-            </Section>
+            {(process?.title || process?.description || process?.image || (process?.features && process.features.length > 0)) && (
+                <Section className="mb-10 lg:mb-16">
+                    <Container>
+                        <Process
+                            title={process?.title}
+                            description={process?.description}
+                            image={process?.image}
+                            features={process?.features}
+                        />
+                    </Container>
+                </Section>
+            )}
         </AppLayout>
     );
 };

@@ -4,9 +4,9 @@ namespace App\Filament\Resources\Menus\Schemas;
 
 use App\Enums\CategoryStatus;
 use App\Filament\Forms\Components\MenuBuilder;
+use App\Helpers\Filament\FormHelper;
 use App\Models\Collection;
 use App\Models\Page;
-use App\Models\Post;
 use App\Models\Product;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -28,7 +28,7 @@ class MenuForm
                         Section::make(__('filament.sections.basic'))
                             ->schema([
                                 TextInput::make('name')
-                                    ->label(__('filament.fields.name'))
+                                    ->label(FormHelper::localizedLabel(__('filament.fields.name')))
                                     ->required()
                                     ->maxLength(255)
                                     ->live(onBlur: true)
@@ -67,24 +67,12 @@ class MenuForm
                     ->schema([
                         MenuBuilder::make('menu_items')
                             ->label(__('filament.resources.menu_item.plural_label'))
-                            // ->withFixedLinks(
-                            //     key: 'fixed_pages',
-                            //     label: __('filament.menu_builder.fixed_pages'),
-                            //     icon: 'heroicon-o-home',
-                            //     links: [
-                            //         ['title' => ['en' => 'Home', 'vi' => 'Trang chủ'], 'url' => '/'],
-                            //         ['title' => ['en' => 'About', 'vi' => 'Về chúng tôi'], 'url' => '/about'],
-                            //         ['title' => ['en' => 'Contact', 'vi' => 'Liên hệ'], 'url' => '/contact'],
-                            //         ['title' => ['en' => 'Partners', 'vi' => 'Đối tác Tin cậy'], 'url' => '/partners'],
-                            //         ['title' => ['en' => 'Shop', 'vi' => 'Sản phẩm'], 'url' => '/shop'],
-                            //     ],
-                            // )
                             ->withModel(
                                 key: 'pages',
                                 label: __('filament.resources.page.plural_label'),
                                 modelClass: Page::class,
                                 titleField: 'title',
-                                urlResolver: fn(Page $record): string => '/pages/' . $record->slug,
+                                urlResolver: fn (Page $record): string => '/pages/'.$record->slug,
                                 icon: 'heroicon-o-document-text',
                             )
                             ->withModel(
@@ -92,7 +80,7 @@ class MenuForm
                                 label: __('filament.resources.collection.plural_label'),
                                 modelClass: Collection::class,
                                 titleField: 'title',
-                                urlResolver: fn(Collection $record): string => '/shop?category=' . $record->slug,
+                                urlResolver: fn (Collection $record): string => '/shop?category='.$record->slug,
                                 icon: 'heroicon-o-squares-2x2',
                             )
                             ->withModel(
@@ -100,7 +88,7 @@ class MenuForm
                                 label: __('filament.resources.product.plural_label'),
                                 modelClass: Product::class,
                                 titleField: 'name',
-                                urlResolver: fn(Product $record): string => '/products/' . $record->slug,
+                                urlResolver: fn (Product $record): string => '/products/'.$record->slug,
                                 icon: 'heroicon-o-shopping-bag',
                             ),
                     ]),

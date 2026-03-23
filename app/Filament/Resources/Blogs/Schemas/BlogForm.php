@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Blogs\Schemas;
 
 use App\Enums\CategoryStatus;
 use App\Filament\Forms\Components\MediaPicker;
+use App\Helpers\Filament\FormHelper;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Grid;
@@ -27,7 +28,7 @@ class BlogForm
                             ->schema([
                                 Grid::make(2)->schema([
                                     TextInput::make('title')
-                                        ->label(__('filament.fields.title'))
+                                        ->label(FormHelper::localizedLabel(__('filament.fields.title')))
                                         ->maxLength(255)
                                         ->required()
                                         ->live(onBlur: true)
@@ -37,7 +38,7 @@ class BlogForm
                                             }
                                         }),
                                     TextInput::make('slug')
-                                        ->label(__('filament.fields.slug'))
+                                        ->label(FormHelper::localizedLabel(__('filament.fields.slug')))
                                         ->required()
                                         ->maxLength(255)
                                         ->rules(function ($livewire, $record) {
@@ -50,7 +51,7 @@ class BlogForm
                                         }),
                                 ]),
                                 TextInput::make('description')
-                                    ->label(__('filament.fields.description'))
+                                    ->label(FormHelper::localizedLabel(__('filament.fields.description')))
                                     ->maxLength(255),
                             ]),
 

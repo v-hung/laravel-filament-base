@@ -8,6 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\App;
 
 class ContactConfirmationMail extends Mailable
 {
@@ -17,13 +18,17 @@ class ContactConfirmationMail extends Mailable
 
     public function envelope(): Envelope
     {
+        App::setLocale($this->contact->locale ?? config('app.locale'));
+
         return new Envelope(
-            subject: 'Xác nhận liên hệ - '.setting('shop.site_name'),
+            subject: __('mail.contact.confirmation.subject', ['site_name' => setting('shop.site_name')]),
         );
     }
 
     public function content(): Content
     {
+        App::setLocale($this->contact->locale ?? config('app.locale'));
+
         return new Content(
             markdown: 'mail.contact.confirmation',
         );

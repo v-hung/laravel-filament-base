@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Products\Schemas;
 use App\Concerns\Media\MediaConversionDefinition;
 use App\Enums\ProductStatus;
 use App\Filament\Forms\Components\MediaPicker;
+use App\Helpers\Filament\FormHelper;
 use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
@@ -32,7 +33,7 @@ class ProductForm
                             ->schema([
                                 Grid::make(2)->schema([
                                     TextInput::make('name')
-                                        ->label(__('filament.fields.name'))
+                                        ->label(FormHelper::localizedLabel(__('filament.fields.name')))
                                         ->maxLength(255)
                                         ->required()
                                         ->live(onBlur: true)
@@ -42,7 +43,7 @@ class ProductForm
                                             }
                                         }),
                                     TextInput::make('slug')
-                                        ->label(__('filament.fields.slug'))
+                                        ->label(FormHelper::localizedLabel(__('filament.fields.slug')))
                                         ->required()
                                         ->maxLength(255)
                                         ->rules(function ($livewire, $record) {
@@ -55,7 +56,7 @@ class ProductForm
                                         }),
                                 ]),
                                 Textarea::make('description')
-                                    ->label(__('filament.fields.description'))
+                                    ->label(FormHelper::localizedLabel(__('filament.fields.description')))
                                     ->rows(3),
                             ]),
 
@@ -84,15 +85,15 @@ class ProductForm
                         Section::make(__('filament.sections.specifications'))
                             ->schema([
                                 KeyValue::make('specifications')
-                                    ->label(__('filament.fields.specifications'))
+                                    ->label(FormHelper::localizedLabel(__('filament.fields.specifications')))
                                     ->keyLabel(__('filament.fields.spec_key'))
                                     ->valueLabel(__('filament.fields.spec_value'))
                                     ->reorderable(),
                                 Textarea::make('features')
-                                    ->label(__('filament.fields.features'))
+                                    ->label(FormHelper::localizedLabel(__('filament.fields.features')))
                                     ->rows(4),
                                 Textarea::make('policies')
-                                    ->label(__('filament.fields.policies'))
+                                    ->label(FormHelper::localizedLabel(__('filament.fields.policies')))
                                     ->rows(4),
                             ]),
 

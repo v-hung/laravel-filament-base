@@ -117,6 +117,7 @@ return [
         'add_split_block' => 'Add Split Block',
         'auto_translate' => 'Auto Translate',
         'auto_translate_description' => 'Translate all multilingual fields from the current locale to other locales using Gemini AI.',
+        'auto_translate_description_dynamic' => 'Translate all multilingual fields from :source to :targets using Gemini AI.',
         'auto_translate_confirm' => 'Start Translating',
         'auto_translate_success' => 'Translation successful!',
         'auto_translate_failed' => 'Translation failed. Please check your API key.',

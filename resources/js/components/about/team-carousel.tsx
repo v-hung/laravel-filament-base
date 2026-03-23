@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import type { Media } from '@/types';
 import {
     Carousel,
     CarouselContent,
@@ -6,16 +7,17 @@ import {
     useCarousel,
 } from '../ui/carousel';
 
-const members = [
-    {
-        name: 'Jakub Pettersen',
-        role: 'Tổng Giám Đốc',
-        image: '/images/about.jpg',
-    },
-    { name: 'Nguyen Van A', role: 'Thiết Kế', image: '/images/about.jpg' },
-    { name: 'Daniel Rojas', role: 'Kỹ Thuật Viên', image: '/images/about.jpg' },
-    { name: 'Lucas Chen', role: 'Vận Hành', image: '/images/about.jpg' },
-];
+type TeamMember = {
+    name?: string;
+    role?: string;
+    image?: Media;
+};
+
+type TeamCarouselProps = {
+    title?: string;
+    members?: TeamMember[];
+};
+
 
 function CarouselControls() {
     const { scrollPrev, scrollNext, canScrollPrev, canScrollNext } =
@@ -87,27 +89,29 @@ function CarouselDots() {
     );
 }
 
-const TeamCarousel = () => {
+const TeamCarousel: React.FC<TeamCarouselProps> = ({ title, members = [] }) => {
     return (
         <Carousel opts={{ align: 'start' }}>
             <div className="mb-12 flex items-center justify-between lg:mb-16">
-                <h2 className="text-h-32-bold text-duyang-black lg:text-h-40-bold">
-                    Gặp Gỡ Những Người Phát Triển
-                </h2>
+                {title && (
+                    <h2 className="text-h-32-bold text-duyang-black lg:text-h-40-bold">
+                        {title}
+                    </h2>
+                )}
                 <CarouselControls />
             </div>
 
             <CarouselContent className="-ml-6 lg:-ml-8">
-                {members.map((member) => (
+                {members.map((member: TeamMember, i: number) => (
                     <CarouselItem
-                        key={member.name}
+                        key={i}
                         className="basis-full pl-6 md:basis-1/2 lg:basis-1/4 lg:pl-8"
                     >
                         <div className="relative flex flex-col gap-3">
                             <div className="relative aspect-295/320 w-full transition-all hover:static">
                                 <div className="group absolute top-0 left-0 h-full w-full overflow-hidden transition-all">
                                     <img
-                                        src={member.image}
+                                        src={member.image?.url}
                                         alt={member.name}
                                         className="h-full w-full bg-duyang-cream object-cover object-top transition-all"
                                     />

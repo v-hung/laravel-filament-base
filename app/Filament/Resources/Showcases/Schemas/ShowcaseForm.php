@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Showcases\Schemas;
 use App\Enums\ShowcaseType;
 use App\Enums\Status;
 use App\Filament\Forms\Components\MediaPicker;
+use App\Helpers\Filament\FormHelper;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -29,12 +30,12 @@ class ShowcaseForm
                                         ->options(ShowcaseType::class)
                                         ->required(),
                                     TextInput::make('title')
-                                        ->label(__('filament.fields.title'))
+                                        ->label(FormHelper::localizedLabel(__('filament.fields.title')))
                                         ->maxLength(255)
                                         ->required(),
                                 ]),
                                 TextInput::make('description')
-                                    ->label(__('filament.fields.description'))
+                                    ->label(FormHelper::localizedLabel(__('filament.fields.description')))
                                     ->maxLength(255),
                             ]),
 

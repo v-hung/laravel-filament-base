@@ -7,9 +7,12 @@ use App\Enums\ContentStatus;
 use App\Enums\PageType;
 use App\Models\Page;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 class PageRepository
 {
+    public function __construct(protected MediaRepository $mediaRepository) {}
+
     public function search(?SearchParams $params = null, ?array $excludeIds = []): LengthAwarePaginator
     {
         $params ??= new SearchParams;
@@ -18,7 +21,7 @@ class PageRepository
             ->where('status', ContentStatus::Published)
             ->where('page_type', PageType::Regular);
 
-        if (!empty($excludeIds)) {
+        if (! empty($excludeIds)) {
             $query->whereNotIn('id', $excludeIds);
         }
 
@@ -42,5 +45,55 @@ class PageRepository
                     ->orWhere('slug->en', $slug);
             })
             ->firstOrFail();
+    }
+
+    /**
+     * Find a page by its Vietnamese slug and return its sections with image_id resolved to image objects.
+     */
+    public function getPageSectionsWithImages(string $slug): ?array
+    {
+        $page = Page::where(function ($q) use ($slug): void {
+            $q->where('slug->vi', $slug)
+                ->orWhere('slug->en', $slug);
+        })->first();
+
+        if (! $page) {
+            return null;
+        }
+
+        $sections = $page->sections ?? [];
+        $imageIds = $this->collectImageIds($sections);
+        $mediaMap = $this->mediaRepository->getMediaByIds($imageIds)->keyBy('id');
+
+        return $this->resolveImages($sections, $mediaMap);
+    }
+
+    private function collectImageIds(array $data): array
+    {
+        $ids = [];
+        array_walk_recursive($data, function ($value, $key) use (&$ids): void {
+            if ($key === 'image_id' && is_int($value)) {
+                $ids[] = $value;
+            }
+        });
+
+        return array_values(array_unique(array_filter($ids)));
+    }
+
+    private function resolveImages(array $data, Collection $mediaMap): array
+    {
+        $result = [];
+
+        foreach ($data as $key => $value) {
+            if ($key === 'image_id' && is_int($value)) {
+                $result['image'] = $mediaMap->get($value)?->toMediaData();
+            } elseif (is_array($value)) {
+                $result[$key] = $this->resolveImages($value, $mediaMap);
+            } else {
+                $result[$key] = $value;
+            }
+        }
+
+        return $result;
     }
 }

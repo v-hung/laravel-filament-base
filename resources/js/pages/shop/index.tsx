@@ -37,25 +37,25 @@ export default function ShopIndex({
 
             {/* Hero Banner */}
             <Section className="pt-6 lg:pt-10">
-                <Container>
-                    <div className="relative h-40 overflow-hidden md:h-64 lg:h-80">
-                        <img
-                            src={
-                                active_collection?.image?.url ||
-                                '/assets/images/banner/shop.jpg'
-                            }
-                            alt={t('shop.bannerAlt')}
-                            className="h-full w-full object-cover"
-                        />
-                        <div className="absolute inset-0 flex items-center justify-center bg-black/40 px-5">
-                            <h1 className="max-w-2xl text-center text-h-24-bold text-white lg:text-h-56-bold">
-                                {active_collection
-                                    ? tv(active_collection.title)
-                                    : t('shop.bannerTitle')}
-                            </h1>
-                        </div>
+                {/* <Container> */}
+                <div className="relative h-40 overflow-hidden md:h-64 lg:h-80">
+                    <img
+                        src={
+                            active_collection?.image?.url ||
+                            '/assets/images/banner/shop.jpg'
+                        }
+                        alt={t('shop.bannerAlt')}
+                        className="h-full w-full object-cover"
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/40 px-5">
+                        <h1 className="max-w-2xl text-center text-h-24-bold text-white lg:text-h-56-bold">
+                            {active_collection
+                                ? tv(active_collection.title)
+                                : t('shop.bannerTitle')}
+                        </h1>
                     </div>
-                </Container>
+                </div>
+                {/* </Container> */}
             </Section>
 
             {/* Categories */}

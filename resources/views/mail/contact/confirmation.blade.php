@@ -1,18 +1,18 @@
 <x-mail::message>
-# Cảm ơn bạn đã liên hệ với {{ setting('shop.site_name') }}
+# {{ __('mail.contact.confirmation.title', ['site_name' => setting('shop.site_name')]) }}
 
-Xin chào **{{ $contact->name }}**,
+{{ __('mail.contact.confirmation.greeting', ['name' => $contact->name]) }}
 
-Chúng tôi đã nhận được thông tin liên hệ của bạn và sẽ phản hồi trong thời gian sớm nhất.
+{{ __('mail.contact.confirmation.intro') }}
 
-**Nội dung bạn đã gửi:**
+{{ __('mail.contact.confirmation.content_label') }}
 
 {{ $contact->content }}
 
 ---
 
-Nếu bạn có thêm câu hỏi, vui lòng liên hệ qua email **{{ setting('shop.site_email') }}** hoặc số điện thoại **{{ setting('shop.site_phone') }}**.
+{{ __('mail.contact.confirmation.footer', ['email' => setting('shop.site_email'), 'phone' => setting('shop.site_phone')]) }}
 
-Trân trọng,
+{{ __('mail.contact.confirmation.closing') }}
 {{ setting('shop.site_name') }}
 </x-mail::message>

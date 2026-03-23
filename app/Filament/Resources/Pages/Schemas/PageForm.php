@@ -6,6 +6,7 @@ use App\Enums\ContentStatus;
 use App\Enums\PageType;
 use App\Filament\Forms\Components\MediaPicker;
 use App\Filament\Forms\Components\RichEditor\RichContentCustomBlocks\TwoColumnBlock;
+use App\Helpers\Filament\FormHelper;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -31,7 +32,7 @@ class PageForm
                             ->schema([
                                 Grid::make(2)->schema([
                                     TextInput::make('title')
-                                        ->label(__('filament.fields.title'))
+                                        ->label(FormHelper::localizedLabel(__('filament.fields.title')))
                                         ->maxLength(255)
                                         ->required()
                                         ->live(onBlur: true)
@@ -41,7 +42,7 @@ class PageForm
                                             }
                                         }),
                                     TextInput::make('slug')
-                                        ->label(__('filament.fields.slug'))
+                                        ->label(FormHelper::localizedLabel(__('filament.fields.slug')))
                                         ->required()
                                         ->maxLength(255)
                                         ->rules(function ($livewire, $record) {
@@ -54,14 +55,14 @@ class PageForm
                                         }),
                                 ]),
                                 TextInput::make('description')
-                                    ->label(__('filament.fields.description'))
+                                    ->label(FormHelper::localizedLabel(__('filament.fields.description')))
                                     ->maxLength(255),
                             ]),
 
                         Section::make(__('filament.sections.content'))
                             ->schema([
                                 RichEditor::make('content')
-                                    ->label(__('filament.fields.content'))
+                                    ->label(FormHelper::localizedLabel(__('filament.fields.content')))
                                     ->extraInputAttributes(['style' => 'min-height: 20rem;'])
                                     ->customBlocks([
                                         TwoColumnBlock::class,
@@ -85,15 +86,15 @@ class PageForm
                                     ->label(__('filament.fields.status'))
                                     ->options(ContentStatus::class)
                                     ->default(ContentStatus::Published),
-                                Select::make('page_type')
-                                    ->label(__('filament.fields.page_type'))
-                                    ->options(
-                                        fn() => Collection::make(PageType::cases())
-                                            ->reject(fn(PageType $type) => $type === PageType::System)
-                                            ->mapWithKeys(fn(PageType $type) => [$type->value => $type->getLabel()])
-                                    )
-                                    ->default(PageType::Regular)
-                                    ->helperText(__('filament.helpers.page_type')),
+                                // Select::make('page_type')
+                                //     ->label(__('filament.fields.page_type'))
+                                //     ->options(
+                                //         fn() => Collection::make(PageType::cases())
+                                //             ->reject(fn(PageType $type) => $type === PageType::System)
+                                //             ->mapWithKeys(fn(PageType $type) => [$type->value => $type->getLabel()])
+                                //     )
+                                //     ->default(PageType::Regular)
+                                //     ->helperText(__('filament.helpers.page_type')),
                             ]),
                     ]),
                 ]),

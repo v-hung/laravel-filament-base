@@ -17,7 +17,7 @@ return new class extends Migration
             $table->json('slug');
             $table->json('description')->nullable();
             $table->json('content')->nullable();
-            $table->decimal('price', 15, 2);
+            $table->decimal('price', 15, 2)->default(0);
             $table->boolean('has_variant')->default(false);
             $table->decimal('compare_at_price', 15, 2)->nullable();
             $table->boolean('is_featured')->default(false);
@@ -25,8 +25,8 @@ return new class extends Migration
             $table->integer('stock_quantity')->default(0);
             $table->integer('sales_count')->default(0);
             $table->json('specifications')->nullable();
-            $table->text('features')->nullable();
-            $table->text('policies')->nullable();
+            $table->json('features')->nullable();
+            $table->json('policies')->nullable();
             $table->string('status')->default('active')->comment('active, inactive, out_of_stock, coming_soon, discontinued');
             $table->timestamps();
         });

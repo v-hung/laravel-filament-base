@@ -18,6 +18,7 @@ class Page extends Model
         'slug',
         'description',
         'content',
+        'sections',
     ];
 
     protected $guarded = [];

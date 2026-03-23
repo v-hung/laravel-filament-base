@@ -18,7 +18,7 @@ class CreateProduct extends CreateRecord
     {
         return [
             LocaleSwitcher::make(),
-            AutoTranslateAction::make(),
+            // AutoTranslateAction::make(),
         ];
     }
 }

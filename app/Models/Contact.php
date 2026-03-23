@@ -15,6 +15,7 @@ class Contact extends Model
         'name',
         'email',
         'content',
+        'locale',
         'read_at',
     ];
 

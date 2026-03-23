@@ -7,6 +7,7 @@ use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 
 class AutoTranslateAction extends Action
 {
@@ -25,6 +26,13 @@ class AutoTranslateAction extends Action
      */
     protected array $slugFields = ['slug'];
 
+    /**
+     * Fields that are key-value JSON objects — keys kept, values translated.
+     *
+     * @var array<string>
+     */
+    protected array $jsonFields = ['specifications'];
+
     public static function getDefaultName(): ?string
     {
         return 'autoTranslate';
@@ -40,7 +48,24 @@ class AutoTranslateAction extends Action
             ->color('info')
             ->requiresConfirmation()
             ->modalHeading(__('filament.actions.auto_translate'))
-            ->modalDescription(__('filament.actions.auto_translate_description'))
+            ->modalDescription(function ($livewire): string {
+                $uiLocale = app()->getLocale();
+                $localeName = fn (string $locale): string => \Locale::getDisplayLanguage($locale, $uiLocale) ?: strtoupper($locale);
+
+                $sourceLocale = $livewire->activeLocale;
+                $targetLocales = array_values(array_filter(
+                    $livewire->getTranslatableLocales(),
+                    fn ($locale) => $locale !== $sourceLocale
+                ));
+
+                $sourceName = $localeName($sourceLocale);
+                $targetNames = implode(', ', array_map($localeName, $targetLocales));
+
+                return __('filament.actions.auto_translate_description_dynamic', [
+                    'source' => $sourceName,
+                    'targets' => $targetNames,
+                ]);
+            })
             ->modalSubmitActionLabel(__('filament.actions.auto_translate_confirm'))
             ->action(function ($livewire, GeminiTranslationService $service): void {
                 $translatableAttributes = $livewire::getResource()::getTranslatableAttributes();
@@ -63,13 +88,25 @@ class AutoTranslateAction extends Action
                 $currentState = $livewire->form->getState();
                 $fieldsToTranslate = Arr::only($currentState, $translatableAttributes);
 
-                $translations = $service->translate(
-                    fields: $fieldsToTranslate,
-                    sourceLocale: $sourceLocale,
-                    targetLocales: $targetLocales,
-                    htmlFields: $this->htmlFields,
-                    slugFields: $this->slugFields,
-                );
+                try {
+                    $translations = $service->translate(
+                        fields: $fieldsToTranslate,
+                        sourceLocale: $sourceLocale,
+                        targetLocales: $targetLocales,
+                        htmlFields: $this->htmlFields,
+                        slugFields: $this->slugFields,
+                        jsonFields: $this->jsonFields,
+                    );
+                } catch (\Throwable $e) {
+                    Log::error('AutoTranslateAction failed', ['error' => $e->getMessage()]);
+
+                    Notification::make()
+                        ->danger()
+                        ->title(__('filament.actions.auto_translate_failed'))
+                        ->send();
+
+                    return;
+                }
 
                 if (empty($translations)) {
                     Notification::make()
@@ -79,6 +116,27 @@ class AutoTranslateAction extends Action
 
                     return;
                 }
+
+                // Post-process slugs: skip if locale already has one, ensure uniqueness
+                $record = $livewire->record ?? null;
+                foreach ($translations as $locale => &$localeData) {
+                    foreach ($this->slugFields as $slugField) {
+                        if (! isset($localeData[$slugField])) {
+                            continue;
+                        }
+
+                        $existingSlug = $livewire->otherLocaleData[$locale][$slugField] ?? null;
+
+                        if (! empty($existingSlug)) {
+                            unset($localeData[$slugField]);
+
+                            continue;
+                        }
+
+                        $localeData[$slugField] = $this->makeSlugUnique($localeData[$slugField], $locale, $record, $slugField);
+                    }
+                }
+                unset($localeData);
 
                 foreach ($translations as $locale => $localeData) {
                     $livewire->otherLocaleData[$locale] = array_merge(
@@ -92,6 +150,33 @@ class AutoTranslateAction extends Action
                     ->title(__('filament.actions.auto_translate_success'))
                     ->send();
             });
+    }
+
+    private function makeSlugUnique(string $slug, string $locale, mixed $record, string $field = 'slug'): string
+    {
+        if (! $record) {
+            return $slug;
+        }
+
+        $modelClass = get_class($record);
+        $baseSlug = $slug;
+        $counter = 2;
+
+        while (true) {
+            $query = $modelClass::query()->where("{$field}->{$locale}", $slug);
+
+            if ($record->exists) {
+                $query->where($record->getKeyName(), '!=', $record->getKey());
+            }
+
+            if (! $query->exists()) {
+                break;
+            }
+
+            $slug = $baseSlug.'-'.$counter++;
+        }
+
+        return $slug;
     }
 
     /**
@@ -110,6 +195,16 @@ class AutoTranslateAction extends Action
     public function slugFields(array $fields): static
     {
         $this->slugFields = $fields;
+
+        return $this;
+    }
+
+    /**
+     * @param  array<string>  $fields
+     */
+    public function jsonFields(array $fields): static
+    {
+        $this->jsonFields = $fields;
 
         return $this;
     }

@@ -12,18 +12,30 @@ class SystemPagesSeeder extends Seeder
     public function run(): void
     {
         $pages = [
-            ['slug' => 'home', 'title' => 'Trang Chủ'],
-            ['slug' => 'about', 'title' => 'Giới Thiệu'],
-            ['slug' => 'contact', 'title' => 'Liên Hệ'],
-            ['slug' => 'partner', 'title' => 'Đối Tác Liên Hệ'],
+            [
+                'slug' => ['vi' => 'home', 'en' => 'home'],
+                'title' => ['vi' => 'Trang chủ', 'en' => 'Home'],
+            ],
+            [
+                'slug' => ['vi' => 'about', 'en' => 'about'],
+                'title' => ['vi' => 'Giới thiệu', 'en' => 'About'],
+            ],
+            [
+                'slug' => ['vi' => 'contact', 'en' => 'contact'],
+                'title' => ['vi' => 'Liên hệ', 'en' => 'Contact'],
+            ],
+            [
+                'slug' => ['vi' => 'partner', 'en' => 'partner'],
+                'title' => ['vi' => 'Đối tác', 'en' => 'Partner'],
+            ],
         ];
 
         foreach ($pages as $page) {
             Page::firstOrCreate(
-                ['slug->vi' => $page['slug']],
+                ['slug->vi' => $page['slug']['vi']],
                 [
-                    'title' => ['vi' => $page['title'], 'en' => $page['title']],
-                    'slug' => ['vi' => $page['slug'], 'en' => $page['slug']],
+                    'title' => $page['title'],
+                    'slug' => $page['slug'],
                     'page_type' => PageType::System,
                     'status' => ContentStatus::Published,
                 ]

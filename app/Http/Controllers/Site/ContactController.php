@@ -21,7 +21,10 @@ class ContactController extends Controller
     public function store(StoreContactRequest $request): RedirectResponse
     {
         try {
-            $contact = Contact::create($request->validated());
+            $contact = Contact::create([
+                ...$request->validated(),
+                'locale' => app()->getLocale(),
+            ]);
 
             // Uncomment to enable email notifications:
 
