@@ -29,6 +29,7 @@ class BlogForm
                                 Grid::make(2)->schema([
                                     TextInput::make('title')
                                         ->label(FormHelper::localizedLabel(__('filament.fields.title')))
+                                        ->validationAttribute(__('filament.fields.title'))
                                         ->maxLength(255)
                                         ->required()
                                         ->live(onBlur: true)
@@ -39,6 +40,7 @@ class BlogForm
                                         }),
                                     TextInput::make('slug')
                                         ->label(FormHelper::localizedLabel(__('filament.fields.slug')))
+                                        ->validationAttribute(__('filament.fields.slug'))
                                         ->required()
                                         ->maxLength(255)
                                         ->rules(function ($livewire, $record) {

@@ -12,21 +12,25 @@ export default function SettingListener({
 }: SettingListenerProps) {
     const setShopSettings = useSettingStore((state) => state.setShopSettings);
 
-    // console.log({ initialSettings });
     useEffect(() => {
         setShopSettings(initialSettings);
 
-        const unlisten = router.on('success', (event) => {
-            const pageProps = event.detail.page.props as {
-                settings?: ShopSettings | null;
-            };
+        // const unlisten = router.on('success', (event) => {
+        //     const pageProps = event.detail.page.props as {
+        //         settings?: ShopSettings | null;
+        //     };
 
-            setShopSettings(pageProps.settings ?? null);
-        });
+        //     if (pageProps.settings !== undefined) {
+        //         const current = useSettingStore.getState().shopSettings;
+        //         if (JSON.stringify(current) !== JSON.stringify(pageProps.settings)) {
+        //             setShopSettings(pageProps.settings);
+        //         }
+        //     }
+        // });
 
-        return () => {
-            unlisten();
-        };
+        // return () => {
+        //     unlisten();
+        // };
     }, [initialSettings, setShopSettings]);
 
     return null;

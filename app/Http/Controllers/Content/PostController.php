@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Content;
 use App\Data\SearchParams;
 use App\Filament\Forms\Components\RichEditor\RichContentCustomBlocks\TwoColumnBlock;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\BaseResource;
 use App\Repositories\PostRepository;
 use Filament\Forms\Components\RichEditor\RichContentRenderer;
 use Illuminate\Http\Request;
@@ -27,7 +28,7 @@ class PostController extends Controller
         $posts = $this->postRepository->search($request);
 
         return $this->render('content/posts', [
-            'posts' => $posts,
+            'posts' => BaseResource::collection($posts),
         ]);
     }
 
@@ -42,15 +43,18 @@ class PostController extends Controller
 
             $renderedContent = collect($post->getTranslations('content'))
                 ->map(
-                    fn(string $html) => RichContentRenderer::make($html)
+                    fn (string $html) => RichContentRenderer::make($html)
                         ->customBlocks([TwoColumnBlock::class])
                         ->toHtml()
                 )
                 ->toArray();
 
             return $this->render('content/post-detail', [
-                'post' => array_merge($post->toArray(), ['content' => $renderedContent]),
-                'other_posts' => $other_posts,
+                'post' => array_merge(
+                    (new BaseResource($post))->resolve(),
+                    ['content' => $renderedContent]
+                ),
+                'other_posts' => BaseResource::collection($other_posts),
             ]);
         } catch (Throwable $e) {
             $this->flash('toast', ['type' => 'error', 'message' => __('shop.post.not_found')]);

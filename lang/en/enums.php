@@ -16,6 +16,21 @@ return [
         ],
     ],
 
+    'collection_status' => [
+        'active' => [
+            'label' => 'Active',
+            'description' => 'Visible in search and available to users.',
+        ],
+        'inactive' => [
+            'label' => 'Inactive',
+            'description' => 'Not visible and not accessible to users.',
+        ],
+        'unlisted' => [
+            'label' => 'Unlisted',
+            'description' => 'Not shown in search but accessible via direct link.',
+        ],
+    ],
+
     'content_status' => [
         'draft' => [
             'label' => 'Draft',

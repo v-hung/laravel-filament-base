@@ -175,8 +175,8 @@ php artisan optimize
 - Zip media
 
 ```
-cd storage/app/public
-zip -r ../../../media.zip media
+cd storage/app/public/media
+zip -r ../../../../media.zip .
 ```
 
 - UnZip media

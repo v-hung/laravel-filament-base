@@ -39,16 +39,16 @@ class PageRepository
                 'ids_key' => 'image_ids',
                 'output_key' => 'image',
                 'output_keys' => 'images',
-                'fetch' => fn (array $ids) => $this->mediaRepository->getMediaByIds($ids)->keyBy('id'),
-                'serialize' => fn ($item) => $item->toMediaData(),
+                'fetch' => fn(array $ids) => $this->mediaRepository->getMediaByIds($ids)->keyBy('id'),
+                'serialize' => fn($item) => $item->toMediaData(),
             ],
             [
                 'id_key' => 'collection_id',
                 'ids_key' => 'collection_ids',
                 'output_key' => 'collection',
                 'output_keys' => 'collections',
-                'fetch' => fn (array $ids) => $this->collectionRepository->getByIds($ids)->keyBy('id'),
-                'serialize' => fn ($item) => $item->toArray(),
+                'fetch' => fn(array $ids) => $this->collectionRepository->getByIds($ids)->keyBy('id'),
+                'serialize' => fn($item) => $item->toArray(),
             ],
         ];
     }
@@ -66,9 +66,6 @@ class PageRepository
         }
 
         return $query
-            ->with(['categories' => function ($q) {
-                $q->limit(1);
-            }])
             ->orderBy($params->sortBy, $params->sortDirection)
             ->paginate(
                 perPage: $params->perPage,
@@ -78,7 +75,7 @@ class PageRepository
 
     public function findBySlug(string $slug): ?Page
     {
-        return Page::with('categories')
+        return Page::query()
             ->where('status', ContentStatus::Published)
             ->whereSlug($slug)
             ->firstOrFail();
@@ -185,7 +182,7 @@ class PageRepository
                 if ($resolver['ids_key'] && $key === $resolver['ids_key'] && is_array($value)) {
                     $result[$resolver['output_keys']] = array_values(array_filter(
                         array_map(
-                            fn ($id) => is_int($id) && ($item = $map->get($id))
+                            fn($id) => is_int($id) && ($item = $map->get($id))
                                 ? ($resolver['serialize'])($item)
                                 : null,
                             $value

@@ -8,7 +8,7 @@
         activeLang: $wire.activeLocale || '{{ app()->getLocale() }}',
 
         /* ── Add form (left panel) ── */
-        addForm: { type: 'custom', title: '', url: '', target: '_self', linkable_id: null, linkable_type: null },
+        addForm: { type: 'custom', title: '', url: '', target: '_self', linkable_id: null, linkable_type: null, title_translations: {} },
 
         /* ── Model checkboxes (per typeKey) ── */
         selected: {},
@@ -78,6 +78,7 @@
             this.addForm.linkable_id = null;
             this.addForm.linkable_type = null;
             this.addForm.title = '';
+            this.addForm.title_translations = {};
         },
 
         onAddLinkableChange() {
@@ -88,6 +89,7 @@
             const found = items.find(i => String(i.id) === String(id));
             if (found) {
                 this.addForm.url = found.url || '';
+                this.addForm.title_translations = found.title_translations || {};
                 if (!this.addForm.title) {
                     this.addForm.title = this.getTitleForDisplay(found);
                 }
@@ -109,7 +111,7 @@
                 parent_temp_id: null,
                 title: this.addForm.title,
                 title_locale: this.activeLang,
-                title_translations: { [this.activeLang]: this.addForm.title },
+                title_translations: { ...this.addForm.title_translations, [this.activeLang]: this.addForm.title },
                 type: this.addForm.type,
                 linkable_type: this.addForm.linkable_type,
                 linkable_id: this.addForm.linkable_id ? Number(this.addForm.linkable_id) : null,
@@ -119,7 +121,7 @@
                 depth: 0,
                 is_active: true,
             }];
-            this.addForm = { type: this.addForm.type, title: '', url: '', target: '_self', linkable_id: null, linkable_type: null };
+            this.addForm = { type: this.addForm.type, title: '', url: '', target: '_self', linkable_id: null, linkable_type: null, title_translations: {} };
         },
 
         /* ─── Model-accordion multi-add (existing behaviour) ───── */

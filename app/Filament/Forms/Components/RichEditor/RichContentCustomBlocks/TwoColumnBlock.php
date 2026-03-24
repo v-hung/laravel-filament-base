@@ -14,6 +14,28 @@ use Filament\Support\Icons\Heroicon;
 
 class TwoColumnBlock extends RichContentCustomBlock
 {
+    protected static string $folderPath = 'posts';
+
+    /** @return class-string<static> */
+    public static function withFolderPath(string $path): string
+    {
+        static $classes = [];
+
+        if (! isset($classes[$path])) {
+            $parent = static::class;
+            $safeName = str_replace('\\', '_', $parent).'_'.md5($path);
+
+            if (! class_exists($safeName, false)) {
+                $quoted = var_export($path, true);
+                eval("class $safeName extends \\$parent { protected static string \$folderPath = $quoted; }");
+            }
+
+            $classes[$path] = $safeName;
+        }
+
+        return $classes[$path];
+    }
+
     public static function getId(): string
     {
         return 'two_column';
@@ -53,7 +75,7 @@ class TwoColumnBlock extends RichContentCustomBlock
                         ->label(__('filament.blocks.two_column.image'))
                         ->dehydrated(true)
                         ->loadStateFromRelationshipsUsing(null)
-                        ->folderPath('posts')
+                        ->folderPath(static::$folderPath)
                         ->acceptedFileTypes(['image/*']),
                 ]),
             ]);

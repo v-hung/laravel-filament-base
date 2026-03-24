@@ -11,17 +11,6 @@ class GeminiTranslationService
 {
     private const API_BASE_URL = 'https://generativelanguage.googleapis.com/v1beta/models';
 
-    private const LOCALE_NAMES = [
-        'vi' => 'Vietnamese',
-        'en' => 'English',
-        'zh' => 'Chinese (Simplified)',
-        'cn' => 'Chinese (Simplified)',
-        'ja' => 'Japanese',
-        'ko' => 'Korean',
-        'fr' => 'French',
-        'de' => 'German',
-    ];
-
     /**
      * Translate fields from a source locale to multiple target locales.
      *
@@ -47,12 +36,12 @@ class GeminiTranslationService
         // Exclude slug from fields sent to Gemini — we generate it ourselves
         $fieldsForApi = array_filter(
             $fields,
-            fn ($key) => ! in_array($key, $slugFields, true),
+            fn($key) => ! in_array($key, $slugFields, true),
             ARRAY_FILTER_USE_KEY
         );
 
         // Remove null/empty fields
-        $fieldsForApi = array_filter($fieldsForApi, fn ($value) => ! is_null($value) && $value !== '' && $value !== []);
+        $fieldsForApi = array_filter($fieldsForApi, fn($value) => ! is_null($value) && $value !== '' && $value !== []);
 
         if (empty($fieldsForApi) || empty($targetLocales)) {
             return [];
@@ -60,7 +49,7 @@ class GeminiTranslationService
 
         $prompt = $this->buildPrompt($fieldsForApi, $sourceLocale, $targetLocales, $htmlFields, $jsonFields);
 
-        $url = self::API_BASE_URL."/{$model}:generateContent?key={$apiKey}";
+        $url = self::API_BASE_URL . "/{$model}:generateContent?key={$apiKey}";
 
         try {
             /** @var \Illuminate\Http\Client\Response $response */
@@ -118,12 +107,25 @@ class GeminiTranslationService
         };
 
         if ($slugSourceField !== null) {
+
+            $englishTitleFallback = $translations['en'][$slugSourceField] ?? $fields[$slugSourceField] ?? null;
+
             foreach ($targetLocales as $locale) {
                 $translatedTitle = $translations[$locale][$slugSourceField] ?? null;
 
                 if ($translatedTitle) {
                     foreach ($slugFields as $slugField) {
-                        $translations[$locale][$slugField] = Str::slug($translatedTitle);
+                        $slug = Str::slug($translatedTitle);
+
+                        if (empty($slug) || in_array($locale, ['zh', 'cn', 'ja', 'ko'])) {
+                            $slug = Str::slug($englishTitleFallback ?? $translatedTitle);
+                        }
+
+                        if (empty($slug)) {
+                            $slug = Str::slug($translatedTitle, '-', null);
+                        }
+
+                        $translations[$locale][$slugField] = $slug;
                     }
                 }
             }
@@ -140,10 +142,10 @@ class GeminiTranslationService
      */
     private function buildPrompt(array $fields, string $sourceLocale, array $targetLocales, array $htmlFields, array $jsonFields): string
     {
-        $sourceLangName = self::LOCALE_NAMES[$sourceLocale] ?? $sourceLocale;
+        $sourceLangName = \Locale::getDisplayLanguage($sourceLocale, 'en');
 
         $targetList = implode(', ', array_map(
-            fn ($locale) => '"'.$locale.'" ('.(self::LOCALE_NAMES[$locale] ?? $locale).')',
+            fn($locale) => '"' . $locale . '" (' . \Locale::getDisplayLanguage($locale, 'en') . ')',
             $targetLocales
         ));
 

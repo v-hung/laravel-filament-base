@@ -1,73 +1,27 @@
 import { Link, router } from '@inertiajs/react';
-import { useRef } from 'react';
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { cn } from '@/lib/utils/cn';
-import { about, contact, posts as postsRoute, shop } from '@/routes';
+import { contact } from '@/routes';
 
 import BrandLogo from './brand-logo';
 import Container from './container';
 import DuButton from './du-button';
 import { useSettingStore } from '@/stores/setting';
 import { useTransValue } from '@/lib/utils/trans-value';
-
-type FooterLink = {
-    label: string;
-    href: string;
-};
-
-type FooterSectionData = {
-    heading: string;
-    links: FooterLink[];
-};
-
-function useFooterSections(): FooterSectionData[] {
-    const { t } = useTranslation();
-
-    return [
-        {
-            heading: t('footer.products'),
-            links: [
-                { label: t('footer.woodenHangers'), href: shop().url },
-                { label: t('footer.plasticHangers'), href: shop().url },
-                { label: t('footer.metalRacks'), href: shop().url },
-            ],
-        },
-        {
-            heading: t('footer.information'),
-            links: [
-                { label: t('footer.aboutUs'), href: about().url },
-                { label: t('footer.productionCapacity'), href: about().url },
-                { label: t('footer.factoryNews'), href: postsRoute().url },
-            ],
-        },
-        {
-            heading: t('footer.support'),
-            links: [
-                { label: t('footer.contactUs'), href: contact().url },
-                { label: t('footer.faq'), href: '#' },
-                { label: t('footer.policies'), href: '#' },
-            ],
-        },
-        {
-            heading: t('footer.connectWithUs'),
-            links: [
-                { label: 'Email', href: 'mailto:info@duyang.vn' },
-                { label: 'Facebook', href: '#' },
-                { label: 'WhatsApp', href: '#' },
-            ],
-        },
-    ];
-}
+import { useMenuStore } from '@/stores/menu';
+import type { MenuNavItem } from '@/types';
 
 function FooterSectionColumn({
     section,
     className,
 }: {
-    section: FooterSectionData;
+    section: MenuNavItem;
     className?: string;
 }) {
+    const tv = useTransValue();
+
     return (
         <div
             className={cn(
@@ -76,25 +30,35 @@ function FooterSectionColumn({
             )}
         >
             <h4 className="text-h-20-bold text-duyang-white lg:text-h-22-bold">
-                {section.heading}
+                {tv(section.title)}
             </h4>
             <ul className="flex flex-wrap gap-5 md:flex-col md:flex-nowrap">
-                {section.links.map((link) => (
-                    <li key={link.label}>
-                        <Link
-                            href={link.href}
-                            className="text-btn-14 text-duyang-grey-light transition-colors hover:text-duyang-white lg:text-btn-16"
-                        >
-                            {link.label}
-                        </Link>
-                    </li>
-                ))}
+                {section.children.map((item) => {
+                    const Component = item.url ? Link : 'a';
+
+                    return (
+                        <li key={item.id}>
+                            <Component
+                                href={item.url || '#'}
+                                className="text-btn-14 text-duyang-grey-light transition-colors hover:text-duyang-white lg:text-btn-16"
+                            >
+                                {tv(item.title)}
+                            </Component>
+                        </li>
+                    );
+                })}
             </ul>
         </div>
     );
 }
 
-function NewsletterSection({ className }: { className?: string }) {
+function NewsletterSection({
+    className,
+    siteName,
+}: {
+    className?: string;
+    siteName: string;
+}) {
     const { t } = useTranslation();
 
     const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
@@ -113,7 +77,7 @@ function NewsletterSection({ className }: { className?: string }) {
             )}
         >
             <h4 className="text-h-20-bold text-duyang-white lg:text-h-22-bold">
-                {t('footer.newsletter.title')}
+                {t('footer.newsletter.title', { siteName })}
             </h4>
             <div className="flex flex-col gap-4">
                 <p className="text-p-14-regular text-duyang-grey-light lg:text-p-16-regular">
@@ -142,7 +106,7 @@ function NewsletterSection({ className }: { className?: string }) {
 export const Footer: FC = () => {
     const { t } = useTranslation();
     const tv = useTransValue();
-    const footerSections = useFooterSections();
+    const footerMenu = useMenuStore((state) => state.footerMenu);
     const siteName = useSettingStore((state) => state.shopSettings.site_name);
 
     return (
@@ -155,14 +119,17 @@ export const Footer: FC = () => {
                     </div>
                     {/* Link columns + Newsletter */}
                     <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-10 lg:grid-cols-8 xl:grid-cols-12">
-                        {footerSections.map((section) => (
+                        {footerMenu.map((section) => (
                             <FooterSectionColumn
-                                key={section.heading}
+                                key={section.id}
                                 section={section}
                                 className="lg:col-span-2"
                             />
                         ))}
-                        <NewsletterSection className="md:col-span-2 lg:col-span-8 xl:col-span-4" />
+                        <NewsletterSection
+                            className="md:col-span-2 lg:col-span-8 xl:col-span-4"
+                            siteName={tv(siteName)}
+                        />
                     </div>
                 </div>
 
@@ -178,7 +145,10 @@ export const Footer: FC = () => {
                         </div>
                         <div className="flex flex-wrap gap-4 md:gap-8 lg:gap-12">
                             <p className="text-p-14- text-center text-duyang-white lg:text-p-16-semibold">
-                                {`© ${new Date().getFullYear()} ${tv(siteName)}. All Rights Reserved`}
+                                {t('common.copyright', {
+                                    year: new Date().getFullYear(),
+                                    siteName: tv(siteName),
+                                })}
                             </p>
                             <a
                                 href="#"

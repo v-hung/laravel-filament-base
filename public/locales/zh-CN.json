@@ -1,0 +1,134 @@
+{
+    "common": {
+        "previous": "上一页",
+        "next": "下一页",
+        "save": "保存",
+        "saved": "已保存",
+        "email": "邮箱",
+        "password": "密码",
+        "search": "搜索",
+        "subscribe": "订阅",
+        "menu": "菜单",
+        "readMore": "阅读更多",
+        "privacyPolicy": "隐私政策",
+        "termsOfService": "服务条款",
+        "copyright": "© {{year}} {{siteName}}。保留所有权利。"
+    },
+    "nav": {
+        "openMenu": "打开导航菜单",
+        "selectLanguage": "选择语言",
+        "languages": {
+            "vi": "越南语",
+            "en": "英语",
+            "zh-CN": "中文"
+        },
+        "searchPlaceholder": "输入产品关键词..."
+    },
+    "footer": {
+        "newsletter": {
+            "title": "获取来自 {{siteName}} 的更新",
+            "description": "订阅以获取生产能力、新产品和合作信息更新。"
+        }
+    },
+    "shop": {
+        "allProducts": "浏览所有衣架产品",
+        "featuredProducts": "客户最喜爱的产品",
+        "noCategories": "暂无分类。",
+        "noProducts": "暂无产品。",
+        "noFeaturedProducts": "暂无推荐产品。"
+    },
+    "contact": {
+        "title": "联系我们",
+        "form": {
+            "fullName": "姓名",
+            "fullNamePlaceholder": "请输入您的姓名",
+            "emailPlaceholder": "请输入您的联系邮箱",
+            "content": "内容",
+            "contentPlaceholder": "请输入您的需求、产品信息或生产要求",
+            "submit": "提交联系请求"
+        },
+        "info": {
+            "title": "联系信息",
+            "address": "办公室与工厂地址",
+            "taxCode": "税号",
+            "representative": "法定代表人",
+            "phone": "电话",
+            "businessField": "制造行业",
+            "workingHours": "工作时间"
+        }
+    },
+    "auth": {
+        "emailAddress": "邮箱地址",
+        "name": "姓名",
+        "fullNamePlaceholder": "姓名",
+        "confirmPassword": "确认密码",
+        "logIn": "登录",
+        "logOut": "退出登录",
+        "login": {
+            "title": "登录账户",
+            "description": "请输入邮箱和密码登录",
+            "forgotPassword": "忘记密码？",
+            "rememberMe": "记住我",
+            "noAccount": "没有账户？",
+            "signUp": "注册"
+        },
+        "register": {
+            "title": "创建账户",
+            "description": "请输入信息创建账户",
+            "submit": "创建账户",
+            "hasAccount": "已有账户？"
+        },
+        "forgotPassword": {
+            "title": "忘记密码",
+            "description": "输入邮箱以接收重置密码链接",
+            "submit": "发送重置链接",
+            "returnTo": "或返回"
+        },
+        "resetPassword": {
+            "title": "重置密码",
+            "description": "请输入新密码",
+            "submit": "重置密码"
+        },
+        "verifyEmail": {
+            "title": "验证邮箱",
+            "description": "请点击我们发送到您邮箱的链接进行验证。",
+            "linkSent": "新的验证链接已发送到您的邮箱。",
+            "resend": "重新发送验证邮件"
+        },
+        "confirmPasswordPage": {
+            "title": "确认密码",
+            "description": "请先确认您的密码以继续。"
+        }
+    },
+    "page": {
+        "related": {
+            "title": "其他新闻",
+            "description": "更新工厂的生产活动、订单进度以及最新出货信息。"
+        }
+    },
+    "settings": {
+        "profile": {
+            "title": "个人资料设置",
+            "emailUnverified": "您的邮箱尚未验证。",
+            "resendVerification": "点击重新发送验证邮件。",
+            "verificationLinkSent": "验证链接已发送。"
+        },
+        "password": {
+            "title": "密码设置",
+            "currentPassword": "当前密码",
+            "newPassword": "新密码",
+            "save": "保存密码"
+        },
+        "appearance": {
+            "title": "外观设置",
+            "label": "外观",
+            "description": "选择您喜欢的外观",
+            "light": "浅色",
+            "dark": "深色",
+            "system": "跟随系统"
+        }
+    },
+    "cart": {
+        "items": "{{count}} 件商品"
+    }
+}

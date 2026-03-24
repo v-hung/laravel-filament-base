@@ -1,58 +1,40 @@
 import { cn } from '@/lib/utils/cn';
-import type { PaginatorLink } from '@/types';
+import type { PaginatorMeta } from '@/types';
 import { Link } from '@inertiajs/react';
 import { useTranslation } from 'react-i18next';
 
 type PaginationProps = {
-    links: PaginatorLink[];
-    lastPage: number;
+    meta: PaginatorMeta;
     className?: string;
 };
 
-export default function Pagination({
-    links,
-    lastPage,
-    className,
-}: PaginationProps) {
+export default function Pagination({ meta, className }: PaginationProps) {
     const { t } = useTranslation();
 
-    if (lastPage <= 1) {
-        return null;
-    }
+    if (meta.last_page <= 1) return null;
 
-    const prevLink = links[0];
-    const nextLink = links[links.length - 1];
-    const pageLinks = links.slice(1, -1);
+    const prevLink = meta.links[0]; // Prev luôn ở đầu
+    const nextLink = meta.links[meta.links.length - 1]; // Next luôn ở cuối
 
-    const currentPage = pageLinks.findIndex((l) => l.active) + 1 || 1;
+    // Các trang số nằm giữa
+    const pageLinks = meta.links
+        .slice(1, -1)
+        .filter((l) => typeof l.page === 'number');
 
-    const visiblePages = (() => {
-        const pages: (number | '...')[] = [];
-        const delta = 1;
+    const currentPage = pageLinks.find((l) => l.active)?.page ?? 1;
+    const lastPage = pageLinks[pageLinks.length - 1]?.page ?? currentPage;
 
-        const rangeStart = Math.max(2, currentPage - delta);
-        const rangeEnd = Math.min(lastPage - 1, currentPage + delta);
+    // Build visible pages với ellipsis
+    const visiblePages: (number | '...')[] = [];
+    const delta = 1;
+    const start = Math.max(2, currentPage - delta);
+    const end = Math.min(lastPage - 1, currentPage + delta);
 
-        pages.push(1);
-
-        if (rangeStart > 2) {
-            pages.push('...');
-        }
-
-        for (let p = rangeStart; p <= rangeEnd; p++) {
-            pages.push(p);
-        }
-
-        if (rangeEnd < lastPage - 1) {
-            pages.push('...');
-        }
-
-        if (lastPage > 1) {
-            pages.push(lastPage);
-        }
-
-        return pages;
-    })();
+    visiblePages.push(1); // luôn show trang 1
+    if (start > 2) visiblePages.push('...');
+    for (let i = start; i <= end; i++) visiblePages.push(i);
+    if (end < lastPage - 1) visiblePages.push('...');
+    if (lastPage > 1) visiblePages.push(lastPage);
 
     return (
         <div
@@ -61,7 +43,8 @@ export default function Pagination({
                 className,
             )}
         >
-            {prevLink.url ? (
+            {/* Previous */}
+            {prevLink?.url ? (
                 <Link
                     href={prevLink.url}
                     className="border border-duyang-black/20 px-4 py-2 text-p-14-regular text-duyang-black hover:bg-duyang-cream"
@@ -74,8 +57,9 @@ export default function Pagination({
                 </span>
             )}
 
-            {visiblePages.map((page, i) => {
-                if (page === '...') {
+            {/* Pages */}
+            {visiblePages.map((p, i) => {
+                if (p === '...') {
                     return (
                         <span
                             key={`ellipsis-${i}`}
@@ -86,12 +70,12 @@ export default function Pagination({
                     );
                 }
 
-                const link = pageLinks[page - 1];
+                const link = pageLinks.find((l) => l.page === p);
                 if (!link) return null;
 
                 return link.url ? (
                     <Link
-                        key={page}
+                        key={p}
                         href={link.url}
                         className={cn(
                             'min-w-9 border px-3 py-2 text-center text-p-14-regular',
@@ -104,7 +88,7 @@ export default function Pagination({
                     </Link>
                 ) : (
                     <span
-                        key={page}
+                        key={p}
                         className="min-w-9 border border-duyang-black/20 px-3 py-2 text-center text-p-14-regular text-duyang-grey-mid"
                     >
                         {link.label}
@@ -112,7 +96,8 @@ export default function Pagination({
                 );
             })}
 
-            {nextLink.url ? (
+            {/* Next */}
+            {nextLink?.url ? (
                 <Link
                     href={nextLink.url}
                     className="border border-duyang-black/20 px-4 py-2 text-p-14-regular text-duyang-black hover:bg-duyang-cream"

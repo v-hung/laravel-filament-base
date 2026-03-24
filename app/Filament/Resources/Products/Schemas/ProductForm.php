@@ -34,6 +34,7 @@ class ProductForm
                                 Grid::make(2)->schema([
                                     TextInput::make('name')
                                         ->label(FormHelper::localizedLabel(__('filament.fields.name')))
+                                        ->validationAttribute(__('filament.fields.name'))
                                         ->maxLength(255)
                                         ->required()
                                         ->live(onBlur: true)
@@ -44,6 +45,7 @@ class ProductForm
                                         }),
                                     TextInput::make('slug')
                                         ->label(FormHelper::localizedLabel(__('filament.fields.slug')))
+                                        ->validationAttribute(__('filament.fields.slug'))
                                         ->required()
                                         ->maxLength(255)
                                         ->rules(function ($livewire, $record) {

@@ -6,6 +6,7 @@ use App\Data\ProductSearchParams;
 use App\Data\SearchParams;
 use App\Enums\ProductOrderType;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\BaseResource;
 use App\Repositories\CollectionRepository;
 use App\Repositories\PageRepository;
 use App\Repositories\ProductRepository;
@@ -29,10 +30,10 @@ class HomeController extends Controller
         $collections = $this->collectionRepository->search(new SearchParams(['perPage' => 3]));
 
         return $this->render('home', [
-            'latestProducts' => $latestProducts,
-            'pages' => $pages,
-            'collections' => $collections,
-            'sections' => $this->pageRepository->getPageSections('home'),
+            'latestProducts' => BaseResource::collection($latestProducts),
+            'pages' => BaseResource::collection($pages),
+            'collections' => BaseResource::collection($collections),
+            'sections' => BaseResource::formatArray($this->pageRepository->getPageSections('home')),
         ]);
     }
 }

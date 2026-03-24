@@ -6,19 +6,37 @@ class FormHelper
 {
     private static array $displayNameCache = [];
 
-    public static function localizedLabel(string $label): \Closure
+    public static function localizedLabel(string $label): LocalizedLabel
     {
         $displayLocale = app()->getLocale();
 
-        return function ($livewire) use ($label, $displayLocale) {
-            $activeLocale = $livewire->activeLocale;
-            $cacheKey = $activeLocale.'_'.$displayLocale;
+        return new LocalizedLabel($label, $displayLocale);
+    }
+}
 
-            if (! isset(self::$displayNameCache[$cacheKey])) {
-                self::$displayNameCache[$cacheKey] = locale_get_display_name($activeLocale, $displayLocale);
-            }
+class LocalizedLabel
+{
+    private static array $displayNameCache = [];
 
-            return $label.' ('.self::$displayNameCache[$cacheKey].')';
-        };
+    public function __construct(
+        private readonly string $label,
+        private readonly string $displayLocale,
+    ) {}
+
+    public function __invoke(mixed $livewire): string
+    {
+        $activeLocale = $livewire->activeLocale;
+        $cacheKey = $activeLocale.'_'.$this->displayLocale;
+
+        if (! isset(self::$displayNameCache[$cacheKey])) {
+            self::$displayNameCache[$cacheKey] = locale_get_display_name($activeLocale, $this->displayLocale);
+        }
+
+        return $this->label.' ('.self::$displayNameCache[$cacheKey].')';
+    }
+
+    public function __toString(): string
+    {
+        return $this->label;
     }
 }

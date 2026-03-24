@@ -41,15 +41,21 @@ Route::post('/checkout', [PaymentController::class, 'process'])->name('checkout.
 
 // Common routes
 Route::get('/greeting/{locale}', function (string $locale) {
-    if (! in_array($locale, config('app.available_locales'))) {
+
+    // normalize: zh-CN -> zh_CN
+    $locale = str_replace('-', '_', $locale);
+
+    $availableLocales = config('app.available_locales');
+
+    if (! in_array($locale, $availableLocales, true)) {
         abort(400, 'Unsupported locale');
     }
 
     session(['locale' => $locale]);
-
     App::setLocale($locale);
 
-    return redirect()->back()->cookie('locale', $locale, 60 * 24 * 365);
+    return redirect()->back() ?? redirect('/')
+        ->cookie('locale', $locale, 60 * 24 * 365);
 })->name('lang.switch');
 
 require __DIR__.'/settings.php';

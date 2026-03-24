@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Concerns\HasTranslatableSlug;
 use App\Concerns\Media\HasMedia;
-use App\Enums\CategoryStatus;
+use App\Enums\CollectionStatus;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -23,7 +23,7 @@ class Collection extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'status' => CategoryStatus::class,
+        'status' => CollectionStatus::class,
     ];
 
     protected $appends = ['image'];

@@ -29,17 +29,3 @@ export type Blog = {
     posts?: Post[];
     [key: string]: unknown;
 };
-
-export type Page = {
-    id: number;
-    title: Translatable;
-    slug: Translatable;
-    description?: Translatable | null;
-    content?: Translatable | null;
-    images?: Media[] | null;
-    image?: Media | null;
-    status?: ContentStatus | null;
-    created_at?: string;
-    updated_at?: string;
-    [key: string]: unknown;
-};

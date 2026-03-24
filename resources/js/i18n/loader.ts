@@ -16,6 +16,9 @@ export const loadDateFnsLocale = async (
         case 'en':
             locale = (await import('date-fns/locale/en-US')).enUS;
             break;
+        case 'zh-CN':
+            locale = (await import('date-fns/locale/zh-CN')).zhCN;
+            break;
         default:
             locale = (await import('date-fns/locale/vi')).vi;
             break;

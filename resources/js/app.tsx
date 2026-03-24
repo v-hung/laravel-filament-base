@@ -7,8 +7,9 @@ import './i18n/config';
 import { Toaster } from './components/ui/sonner';
 import { initializeTheme } from './hooks/use-appearance';
 import FlashListener from './shared/listeners/FlashListener';
+import MenuListener from './shared/listeners/MenuListener';
 import SettingListener from './shared/listeners/SettingListener';
-import type { ShopSettings } from './types';
+import type { ShopSettings, MenuNavItem } from './types';
 
 // const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -21,13 +22,17 @@ createInertiaApp({
         ),
     setup({ el, App, props }) {
         const root = createRoot(el);
-        const initialSettings =
-            (props.initialPage.props as { settings?: ShopSettings | null })
-                .settings ?? null;
+        const initialPage = props.initialPage.props as {
+            settings?: ShopSettings | null;
+            menus?: { header: MenuNavItem[]; footer: MenuNavItem[] } | null;
+        };
+        const initialSettings = initialPage.settings ?? null;
+        const initialMenus = initialPage.menus ?? null;
 
         root.render(
             <StrictMode>
                 <SettingListener initialSettings={initialSettings} />
+                <MenuListener initialMenus={initialMenus} />
                 <FlashListener />
                 <App {...props} />
                 <Toaster position="top-right" />

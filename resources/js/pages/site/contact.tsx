@@ -253,7 +253,8 @@ export default function Contact({ sections }: ContactProps) {
                             </h3>
                             <div className="mt-8 flex flex-col gap-5">
                                 {Object.entries(
-                                    sectionsTrans?.working_hours?.working_hours ?? {},
+                                    sectionsTrans?.working_hours
+                                        ?.working_hours ?? {},
                                 ).map(([key, value], index) => (
                                     <div
                                         key={index}
@@ -280,7 +281,10 @@ export default function Contact({ sections }: ContactProps) {
                         <div
                             className="h-75 w-full overflow-hidden lg:h-125 [&_iframe]:h-full! [&_iframe]:w-full!"
                             dangerouslySetInnerHTML={{
-                                __html: new DOMParser().parseFromString(sectionsTrans.map.embed, 'text/html').body.innerHTML,
+                                __html: new DOMParser().parseFromString(
+                                    sectionsTrans.map.embed,
+                                    'text/html',
+                                ).body.innerHTML,
                             }}
                         />
                     </Container>
@@ -294,12 +298,10 @@ export default function Contact({ sections }: ContactProps) {
                         {/* Left — Title & description */}
                         <div className="lg:col-span-4">
                             <h2 className="text-h-24-bold text-duyang-black lg:text-h-40-bold">
-                                {sectionsTrans?.faq?.title ??
-                                    t('contact.faq.title')}
+                                {sectionsTrans?.faq?.title}
                             </h2>
                             <p className="mt-6 text-p-14-regular text-duyang-grey lg:text-p-16-regular">
-                                {sectionsTrans?.faq?.description ??
-                                    t('contact.faq.description')}
+                                {sectionsTrans?.faq?.description}
                             </p>
                         </div>
                         {/* Right — Accordion */}

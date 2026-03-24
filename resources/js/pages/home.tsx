@@ -12,6 +12,8 @@ import Section from '@/components/shared/section';
 import AppLayout from '@/layouts/app-layout';
 import type { Collection, Media, Paginator, Post, Product } from '@/types';
 import { useTransValue, type Translatable } from '@/lib/utils/trans-value';
+import type { Page } from '@/types/models/page';
+import RelatedPages from '@/components/page/related-pages';
 
 type HomeSections = {
     banner?: {
@@ -54,7 +56,7 @@ type HomeSections = {
 
 type HomeProps = {
     latestProducts: Paginator<Product>;
-    pages: Paginator<Post>;
+    pages: Paginator<Page>;
     collections: Paginator<Collection>;
     sections?: Translatable<HomeSections>;
 };
@@ -88,7 +90,7 @@ export default function Home({
 
             <Section className="mb-10 lg:mb-16">
                 <Container>
-                    <RelatedPosts data={sectionsTrans?.post} posts={pages} />
+                    <RelatedPages data={sectionsTrans?.post} pages={pages} />
                 </Container>
             </Section>
         </AppLayout>

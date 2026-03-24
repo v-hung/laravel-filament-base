@@ -7,98 +7,54 @@
         "email": "Email",
         "password": "Mật khẩu",
         "search": "Tìm kiếm",
-        "subscribe": "Đăng Ký",
+        "subscribe": "Đăng ký",
         "menu": "Menu",
-        "readMore": "Xem Thêm",
-        "allRightsReserved": "© {{year}} DUYANG VIETNAM. Đã đăng ký bản quyền",
-        "privacyPolicy": "Chính Sách Bảo Mật",
-        "termsOfService": "Điều Khoản Sử Dụng"
+        "readMore": "Xem thêm",
+        "privacyPolicy": "Chính sách bảo mật",
+        "termsOfService": "Điều khoản dịch vụ",
+        "copyright": "© {{year}} {{siteName}}. All Rights Reserved"
     },
     "nav": {
-        "home": "Trang chủ",
-        "partner": "Đối Tác Tin Cậy",
-        "shop": "Sản Phẩm",
-        "about": "Về Chúng Tôi",
-        "contact": "Liên Hệ",
         "openMenu": "Mở menu điều hướng",
-        "selectLanguage": "Chọn ngôn ngữ"
+        "selectLanguage": "Chọn ngôn ngữ",
+        "languages": {
+            "vi": "Tiếng Việt",
+            "en": "Tiếng Anh",
+            "zh-CN": "Tiếng Trung"
+        },
+        "searchPlaceholder": "Nhập từ khóa sản phẩm..."
     },
     "footer": {
-        "products": "Sản Phẩm",
-        "woodenHangers": "Móc Treo Gỗ",
-        "plasticHangers": "Móc Treo Nhựa",
-        "metalRacks": "Giá Kim Loại",
-        "information": "Thông Tin",
-        "aboutUs": "Về Chúng Tôi",
-        "productionCapacity": "Năng Lực Sản Xuất",
-        "factoryNews": "Tin Tức Nhà Máy",
-        "support": "Hỗ Trợ",
-        "contactUs": "Liên Hệ",
-        "faq": "Câu Hỏi",
-        "policies": "Chính Sách",
-        "connectWithUs": "Kết Nối Với Chúng Tôi",
         "newsletter": {
-            "title": "Nhận Thông Tin Từ DUYANG VIETNAM",
-            "description": "Đăng ký để nhận cập nhật về năng lực sản xuất, sản phẩm mới và thông tin hợp tác."
-        }
-    },
-    "home": {
-        "banner": {
-            "title": "Khám Phá Bộ\nSưu Tập Tông\nMàu Đất",
-            "description": "Tô điểm không gian nội thất với sản phẩm mới từ gỗ ấm, tông trung tính và kết cấu tự nhiên"
-        },
-        "features": {
-            "sustainableMaterials": "Vật liệu\nbền vững",
-            "designForLife": "Thiết kế cho cuộc\nsống hàng ngày",
-            "craftedByExperts": "Chế tác bởi đội ngũ\nchuyên gia",
-            "convenientDelivery": "Giao hàng & hỗ trợ\nthuận tiện"
-        },
-        "about": {
-            "factoryAlt": "Nhà máy Duyang Vietnam",
-            "label": "Về Chúng Tôi",
-            "title": "Nền Tảng Chất Lượng – Tạo Nên Giá Trị Bền Vững",
-            "description": "Chúng tôi là nhà máy chuyên sản xuất các sản phẩm từ gỗ, nhựa và vật liệu công nghiệp, phục vụ thị trường trong nước và xuất khẩu. Với hệ thống máy móc hiện đại, quy trình sản xuất khép kín và đội ngũ kỹ thuật giàu kinh nghiệm, chúng tôi cam kết mang đến những sản phẩm đạt tiêu chuẩn cao về độ bền, tính chính xác và chất lượng hoàn thiện.\nKhông ngừng cải tiến công nghệ và tối ưu quy trình, chúng tôi hướng đến việc cung cấp giải pháp sản xuất hiệu quả, ổn định và lâu dài cho đối tác, từ sản phẩm tiêu chuẩn đến gia công theo yêu cầu (OEM / ODM)."
+            "title": "Nhận cập nhật từ {{siteName}}",
+            "description": "Đăng ký để nhận thông tin về năng lực sản xuất, sản phẩm mới và cơ hội hợp tác."
         }
     },
     "shop": {
-        "title": "Cửa Hàng",
-        "bannerAlt": "Khám phá tất cả sản phẩm",
-        "bannerTitle": "Khám phá tất cả sản phẩm",
-        "allProducts": "Khám Phá Tất Cả Các Sản Phẩm Móc",
-        "featuredProducts": "Sản Phẩm Được Khách Hàng Yêu Thích Nhất",
-        "noCategories": "Không có danh mục nào.",
-        "noProducts": "Không có sản phẩm nào.",
-        "noFeaturedProducts": "Không có sản phẩm nổi bật nào."
-    },
-    "about": {
-        "whoWeAre": "Chúng Tôi Là Ai",
-        "factoryAlt": "Nhà máy DUYANG VIETNAM",
-        "whoWeAreDescription": "DUYANG VIETNAM là nhà máy chuyên sản xuất và gia công các sản phẩm từ gỗ, kim loại và nhựa, phục vụ thị trường trong nước và xuất khẩu. Với hệ thống sản xuất hiện đại, quy trình khép kín và đội ngũ kỹ thuật giàu kinh nghiệm, chúng tôi cung cấp các giải pháp sản xuất ổn định, chính xác và phù hợp cho sản xuất quy mô lớn cũng như gia công theo yêu cầu (OEM / ODM).\nChúng tôi cam kết mang đến sản phẩm đạt tiêu chuẩn chất lượng, độ bền cao và tính đồng đều trong từng đơn hàng."
+        "allProducts": "Khám phá tất cả sản phẩm móc treo",
+        "featuredProducts": "Sản phẩm được khách hàng yêu thích nhất",
+        "noCategories": "Không có danh mục.",
+        "noProducts": "Không có sản phẩm.",
+        "noFeaturedProducts": "Không có sản phẩm nổi bật."
     },
     "contact": {
-        "title": "Liên Hệ Với Chúng Tôi",
-        "factoryAlt": "Nhà máy DUYANG VIETNAM",
+        "title": "Liên hệ",
         "form": {
-            "fullName": "Họ Và Tên",
-            "fullNamePlaceholder": "Nhập họ và tên của bạn",
-            "emailPlaceholder": "Nhập địa chỉ email liên hệ",
-            "content": "Nội Dung",
-            "contentPlaceholder": "Nhập yêu cầu, thông tin sản phẩm hoặc nhu cầu sản xuất của bạn",
-            "submit": "Gửi Yêu Cầu Liên Hệ"
+            "fullName": "Họ và tên",
+            "fullNamePlaceholder": "Nhập họ và tên",
+            "emailPlaceholder": "Nhập email liên hệ",
+            "content": "Nội dung",
+            "contentPlaceholder": "Nhập yêu cầu, thông tin sản phẩm hoặc nhu cầu sản xuất",
+            "submit": "Gửi yêu cầu liên hệ"
         },
         "info": {
-            "title": "Thông Tin Liên Hệ",
-            "address": "Địa Chỉ Trụ Sở & Nhà Máy",
-            "taxCode": "Mã Số Thuế",
-            "representative": "Người Đại Diện",
-            "phone": "Điện Thoại",
-            "businessField": "Ngành Nghề Sản Xuất",
-            "workingHours": "Giờ Làm Việc"
-        },
-        "faq": {
-            "title": "Thông Tin Cần Biết Trước Khi Hợp Tác",
-            "description": "Giải đáp các câu hỏi phổ biến về sản xuất, gia công, đóng gói và xuất hàng tại DUYANG VIETNAM.",
-            "searchPlaceholder": "Nhập từ khóa sản phẩm..."
+            "title": "Thông tin liên hệ",
+            "address": "Địa chỉ văn phòng & nhà máy",
+            "taxCode": "Mã số thuế",
+            "representative": "Người đại diện",
+            "phone": "Điện thoại",
+            "businessField": "Ngành sản xuất",
+            "workingHours": "Giờ làm việc"
         }
     },
     "auth": {
@@ -109,7 +65,7 @@
         "logIn": "Đăng nhập",
         "logOut": "Đăng xuất",
         "login": {
-            "title": "Đăng nhập vào tài khoản",
+            "title": "Đăng nhập tài khoản",
             "description": "Nhập email và mật khẩu để đăng nhập",
             "forgotPassword": "Quên mật khẩu?",
             "rememberMe": "Ghi nhớ đăng nhập",
@@ -118,7 +74,7 @@
         },
         "register": {
             "title": "Tạo tài khoản",
-            "description": "Nhập thông tin để tạo tài khoản mới",
+            "description": "Nhập thông tin để tạo tài khoản",
             "submit": "Tạo tài khoản",
             "hasAccount": "Đã có tài khoản?"
         },
@@ -130,26 +86,32 @@
         },
         "resetPassword": {
             "title": "Đặt lại mật khẩu",
-            "description": "Vui lòng nhập mật khẩu mới",
+            "description": "Nhập mật khẩu mới",
             "submit": "Đặt lại mật khẩu"
         },
         "verifyEmail": {
             "title": "Xác minh email",
-            "description": "Vui lòng xác minh địa chỉ email bằng cách nhấp vào liên kết chúng tôi vừa gửi cho bạn.",
-            "linkSent": "Liên kết xác minh mới đã được gửi đến địa chỉ email bạn đã đăng ký.",
+            "description": "Vui lòng xác minh email bằng cách nhấp vào liên kết chúng tôi đã gửi.",
+            "linkSent": "Liên kết xác minh mới đã được gửi đến email của bạn.",
             "resend": "Gửi lại email xác minh"
         },
         "confirmPasswordPage": {
             "title": "Xác nhận mật khẩu",
-            "description": "Đây là khu vực bảo mật. Vui lòng xác nhận mật khẩu trước khi tiếp tục."
+            "description": "Vui lòng xác nhận mật khẩu để tiếp tục."
+        }
+    },
+    "page": {
+        "related": {
+            "title": "Tin Tức Khác",
+            "description": "Cập nhật các hoạt động sản xuất, tiến độ đơn hàng và thông tin xuất xưởng mới nhất từ nhà máy."
         }
     },
     "settings": {
         "profile": {
             "title": "Cài đặt hồ sơ",
-            "emailUnverified": "Email chưa được xác minh.",
-            "resendVerification": "Nhấp vào đây để gửi lại email xác minh.",
-            "verificationLinkSent": "Liên kết xác minh mới đã được gửi đến email của bạn."
+            "emailUnverified": "Email của bạn chưa được xác minh.",
+            "resendVerification": "Nhấn để gửi lại email xác minh.",
+            "verificationLinkSent": "Liên kết xác minh đã được gửi."
         },
         "password": {
             "title": "Cài đặt mật khẩu",
@@ -160,10 +122,10 @@
         "appearance": {
             "title": "Cài đặt giao diện",
             "label": "Giao diện",
-            "description": "Chọn giao diện ưa thích",
+            "description": "Chọn giao diện bạn muốn",
             "light": "Sáng",
             "dark": "Tối",
-            "system": "Hệ thống"
+            "system": "Theo hệ thống"
         }
     },
     "cart": {

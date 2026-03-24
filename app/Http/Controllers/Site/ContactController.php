@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Site\StoreContactRequest;
+use App\Http\Resources\BaseResource;
 use App\Mail\Contact\ContactConfirmationMail;
 use App\Mail\Contact\ContactNotificationMail;
 use App\Models\Contact;
@@ -19,7 +20,7 @@ class ContactController extends Controller
     public function index(): \Inertia\Response
     {
         return $this->render('site/contact', [
-            'sections' => $this->pageRepository->getPageSections('contact'),
+            'sections' => BaseResource::formatArray($this->pageRepository->getPageSections('contact')),
         ]);
     }
 

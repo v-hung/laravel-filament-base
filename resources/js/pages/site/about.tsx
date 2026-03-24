@@ -44,8 +44,6 @@ export default function About({ sections }: AboutProps) {
     const tv = useTransValue();
     const sectionsTrans = tv(sections);
 
-    console.log({ sectionsTrans });
-
     return (
         <AppLayout>
             {/* Hero Section */}

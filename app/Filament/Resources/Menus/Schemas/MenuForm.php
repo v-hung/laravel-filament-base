@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Menus\Schemas;
 
 use App\Enums\CategoryStatus;
+use App\Enums\PageType;
 use App\Filament\Forms\Components\MenuBuilder;
 use App\Helpers\Filament\FormHelper;
 use App\Models\Collection;
@@ -72,7 +73,17 @@ class MenuForm
                                 label: __('filament.resources.page.plural_label'),
                                 modelClass: Page::class,
                                 titleField: 'title',
-                                urlResolver: fn (Page $record): string => '/pages/'.$record->slug,
+                                urlResolver: fn (Page $record): string => match ($record->page_type) {
+                                    PageType::System => match ((string) $record->slug) {
+                                        'home' => '/',
+                                        'about' => '/about',
+                                        'contact' => '/contact',
+                                        'partner' => '/partner',
+                                        'shop' => '/shop',
+                                        default => '/pages/'.$record->slug,
+                                    },
+                                    default => '/pages/'.$record->slug,
+                                },
                                 icon: 'heroicon-o-document-text',
                             )
                             ->withModel(

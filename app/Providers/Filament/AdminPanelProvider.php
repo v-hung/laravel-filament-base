@@ -42,9 +42,9 @@ class AdminPanelProvider extends PanelProvider
             ->pages([
                 Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
+            // ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
-                // AccountWidget::class,
+                AccountWidget::class,
                 // FilamentInfoWidget::class,
             ])
             ->middleware([
@@ -79,14 +79,14 @@ class AdminPanelProvider extends PanelProvider
                     ->defaultLocales(config('app.available_locales')),
             ])
             ->navigationGroups([
-                'shop' => NavigationGroup::make(fn() => __('filament.navigation.shop')),
-                'content' => NavigationGroup::make(fn() => __('filament.navigation.content')),
-                'user' => NavigationGroup::make(fn() => __('filament-shield::filament-shield.nav.group')),
-                'settings' => NavigationGroup::make(fn() => __('filament.navigation.settings')),
+                'shop' => NavigationGroup::make(fn () => __('filament.navigation.shop')),
+                'content' => NavigationGroup::make(fn () => __('filament.navigation.content')),
+                'user' => NavigationGroup::make(fn () => __('filament-shield::filament-shield.nav.group')),
+                'settings' => NavigationGroup::make(fn () => __('filament.navigation.settings')),
             ])
             ->renderHook(
                 PanelsRenderHook::BODY_END,
-                fn() => Blade::render('@livewire(\'media-picker-modal\')')
+                fn () => Blade::render('@livewire(\'media-picker-modal\')')
             )
             ->authMiddleware([
                 Authenticate::class,

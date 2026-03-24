@@ -16,6 +16,21 @@ return [
         ],
     ],
 
+    'collection_status' => [
+        'active' => [
+            'label' => 'Hoạt động',
+            'description' => 'Hiển thị trong tìm kiếm và có sẵn cho người dùng.',
+        ],
+        'inactive' => [
+            'label' => 'Không hoạt động',
+            'description' => 'Không hiển thị và không thể truy cập bởi người dùng.',
+        ],
+        'unlisted' => [
+            'label' => 'Không công khai',
+            'description' => 'Không xuất hiện trong tìm kiếm nhưng vẫn truy cập được qua liên kết trực tiếp.',
+        ],
+    ],
+
     'content_status' => [
         'draft' => [
             'label' => 'Bản nháp',

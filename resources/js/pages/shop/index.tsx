@@ -46,6 +46,8 @@ export default function ShopIndex({
 
     const sectionsTrans = tv(sections);
 
+    console.log({ products });
+
     return (
         <AppLayout>
             <AppHead title={sectionsTrans?.hero?.title} />
@@ -127,19 +129,13 @@ export default function ShopIndex({
                     )}
 
                     {/* Pagination */}
-                    <Pagination
-                        links={products.links}
-                        lastPage={products.last_page}
-                        className="mt-10"
-                    />
+                    <Pagination meta={products.meta} className="mt-10" />
                 </Container>
             </Section>
 
             {/* Featured Products */}
             <Section
-                className={
-                    active_collection ? `mb-10 overflow-hidden lg:mb-16` : ''
-                }
+                className={`overflow-hidden ${active_collection ? `mb-10 lg:mb-16` : ''}`}
             >
                 <Container>
                     <div className="mb-12 flex items-center justify-between lg:mb-16">
@@ -179,9 +175,10 @@ export default function ShopIndex({
             {!active_collection ? (
                 <Section>
                     <Container>
-                        <div className="grid grid-cols-1 lg:grid-cols-2">
-                            {sectionsTrans?.banners.map((banner) => (
+                        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                            {sectionsTrans?.banners.map((banner, index) => (
                                 <Link
+                                    key={index}
                                     href={shop.url({
                                         query: {
                                             category: tv(
@@ -191,9 +188,18 @@ export default function ShopIndex({
                                     })}
                                 >
                                     <Banner
-                                        image={banner.image?.url}
-                                        title={banner.title}
-                                        description={banner.description}
+                                        image={
+                                            banner.image?.url ??
+                                            banner.collection?.image?.url
+                                        }
+                                        title={
+                                            banner.title ??
+                                            tv(banner.collection?.title)
+                                        }
+                                        description={
+                                            banner.description ??
+                                            tv(banner.collection?.description)
+                                        }
                                     />
                                 </Link>
                             ))}

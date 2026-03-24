@@ -1,4 +1,5 @@
 import { Link, usePage, router } from '@inertiajs/react';
+import { useMenuStore } from '@/stores/menu';
 import { CheckIcon, ChevronDownIcon } from 'lucide-react';
 import type { FC } from 'react';
 import { useEffect, useRef, useState } from 'react';
@@ -28,14 +29,13 @@ import BrandLogo from './brand-logo';
 
 type Language = {
     value: AppLocale;
-    label: string;
     icon: FC<{ size?: number; className?: string }>;
 };
 
 const LANGUAGES: Language[] = [
-    { value: 'vi', label: 'VI', icon: Icons.Vi },
-    { value: 'en', label: 'EN', icon: Icons.En },
-    { value: 'zh', label: 'ZH', icon: Icons.Zh },
+    { value: 'vi', icon: Icons.Vi },
+    { value: 'en', icon: Icons.En },
+    { value: 'zh-CN', icon: Icons.Zh_CN },
 ];
 
 function resolveTitle(title: Record<string, string>, locale: string): string {
@@ -236,13 +236,15 @@ const Header: FC<HeaderProps> = ({ className }) => {
     const locale =
         (i18n.language as AppLocale) || appLocale || CURRENT_LANGUAGE;
 
-    const headerMenu = props.menus.header;
+    const headerMenu = useMenuStore((state) => state.headerMenu);
 
     const selectedLanguage =
         LANGUAGES.find((item) => item.value === locale) ?? LANGUAGES[0];
 
     const handleLanguageChange = async (newLocale: AppLocale) => {
-        router.visit(`/greeting/${newLocale}`, {
+        const backendLocale = newLocale.replace('-', '_');
+
+        router.visit(`/greeting/${backendLocale}`, {
             method: 'get',
             preserveState: true,
             onSuccess: () => {
@@ -347,9 +349,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
                                         autoFocus
                                         type="text"
                                         label={t('common.search')}
-                                        placeholder={t(
-                                            'contact.faq.searchPlaceholder',
-                                        )}
+                                        placeholder={t('nav.searchPlaceholder')}
                                     />
                                 </div>
                             </DialogContent>
@@ -360,9 +360,12 @@ const Header: FC<HeaderProps> = ({ className }) => {
                                 <button
                                     type="button"
                                     aria-label={t('nav.selectLanguage')}
-                                    className="rounded-none border-0 bg-transparent px-0 py-0 focus-visible:outline-none"
+                                    className="flex items-center gap-2 rounded-none border-0 bg-transparent px-0 py-0 text-duyang-black focus-visible:outline-none"
                                 >
                                     <selectedLanguage.icon size={24} />
+                                    {/* <span className="text-p-14-medium">
+                                        {t(`nav.languages.${locale}`)}
+                                    </span> */}
                                 </button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent className="min-w-28 rounded-none border border-duyang-grey-light/40 bg-duyang-white shadow-lg shadow-black/5">
@@ -377,7 +380,11 @@ const Header: FC<HeaderProps> = ({ className }) => {
                                         <span className="flex w-full items-center justify-between gap-3">
                                             <span className="flex items-center gap-2">
                                                 <item.icon size={20} />
-                                                <span>{item.label}</span>
+                                                <span>
+                                                    {t(
+                                                        `nav.languages.${item.value}`,
+                                                    )}
+                                                </span>
                                             </span>
                                             {locale === item.value && (
                                                 <CheckIcon

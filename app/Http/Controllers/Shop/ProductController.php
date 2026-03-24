@@ -6,7 +6,9 @@ use App\Data\ProductSearchParams;
 use App\Data\SearchParams;
 use App\Enums\ProductOrderType;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\BaseResource;
 use App\Repositories\CollectionRepository;
+use App\Repositories\PageRepository;
 use App\Repositories\ProductRepository;
 use Illuminate\Http\Request;
 use Throwable;
@@ -15,7 +17,8 @@ class ProductController extends Controller
 {
     public function __construct(
         protected ProductRepository $productRepository,
-        protected CollectionRepository $collectionRepository
+        protected CollectionRepository $collectionRepository,
+        protected PageRepository $pageRepository,
     ) {}
 
     /**
@@ -38,10 +41,11 @@ class ProductController extends Controller
         $collections = $this->collectionRepository->search(new SearchParams(['perPage' => 6]));
 
         return $this->render('shop/index', [
-            'products' => $products,
-            'featured_products' => $featured_products,
-            'collections' => $collections,
-            'active_collection' => $activeCollection,
+            'products' => BaseResource::collection($products),
+            'featured_products' => BaseResource::collection($featured_products),
+            'collections' => BaseResource::collection($collections),
+            'active_collection' => $activeCollection ? new BaseResource($activeCollection) : null,
+            'sections' => BaseResource::formatArray($this->pageRepository->getPageSections('shop')),
         ]);
     }
 

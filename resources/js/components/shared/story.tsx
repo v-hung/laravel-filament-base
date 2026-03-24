@@ -17,7 +17,7 @@ export default function Story({
         <div
             className={`flex flex-col gap-10 lg:gap-20 ${reverse ? 'lg:flex-row-reverse' : 'lg:flex-row'}`}
         >
-            <div className="flex flex-1 flex-col gap-6">
+            <div className="flex flex-1 flex-col gap-6 py-4">
                 {title && (
                     <h2 className="text-h-32-bold text-duyang-black lg:text-h-40-bold">
                         {title}

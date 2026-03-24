@@ -16,6 +16,24 @@ use Filament\Schemas\Schema;
 
 class HomePageForm
 {
+    /**
+     * Paths within `sections` that are shared across all locales (non-translatable).
+     * Supports wildcard `*` for repeater items, e.g. `about.features.*.image_id`.
+     *
+     * @return string[]
+     */
+    public static function sharedSectionPaths(): array
+    {
+        return [
+            'banner.image_id',
+            'about.image_id',
+            'about.features.*.image_id',
+            'banner2.image_id',
+            'cta.image_id',
+            'inspiration.image_ids',
+        ];
+    }
+
     public static function configure(Schema $schema): Schema
     {
         return $schema->components([

@@ -10,74 +10,36 @@
         "subscribe": "Subscribe",
         "menu": "Menu",
         "readMore": "Read More",
-        "allRightsReserved": "© {{year}} DUYANG VIETNAM. All Rights Reserved",
         "privacyPolicy": "Privacy Policy",
-        "termsOfService": "Terms of Service"
+        "termsOfService": "Terms of Service",
+        "allRightsReserved": "All Rights Reserved",
+        "copyright": "© {{year}} {{siteName}}. All Rights Reserved"
     },
     "nav": {
-        "home": "Home",
-        "partner": "Trusted Partners",
-        "shop": "Products",
-        "about": "About Us",
-        "contact": "Contact Us",
         "openMenu": "Open navigation menu",
-        "selectLanguage": "Select language"
+        "selectLanguage": "Select language",
+        "languages": {
+            "vi": "Vietnamese",
+            "en": "English",
+            "zh-CN": "Chinese"
+        },
+        "searchPlaceholder": "Enter product keyword..."
     },
     "footer": {
-        "products": "Products",
-        "woodenHangers": "Wooden Hangers",
-        "plasticHangers": "Plastic Hangers",
-        "metalRacks": "Metal Racks",
-        "information": "Information",
-        "aboutUs": "About Us",
-        "productionCapacity": "Production Capacity",
-        "factoryNews": "Factory News",
-        "support": "Support",
-        "contactUs": "Contact Us",
-        "faq": "FAQ",
-        "policies": "Policies",
-        "connectWithUs": "Connect With Us",
         "newsletter": {
-            "title": "Get Updates From DUYANG VIETNAM",
+            "title": "Get Updates From {{siteName}}",
             "description": "Subscribe to receive updates on production capacity, new products, and partnership information."
         }
     },
-    "home": {
-        "banner": {
-            "title": "Explore The\nEarthy Tones\nCollection",
-            "description": "Ground your interiors with our latest arrivals in warm woods, neutrals, and natural textures"
-        },
-        "features": {
-            "sustainableMaterials": "Sustainable\nMaterials",
-            "designForLife": "Designed for\nEveryday Life",
-            "craftedByExperts": "Crafted by\nExpert Team",
-            "convenientDelivery": "Convenient\nDelivery & Support"
-        },
-        "about": {
-            "factoryAlt": "Duyang Vietnam Factory",
-            "label": "About Us",
-            "title": "Quality Foundation – Creating Sustainable Value",
-            "description": "We are a factory specializing in the production of wood, plastic, and industrial material products, serving both domestic and export markets. With modern machinery, closed production processes, and an experienced technical team, we are committed to delivering products that meet high standards of durability, precision, and finish quality.\nContinuously improving technology and optimizing processes, we aim to provide efficient, stable, and long-term manufacturing solutions for our partners, from standard products to custom manufacturing (OEM / ODM)."
-        }
-    },
     "shop": {
-        "title": "Shop",
-        "bannerAlt": "Explore all products",
-        "bannerTitle": "Explore All Products",
         "allProducts": "Explore All Hanger Products",
         "featuredProducts": "Most Loved Products by Customers",
         "noCategories": "No categories available.",
         "noProducts": "No products available.",
         "noFeaturedProducts": "No featured products available."
     },
-    "about": {
-        "whoWeAre": "Who We Are",
-        "factoryAlt": "DUYANG VIETNAM Factory",
-        "whoWeAreDescription": "DUYANG VIETNAM is a factory specializing in the production and processing of products made from wood, metal, and plastic, serving both domestic and export markets. With a modern production system, closed-loop processes, and an experienced technical team, we provide stable, precise, and scalable manufacturing solutions for large-scale production as well as custom processing (OEM / ODM).\nWe are committed to delivering products that meet quality standards, with high durability and consistency in every order."
-    },
     "contact": {
         "title": "Contact Us",
-        "factoryAlt": "DUYANG VIETNAM Factory",
         "form": {
             "fullName": "Full Name",
             "fullNamePlaceholder": "Enter your full name",
@@ -94,11 +56,6 @@
             "phone": "Phone",
             "businessField": "Manufacturing Industry",
             "workingHours": "Working Hours"
-        },
-        "faq": {
-            "title": "What to Know Before Partnering",
-            "description": "Answers to common questions about manufacturing, processing, packaging, and shipping at DUYANG VIETNAM.",
-            "searchPlaceholder": "Enter product keyword..."
         }
     },
     "auth": {
@@ -142,6 +99,12 @@
         "confirmPasswordPage": {
             "title": "Confirm your password",
             "description": "This is a secure area of the application. Please confirm your password before continuing."
+        }
+    },
+    "page": {
+        "related": {
+            "title": "Other News",
+            "description": "Updates on production activities, order progress, and the latest factory shipment information."
         }
     },
     "settings": {

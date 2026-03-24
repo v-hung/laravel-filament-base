@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Resources\BaseResource;
 use App\Repositories\MenuItemRepository;
 use App\Services\CartService;
 use Illuminate\Http\Request;
@@ -52,7 +53,7 @@ class HandleInertiaRequests extends Middleware
                 $repo = app(MenuItemRepository::class);
 
                 return [
-                    'header' => $repo->forFrontend('header'),
+                    'header' => BaseResource::formatArray($repo->forFrontend('header')),
                     'footer' => $repo->forFrontend('footer'),
                 ];
             },

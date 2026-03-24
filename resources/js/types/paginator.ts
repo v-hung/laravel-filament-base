@@ -1,19 +1,28 @@
 export type PaginatorLink = {
     url: string | null;
     label: string;
+    page: number | null;
     active: boolean;
 };
 
-export type Paginator<T> = {
-    data: T[];
+export type PaginatorMeta = {
     current_page: number;
     from: number | null;
     last_page: number;
     links: PaginatorLink[];
-    next_page_url: string | null;
+    path: string;
     per_page: number;
-    prev_page_url: string | null;
     to: number | null;
     total: number;
-    path: string;
+};
+
+export type Paginator<T> = {
+    data: T[];
+    links: {
+        first: string;
+        last: string;
+        prev: string | null;
+        next: string | null;
+    };
+    meta: PaginatorMeta;
 };

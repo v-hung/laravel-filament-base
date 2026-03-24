@@ -61,15 +61,21 @@ class MenuBuilder extends Field
                 return $modelClass::query()
                     ->get()
                     ->map(function ($record) use ($titleField, $urlResolver, $locale) {
-                        $rawTitle = $record->{$titleField};
-                        $title = is_array($rawTitle)
-                            ? ($rawTitle[$locale] ?? (reset($rawTitle) ?: ''))
-                            : (string) $rawTitle;
+                        $translations = method_exists($record, 'getTranslations')
+                            ? $record->getTranslations($titleField)
+                            : null;
+
+                        if (is_array($translations) && ! empty($translations)) {
+                            $title = $translations[$locale] ?? (reset($translations) ?: '');
+                        } else {
+                            $title = (string) $record->{$titleField};
+                            $translations = [];
+                        }
 
                         return [
                             'id' => $record->id,
                             'title' => $title,
-                            'title_translations' => is_array($rawTitle) ? $rawTitle : [],
+                            'title_translations' => $translations,
                             'url' => $urlResolver ? $urlResolver($record) : '',
                         ];
                     })

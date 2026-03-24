@@ -18,7 +18,7 @@ export default function Banner({
     return (
         <section
             className={cn(
-                'relative isolate overflow-hidden bg-duyang-grey-mid',
+                'relative isolate h-full overflow-hidden bg-duyang-grey-mid',
                 className,
             )}
             {...props}
@@ -29,12 +29,12 @@ export default function Banner({
             />
             <div className="absolute inset-0 bg-linear-to-r from-duyang-black/60 via-duyang-black/35 to-duyang-black/10" />
 
-            <div className="relative flex min-h-105 flex-col justify-between px-6 py-8 md:min-h-140 md:px-12 md:py-12 lg:min-h-175 lg:px-20 lg:py-16">
-                <h1 className="max-w-[20rem] text-h-40-bold whitespace-pre-line text-duyang-white md:max-w-136 md:text-h-56-bold">
+            <div className="relative flex min-h-80 flex-col justify-between gap-6 p-6 lg:max-w-110 lg:p-8">
+                <h1 className="text-h-32-bold whitespace-pre-line text-duyang-white lg:text-h-40-bold">
                     {title}
                 </h1>
 
-                <p className="max-w-5xl text-p-16-regular text-duyang-white md:text-p-18-regular">
+                <p className="text-p-14-regular text-duyang-white lg:text-p-16-regular">
                     {description}
                 </p>
             </div>
