@@ -18,7 +18,7 @@ class SystemPagesSeeder extends Seeder
             ],
             [
                 'slug' => ['vi' => 'about', 'en' => 'about'],
-                'title' => ['vi' => 'Giới thiệu', 'en' => 'About'],
+                'title' => ['vi' => 'Về chúng tôi', 'en' => 'About'],
             ],
             [
                 'slug' => ['vi' => 'contact', 'en' => 'contact'],
@@ -26,7 +26,11 @@ class SystemPagesSeeder extends Seeder
             ],
             [
                 'slug' => ['vi' => 'partner', 'en' => 'partner'],
-                'title' => ['vi' => 'Đối tác', 'en' => 'Partner'],
+                'title' => ['vi' => 'Đối tác tin cậy', 'en' => 'Partner'],
+            ],
+            [
+                'slug' => ['vi' => 'shop', 'en' => 'shop'],
+                'title' => ['vi' => 'Sản phẩm', 'en' => 'Shop'],
             ],
         ];
 

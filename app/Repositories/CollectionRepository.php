@@ -27,9 +27,7 @@ class CollectionRepository
     {
         return Collection::query()
             ->where('status', CategoryStatus::Active)
-            ->where(function ($q) use ($slug): void {
-                $q->where('slug->vi', $slug)->orWhere('slug->en', $slug);
-            })
+            ->whereSlug($slug)
             ->first();
     }
 
@@ -37,6 +35,18 @@ class CollectionRepository
     {
         return Collection::query()
             ->where('status', CategoryStatus::Active)
+            ->get();
+    }
+
+    /**
+     * @param  int[]  $ids
+     */
+    public function getByIds(array $ids): EloquentCollection
+    {
+        return Collection::query()
+            ->with('media')
+            ->where('status', CategoryStatus::Active)
+            ->whereIn('id', $ids)
             ->get();
     }
 }

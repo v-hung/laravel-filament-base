@@ -175,7 +175,14 @@ php artisan optimize
 - Zip media
 
 ```
-zip -r media.zip storage/app/public/media
+cd storage/app/public
+zip -r ../../../media.zip media
+```
+
+- UnZip media
+
+```
+unzip media.zip -d storage/app/public/media
 ```
 
 - With .env file

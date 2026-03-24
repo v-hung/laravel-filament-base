@@ -21,7 +21,7 @@ return [
         ],
         'page' => [
             'label' => 'Trang',
-            'plural_label' => 'Danh sách bài trang',
+            'plural_label' => 'Danh sách trang',
         ],
         'order' => [
             'label' => 'Hóa đơn',
@@ -58,6 +58,17 @@ return [
     ],
 
     'pages' => [
+        'shop' => [
+            'sections' => [
+                'hero' => 'Banner Chính',
+                'banners' => 'Banner Quảng Cáo',
+                'banner_1' => 'Banner 1',
+                'banner_2' => 'Banner 2',
+            ],
+            'fields' => [
+                'collection' => 'Bộ sưu tập',
+            ],
+        ],
         'shop_settings' => [
             'label' => 'Cài đặt cửa hàng',
         ],
@@ -67,30 +78,137 @@ return [
         'media_manager' => [
             'label' => 'Quản lý phương tiện',
         ],
+        'partner' => [
+            'sections' => [
+                'hero' => 'Banner Chính',
+                'innovation' => 'Sự Đổi Mới',
+                'stats' => 'Thống Kê',
+                'direction' => 'Định Hướng Phát Triển',
+                'core_values' => 'Giá Trị Cốt Lõi',
+                'design' => 'Thiết Kế & Phát Triển Sản Phẩm',
+                'improvement' => 'Tinh Thần Cải Tiến',
+                'materials' => 'Vật Liệu Bền Vững',
+                'process' => 'Quy Trình Sản Xuất Tuần Hoàn',
+            ],
+            'fields' => [
+                'stat_value' => 'Giá trị (vd: 500+)',
+                'stat_unit' => 'Đơn vị (vd: years)',
+                'stat_label' => 'Nhãn mô tả',
+                'section_title' => 'Tiêu đề section',
+                'icon_image' => 'Icon / Hình ảnh',
+                'feature_name' => 'Tên tính năng',
+            ],
+            'repeaters' => [
+                'stats' => 'Các Chỉ Số',
+                'core_values' => 'Các Giá Trị',
+                'process_features' => 'Các Tính Năng Quy Trình',
+            ],
+            'actions' => [
+                'add_stat' => 'Thêm chỉ số',
+                'add_value' => 'Thêm giá trị',
+                'add_feature' => 'Thêm tính năng',
+            ],
+        ],
+        'about' => [
+            'sections' => [
+                'hero' => 'Banner Chính',
+                'who_we_are' => 'Chúng Tôi Là Ai',
+                'vision' => 'Tầm Nhìn',
+                'mission' => 'Sứ Mệnh',
+                'team' => 'Đội Ngũ',
+                'core_values' => 'Giá Trị Cốt Lõi',
+                'development' => 'Sự Phát Triển',
+            ],
+            'fields' => [
+                'section_title' => 'Tiêu đề section',
+                'icon_image' => 'Icon / Hình ảnh',
+                'member_role' => 'Chức vụ',
+                'social_links' => 'Mạng Xã Hội',
+                'social_label' => 'Label',
+                'social_url' => 'URL',
+            ],
+            'repeaters' => [
+                'members' => 'Thành Viên',
+                'core_values' => 'Các Giá Trị',
+            ],
+            'actions' => [
+                'add_member' => 'Thêm thành viên',
+                'add_value' => 'Thêm giá trị',
+            ],
+        ],
+        'contact' => [
+            'sections' => [
+                'hero' => 'Banner & Mô Tả',
+                'info' => 'Thông Tin Liên Hệ',
+                'working_hours' => 'Giờ Làm Việc',
+                'map' => 'Bản Đồ',
+                'faq' => 'Câu Hỏi Thường Gặp',
+            ],
+            'fields' => [
+                'address' => 'Địa chỉ',
+                'tax_code' => 'Mã số thuế',
+                'representative' => 'Người đại diện',
+                'phone' => 'Số điện thoại',
+                'business_field' => 'Ngành nghề sản xuất',
+                'email' => 'Email',
+                'working_day' => 'Ngày / Khoảng thời gian',
+                'working_hours_value' => 'Giờ làm việc',
+                'map_embed' => 'Mã nhúng bản đồ (iframe)',
+                'faq_question' => 'Câu hỏi',
+                'faq_answer' => 'Câu trả lời',
+            ],
+            'repeaters' => [
+                'working_hours' => 'Giờ Làm Việc',
+                'faq' => 'Danh sách câu hỏi',
+            ],
+            'actions' => [
+                'add_working_hours' => 'Thêm hàng',
+                'add_faq' => 'Thêm câu hỏi',
+            ],
+            'helpers' => [
+                'map_embed' => 'Dán mã nhúng iframe từ Google Maps.',
+            ],
+        ],
+        'home' => [
+            'sections' => [
+                'banner' => 'Banner Chính',
+                'about' => 'Về Chúng Tôi',
+                'featured' => 'Sản Phẩm Nổi Bật',
+                'banner2' => 'Banner Sản Xuất',
+                'collections' => 'Danh Mục Sản Phẩm',
+                'cta' => 'CTA – Vì Sao Chọn Chúng Tôi',
+                'inspiration' => 'Cảm Hứng Trang Trí',
+                'post' => 'Tin tức',
+            ],
+            'fields' => [
+                'section_label' => 'Nhãn section',
+                'highlights' => 'Điểm Nổi Bật',
+                'label' => 'Nhãn',
+                'banner_photo' => 'Ảnh Banner',
+                'background_photo' => 'Ảnh nền',
+            ],
+            'actions' => [
+                'add_item' => 'Thêm mục',
+            ],
+        ],
     ],
 
     'sections' => [
         'basic' => 'Thông tin cơ bản',
-        'blocks' => 'Khối nội dung',
         'branding' => 'Thương hiệu',
         'contact' => 'Thông tin liên hệ',
         'content' => 'Nội dung',
-        'faq' => 'Câu hỏi thường gặp',
         'featured' => 'Nổi bật',
         'images' => 'Hình ảnh',
         'customer' => 'Thông tin khách hàng',
         'organization' => 'Phân loại',
         'permissions' => 'Phân quyền',
-        'pricing' => 'Giá & Tồn kho',
         'shipping' => 'Thông tin giao hàng',
         'specifications' => 'Thông số kỹ thuật',
-        'business_info' => 'Thông tin doanh nghiệp',
-        'gallery' => 'Thư viện ảnh',
         'system_actions' => 'Thao tác hệ thống',
     ],
 
     'blocks' => [
-        'split' => 'Layout 2 cột',
         'two_column' => [
             'label' => 'Bố cục hai cột',
             'image_position' => 'Vị trí ảnh',
@@ -114,7 +232,6 @@ return [
     ],
 
     'actions' => [
-        'add_split_block' => 'Thêm block 2 cột',
         'auto_translate' => 'Tự động dịch',
         'auto_translate_description' => 'Dịch tất cả các trường đa ngôn ngữ từ ngôn ngữ hiện tại sang các ngôn ngữ còn lại bằng Gemini AI.',
         'auto_translate_description_dynamic' => 'Dịch tất cả các trường đa ngôn ngữ từ :source sang :targets bằng Gemini AI.',
@@ -132,17 +249,6 @@ return [
             'site_phone' => 'Số điện thoại',
             'site_address' => 'Địa chỉ cửa hàng',
             'site_description' => 'Mô tả website',
-            'site_map' => 'Địa chỉ map',
-            'tax_code' => 'Mã số thuế',
-            'business_field' => 'Ngành nghề sản xuất',
-            'representative' => 'Người đại diện',
-            'working_hours' => 'Giờ làm việc',
-            'working_hours_day' => 'Ngày',
-            'working_hours_time' => 'Giờ',
-            'bank_info' => 'Thông tin ngân hàng',
-            'faq' => 'Câu hỏi thường gặp',
-            'faq_question' => 'Câu hỏi',
-            'faq_answer' => 'Câu trả lời',
             'gallery' => 'Ảnh thư viện',
         ],
     ],
@@ -193,11 +299,11 @@ return [
         'content' => 'Nội dung',
         'image' => 'Hình ảnh',
         'images' => 'Hình ảnh',
+        'banner_image' => 'Ảnh Banner',
         'status' => 'Trạng thái',
         'name' => 'Tên',
         'email' => 'Email',
         'password' => 'Mật khẩu',
-        'code' => 'Mã đơn',
         'phone' => 'Số điện thoại',
         'address' => 'Địa chỉ',
         'note' => 'Ghi chú',
@@ -248,11 +354,5 @@ return [
         'menu_target' => 'Mở trong',
         'menu_parent' => 'Mục cha',
         'menu_items_count' => 'Số mục',
-        'left_type' => 'Loại cột trái',
-        'right_type' => 'Loại cột phải',
-        'left_text' => 'Chữ cột trái',
-        'right_text' => 'Chữ cột phải',
-        'left_image' => 'Ảnh cột trái',
-        'right_image' => 'Ảnh cột phải',
     ],
 ];

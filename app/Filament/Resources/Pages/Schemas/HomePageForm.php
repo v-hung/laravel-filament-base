@@ -22,104 +22,111 @@ class HomePageForm
             Grid::make(3)->columnSpanFull()->schema([
                 // Main content (left, 2/3)
                 Grid::make(1)->columnSpan(2)->schema([
-                    Section::make('Banner Chính')
+                    Section::make(__('filament.pages.home.sections.banner'))
                         ->statePath('sections.banner')
                         ->schema([
                             MediaPickerInline::make('image_id')
-                                ->label('Banner')
+                                ->label(__('filament.fields.banner_image'))
                                 ->folderPath('pages/home')
                                 ->acceptedFileTypes(['image/*', 'video/*']),
                         ]),
 
-                    Section::make('Về Chúng Tôi')
+                    Section::make(__('filament.pages.home.sections.about'))
                         ->statePath('sections.about')
                         ->schema([
                             Grid::make(2)->schema([
                                 MediaPickerInline::make('image_id')
-                                    ->label('Ảnh')
+                                    ->label(__('filament.fields.image'))
                                     ->folderPath('pages/home')
                                     ->acceptedFileTypes(['image/*']),
                                 Grid::make(1)->schema([
-                                    TextInput::make('label')->label('Nhãn section')->maxLength(255),
-                                    TextInput::make('title')->label('Tiêu đề')->maxLength(255),
-                                    Textarea::make('description')->label('Mô tả')->rows(3),
+                                    TextInput::make('label')->label(__('filament.pages.home.fields.section_label'))->maxLength(255),
+                                    TextInput::make('title')->label(__('filament.fields.title'))->maxLength(255),
+                                    Textarea::make('description')->label(__('filament.fields.description'))->rows(3),
                                 ]),
                             ]),
                             Repeater::make('features')
-                                ->label('Điểm Nổi Bật')
+                                ->label(__('filament.pages.home.fields.highlights'))
                                 ->table([
-                                    TableColumn::make('Image')->width('40%'),
-                                    TableColumn::make('Label'),
+                                    TableColumn::make(__('filament.fields.image'))->width('40%'),
+                                    TableColumn::make(__('filament.pages.home.fields.label')),
                                 ])
                                 ->schema([
                                     MediaPickerInline::make('image_id')
-                                        ->label('Ảnh')
+                                        ->label(__('filament.fields.image'))
                                         ->folderPath('pages/home/icons')
                                         ->compact()
                                         ->acceptedFileTypes(['image/*']),
-                                    TextInput::make('label')->label('Nhãn')->maxLength(255),
+                                    TextInput::make('label')->label(__('filament.pages.home.fields.label'))->maxLength(255),
                                 ])
                                 // ->columns(2)
                                 ->maxItems(4)
-                                ->addActionLabel('Thêm mục')
+                                ->addActionLabel(__('filament.pages.home.actions.add_item'))
                                 ->columnSpanFull(),
                         ]),
 
-                    Section::make('Sản Phẩm Nổi Bật')
+                    Section::make(__('filament.pages.home.sections.featured'))
                         ->statePath('sections.featured')
                         ->schema([
-                            TextInput::make('title')->label('Tiêu đề')->maxLength(255),
-                            Textarea::make('description')->label('Mô tả')->rows(4),
+                            TextInput::make('title')->label(__('filament.fields.title'))->maxLength(255),
+                            Textarea::make('description')->label(__('filament.fields.description'))->rows(4),
                         ]),
 
-                    Section::make('Banner Sản Xuất')
+                    Section::make(__('filament.pages.home.sections.banner2'))
                         ->statePath('sections.banner2')
                         ->schema([
                             Grid::make(2)->schema([
                                 MediaPickerInline::make('image_id')
-                                    ->label('Ảnh Banner')
+                                    ->label(__('filament.pages.home.fields.banner_photo'))
                                     ->folderPath('pages/home')
                                     ->acceptedFileTypes(['image/*']),
                                 Grid::make(1)->schema([
-                                    TextInput::make('title')->label('Tiêu đề')->maxLength(255),
-                                    Textarea::make('description')->label('Mô tả')->rows(3),
+                                    TextInput::make('title')->label(__('filament.fields.title'))->maxLength(255),
+                                    Textarea::make('description')->label(__('filament.fields.description'))->rows(3),
                                 ]),
                             ]),
                         ]),
 
-                    Section::make('Danh Mục Sản Phẩm')
+                    Section::make(__('filament.pages.home.sections.collections'))
                         ->statePath('sections.collections')
                         ->schema([
-                            TextInput::make('title')->label('Tiêu đề')->maxLength(255),
-                            Textarea::make('description')->label('Mô tả')->rows(4),
+                            TextInput::make('title')->label(__('filament.fields.title'))->maxLength(255),
+                            Textarea::make('description')->label(__('filament.fields.description'))->rows(4),
                         ]),
 
-                    Section::make('CTA – Vì Sao Chọn Chúng Tôi')
+                    Section::make(__('filament.pages.home.sections.cta'))
                         ->statePath('sections.cta')
                         ->schema([
                             Grid::make(2)->schema([
                                 MediaPickerInline::make('image_id')
-                                    ->label('Ảnh nền')
+                                    ->label(__('filament.pages.home.fields.background_photo'))
                                     ->folderPath('pages/home')
                                     ->acceptedFileTypes(['image/*']),
                                 Grid::make(1)->schema([
-                                    TextInput::make('title')->label('Tiêu đề')->maxLength(255),
-                                    Textarea::make('description')->label('Mô tả')->rows(3),
+                                    TextInput::make('title')->label(__('filament.fields.title'))->maxLength(255),
+                                    Textarea::make('description')->label(__('filament.fields.description'))->rows(3),
                                 ]),
                             ]),
                         ]),
 
-                    Section::make('Cảm Hứng Trang Trí')
+                    Section::make(__('filament.pages.home.sections.inspiration'))
                         ->statePath('sections.inspiration')
                         ->schema([
-                            TextInput::make('title')->label('Tiêu đề')->maxLength(255),
-                            MediaPicker::make('gallery')
+                            TextInput::make('title')->label(__('filament.fields.title'))->maxLength(255),
+                            MediaPicker::make('image_ids')
                                 ->label(__('filament.settings.fields.gallery'))
                                 ->multiple()
                                 ->maxFiles(8)
                                 ->dehydrated(true)
                                 ->folderPath('pages/home/gallery')
                                 ->acceptedFileTypes(['image/*']),
+                        ]),
+
+                    Section::make(__('filament.pages.home.sections.post'))
+                        ->statePath('sections.post')
+                        ->schema([
+                            TextInput::make('title')->label(__('filament.fields.title'))->maxLength(255),
+                            Textarea::make('description')->label(__('filament.fields.description'))->rows(4),
                         ]),
                 ]),
                 // Sidebar (right, 1/3)

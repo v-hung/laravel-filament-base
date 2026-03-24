@@ -56,7 +56,7 @@ const AboutSection: FC<AboutSectionProps> = ({ data }) => {
                                 className="flex flex-col items-center gap-3 text-center lg:flex-row lg:gap-6 lg:text-start"
                             >
                                 {feature.image && (
-                                    <div className="flex h-16 w-16 flex-none items-center justify-center overflow-hidden rounded bg-duyang-white p-4">
+                                    <div className="flex h-14 w-14 flex-none items-center justify-center overflow-hidden rounded bg-duyang-white p-3 lg:h-16 lg:w-16 lg:p-4">
                                         <img
                                             src={feature.image.url}
                                             alt={feature.label ?? ''}

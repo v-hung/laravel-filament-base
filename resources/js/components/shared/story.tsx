@@ -1,7 +1,7 @@
 interface StoryProps {
     title?: string;
-    description: string;
-    image: string;
+    description?: string;
+    image?: string;
     imageAlt?: string;
     reverse?: boolean;
 }

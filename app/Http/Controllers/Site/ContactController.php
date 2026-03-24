@@ -7,15 +7,20 @@ use App\Http\Requests\Site\StoreContactRequest;
 use App\Mail\Contact\ContactConfirmationMail;
 use App\Mail\Contact\ContactNotificationMail;
 use App\Models\Contact;
+use App\Repositories\PageRepository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Mail;
 use Throwable;
 
 class ContactController extends Controller
 {
+    public function __construct(protected PageRepository $pageRepository) {}
+
     public function index(): \Inertia\Response
     {
-        return $this->render('site/contact');
+        return $this->render('site/contact', [
+            'sections' => $this->pageRepository->getPageSections('contact'),
+        ]);
     }
 
     public function store(StoreContactRequest $request): RedirectResponse

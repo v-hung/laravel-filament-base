@@ -16,7 +16,7 @@ class PostRepository
         $query = Post::query()
             ->where('status', ContentStatus::Published);
 
-        if (!empty($excludeIds)) {
+        if (! empty($excludeIds)) {
             $query->whereNotIn('id', $excludeIds);
         }
 
@@ -35,10 +35,7 @@ class PostRepository
     {
         return Post::with('categories')
             ->where('status', ContentStatus::Published)
-            ->where(function ($q) use ($slug) {
-                $q->where('slug->vi', $slug)
-                    ->orWhere('slug->en', $slug);
-            })
+            ->whereSlug($slug)
             ->firstOrFail();
     }
 }

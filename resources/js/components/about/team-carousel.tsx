@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import type { Media } from '@/types';
+import type { TeamMember } from '@/pages/site/about';
 import {
     Carousel,
     CarouselContent,
@@ -7,23 +7,10 @@ import {
     useCarousel,
 } from '../ui/carousel';
 
-type SocialLink = {
-    label?: string;
-    url?: string;
-};
-
-type TeamMember = {
-    name?: string;
-    role?: string;
-    image?: Media;
-    social_links?: SocialLink[];
-};
-
 type TeamCarouselProps = {
     title?: string;
     members?: TeamMember[];
 };
-
 
 function CarouselControls() {
     const { scrollPrev, scrollNext, canScrollPrev, canScrollNext } =
@@ -109,7 +96,9 @@ const TeamCarousel: React.FC<TeamCarouselProps> = ({ title, members = [] }) => {
 
             <CarouselContent className="-ml-6 lg:-ml-8">
                 {members.map((member: TeamMember, i: number) => {
-                    const socialLinks = (member.social_links ?? []).filter((s) => s.label && s.url);
+                    const socialLinks = Object.entries(
+                        member.social_links ?? {},
+                    ).filter(([, value]) => value);
 
                     return (
                         <CarouselItem
@@ -126,15 +115,15 @@ const TeamCarousel: React.FC<TeamCarouselProps> = ({ title, members = [] }) => {
                                         />
                                         {socialLinks.length > 0 && (
                                             <div className="absolute bottom-3 left-3 flex gap-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                                                {socialLinks.map((social) => (
+                                                {socialLinks.map(([key, value]) => (
                                                     <a
-                                                        key={social.label}
-                                                        href={social.url}
+                                                        key={key}
+                                                        href={value}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
                                                         className="bg-duyang-white px-2.5 py-1.5 text-btn-14 text-duyang-black"
                                                     >
-                                                        {social.label}
+                                                        {key}
                                                     </a>
                                                 ))}
                                             </div>

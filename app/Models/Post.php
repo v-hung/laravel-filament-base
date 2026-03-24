@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Concerns\HasTranslatableSlug;
 use App\Concerns\Media\HasMedia;
 use App\Enums\ContentStatus;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -11,7 +12,7 @@ use Spatie\Translatable\HasTranslations;
 
 class Post extends Model
 {
-    use HasMedia, HasTranslations;
+    use HasMedia, HasTranslatableSlug, HasTranslations;
 
     public array $translatable = [
         'title',
@@ -35,6 +36,6 @@ class Post extends Model
 
     public function image(): Attribute
     {
-        return Attribute::get(fn() => $this->getFirstMedia('image')?->toMediaData());
+        return Attribute::get(fn () => $this->getFirstMedia('image')?->toMediaData());
     }
 }

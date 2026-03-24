@@ -10,16 +10,47 @@ import {
     AccordionItem,
 } from '@/components/ui/accordion';
 import AppLayout from '@/layouts/app-layout';
-import { useTransValue } from '@/lib/utils/trans-value';
+import { useTransValue, type Translatable } from '@/lib/utils/trans-value';
 import { contact } from '@/routes';
-import { useSettingStore } from '@/stores/setting';
+import type { Media } from '@/types';
 import { useForm, usePage } from '@inertiajs/react';
 import { ChevronDownIcon } from 'lucide-react';
 import { Accordion as AccordionPrimitive } from 'radix-ui';
 import { useEffect, useId } from 'react';
 import { useTranslation } from 'react-i18next';
 
-export default function Contact() {
+type ContactSections = {
+    hero?: {
+        title?: string;
+        image?: Media;
+        description?: string;
+    };
+    info?: {
+        address?: string;
+        tax_code?: string;
+        representative?: string;
+        phone?: string;
+        business_field?: string;
+        email?: string;
+    };
+    working_hours?: {
+        working_hours?: Record<string, string>;
+    };
+    map?: {
+        embed?: string;
+    };
+    faq?: {
+        title?: string;
+        description?: string;
+        faq?: Record<string, string>;
+    };
+};
+
+type ContactProps = {
+    sections?: Translatable<ContactSections>;
+};
+
+export default function Contact({ sections }: ContactProps) {
     const { t } = useTranslation();
     const tv = useTransValue();
     const formId = useId();
@@ -29,6 +60,8 @@ export default function Contact() {
         email: '',
         content: '',
     });
+
+    const sectionsTrans = tv(sections);
 
     useEffect(() => {
         const searchParams = new URLSearchParams(window.location.search);
@@ -45,12 +78,9 @@ export default function Contact() {
         });
     };
 
-    const shopSettings = useSettingStore((state) => state.shopSettings);
-    const mapTrans = tv(shopSettings.site_map);
-
     return (
         <AppLayout>
-            <AppHead title={t('contact.title')} />
+            <AppHead title={sectionsTrans?.hero?.title ?? ''} />
 
             {/* Contact Form Section */}
             <Section className="pt-6 lg:pt-10">
@@ -59,8 +89,7 @@ export default function Contact() {
                         {/* Left — Factory image */}
                         <div className="relative hidden lg:block">
                             <img
-                                src={'/assets/images/banner/contact.jpg'}
-                                alt={t('contact.factoryAlt')}
+                                src={sectionsTrans?.hero?.image?.url}
                                 className="absolute inset-0 h-full w-full object-cover"
                             />
                         </div>
@@ -70,7 +99,7 @@ export default function Contact() {
                                 {t('contact.title')}
                             </h2>
                             <p className="mt-6 max-w-xl text-p-14-regular text-duyang-grey lg:text-p-16-regular">
-                                {tv(shopSettings.site_description)}
+                                {sectionsTrans?.hero?.description}
                             </p>
                             {flash?.success && (
                                 <p className="mt-8 max-w-xl border-l-2 border-duyang-black py-1 pl-4 text-p-14-regular text-duyang-black lg:text-p-16-regular">
@@ -170,7 +199,7 @@ export default function Contact() {
                                     {t('contact.info.address')}
                                 </h3>
                                 <p className="text-p-14-regular text-duyang-grey lg:text-p-16-regular">
-                                    {tv(shopSettings.site_address)}
+                                    {sectionsTrans?.info?.address}
                                 </p>
                             </div>
                             <div className="flex flex-col gap-2">
@@ -178,7 +207,7 @@ export default function Contact() {
                                     {t('contact.info.taxCode')}
                                 </h3>
                                 <p className="text-p-14-regular text-duyang-grey lg:text-p-16-regular">
-                                    {tv(shopSettings.tax_code)}
+                                    {sectionsTrans?.info?.tax_code}
                                 </p>
                             </div>
                             <div className="flex flex-col gap-2">
@@ -186,7 +215,7 @@ export default function Contact() {
                                     {t('contact.info.representative')}
                                 </h3>
                                 <p className="text-p-14-regular text-duyang-grey lg:text-p-16-regular">
-                                    {tv(shopSettings.representative)}
+                                    {sectionsTrans?.info?.representative}
                                 </p>
                             </div>
                         </div>
@@ -197,7 +226,7 @@ export default function Contact() {
                                     {t('contact.info.phone')}
                                 </h3>
                                 <p className="text-p-14-regular text-duyang-grey lg:text-p-16-regular">
-                                    {tv(shopSettings.site_phone)}
+                                    {sectionsTrans?.info?.phone}
                                 </p>
                             </div>
                             <div className="flex flex-col gap-2">
@@ -205,7 +234,7 @@ export default function Contact() {
                                     {t('contact.info.businessField')}
                                 </h3>
                                 <p className="text-p-14-regular text-duyang-grey lg:text-p-16-regular">
-                                    {tv(shopSettings.business_field)}
+                                    {sectionsTrans?.info?.business_field}
                                 </p>
                             </div>
                             <div className="flex flex-col gap-2">
@@ -213,7 +242,7 @@ export default function Contact() {
                                     Email
                                 </h3>
                                 <p className="text-p-14-regular text-duyang-grey lg:text-p-16-regular">
-                                    {tv(shopSettings.site_email)}
+                                    {sectionsTrans?.info?.email}
                                 </p>
                             </div>
                         </div>
@@ -223,21 +252,21 @@ export default function Contact() {
                                 {t('contact.info.workingHours')}
                             </h3>
                             <div className="mt-8 flex flex-col gap-5">
-                                {tv(shopSettings.working_hours)?.map(
-                                    (item, index) => (
-                                        <div
-                                            key={index}
-                                            className="flex items-baseline justify-between border-b border-white/15 pb-5"
-                                        >
-                                            <span className="text-p-14-semibold text-duyang-white lg:text-p-16-semibold">
-                                                {item.key}
-                                            </span>
-                                            <span className="text-p-14-regular text-duyang-white lg:text-p-16-regular">
-                                                {item.value}
-                                            </span>
-                                        </div>
-                                    ),
-                                )}
+                                {Object.entries(
+                                    sectionsTrans?.working_hours?.working_hours ?? {},
+                                ).map(([key, value], index) => (
+                                    <div
+                                        key={index}
+                                        className="flex items-baseline justify-between border-b border-white/15 pb-5"
+                                    >
+                                        <span className="text-p-14-semibold text-duyang-white lg:text-p-16-semibold">
+                                            {key}
+                                        </span>
+                                        <span className="text-p-14-regular text-duyang-white lg:text-p-16-regular">
+                                            {value}
+                                        </span>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </div>
@@ -245,13 +274,13 @@ export default function Contact() {
             </Section>
 
             {/* Map Section */}
-            {mapTrans && (
+            {sectionsTrans?.map?.embed && (
                 <Section>
                     <Container>
                         <div
                             className="h-75 w-full overflow-hidden lg:h-125 [&_iframe]:h-full! [&_iframe]:w-full!"
                             dangerouslySetInnerHTML={{
-                                __html: mapTrans,
+                                __html: new DOMParser().parseFromString(sectionsTrans.map.embed, 'text/html').body.innerHTML,
                             }}
                         />
                     </Container>
@@ -265,45 +294,47 @@ export default function Contact() {
                         {/* Left — Title & description */}
                         <div className="lg:col-span-4">
                             <h2 className="text-h-24-bold text-duyang-black lg:text-h-40-bold">
-                                {t('contact.faq.title')}
+                                {sectionsTrans?.faq?.title ??
+                                    t('contact.faq.title')}
                             </h2>
                             <p className="mt-6 text-p-14-regular text-duyang-grey lg:text-p-16-regular">
-                                {t('contact.faq.description')}
+                                {sectionsTrans?.faq?.description ??
+                                    t('contact.faq.description')}
                             </p>
                         </div>
                         {/* Right — Accordion */}
                         <div className="lg:col-span-8">
                             <Accordion type="single" collapsible>
-                                {(tv(shopSettings?.faq) ?? []).map(
-                                    (item, index) => (
-                                        <AccordionItem
-                                            key={index}
-                                            value={item.key}
-                                            className="border-b border-duyang-grey-light/20 transition-colors data-[state=open]:bg-duyang-cream"
-                                        >
-                                            <AccordionPrimitive.Header className="flex">
-                                                <AccordionPrimitive.Trigger className="group flex w-full cursor-pointer items-center justify-between px-6 py-6 text-left">
-                                                    <div className="flex items-center gap-6">
-                                                        <span className="text-p-16-regular text-duyang-grey-light lg:text-p-18-regular">
-                                                            {String(
-                                                                index + 1,
-                                                            ).padStart(2, '0')}
-                                                        </span>
-                                                        <span className="text-h-20-bold text-duyang-black lg:text-h-24-bold">
-                                                            {item.key}
-                                                        </span>
-                                                    </div>
-                                                    <ChevronDownIcon className="size-5 shrink-0 text-duyang-black transition-transform duration-200 group-data-[state=open]:rotate-180" />
-                                                </AccordionPrimitive.Trigger>
-                                            </AccordionPrimitive.Header>
-                                            <AccordionContent className="px-6 pb-6 pl-18">
-                                                <p className="text-p-14-regular text-duyang-grey lg:text-p-16-regular">
-                                                    {item.value}
-                                                </p>
-                                            </AccordionContent>
-                                        </AccordionItem>
-                                    ),
-                                )}
+                                {Object.entries(
+                                    sectionsTrans?.faq?.faq ?? {},
+                                ).map(([key, value], index) => (
+                                    <AccordionItem
+                                        key={index}
+                                        value={key ?? String(index)}
+                                        className="border-b border-duyang-grey-light/20 transition-colors data-[state=open]:bg-duyang-cream"
+                                    >
+                                        <AccordionPrimitive.Header className="flex">
+                                            <AccordionPrimitive.Trigger className="group flex w-full cursor-pointer items-center justify-between px-6 py-6 text-left">
+                                                <div className="flex items-center gap-6">
+                                                    <span className="text-p-16-regular text-duyang-grey-light lg:text-p-18-regular">
+                                                        {String(
+                                                            index + 1,
+                                                        ).padStart(2, '0')}
+                                                    </span>
+                                                    <span className="text-h-20-bold text-duyang-black lg:text-h-24-bold">
+                                                        {key}
+                                                    </span>
+                                                </div>
+                                                <ChevronDownIcon className="size-5 shrink-0 text-duyang-black transition-transform duration-200 group-data-[state=open]:rotate-180" />
+                                            </AccordionPrimitive.Trigger>
+                                        </AccordionPrimitive.Header>
+                                        <AccordionContent className="px-6 pb-6 pl-18">
+                                            <p className="text-p-14-regular text-duyang-grey lg:text-p-16-regular">
+                                                {value}
+                                            </p>
+                                        </AccordionContent>
+                                    </AccordionItem>
+                                ))}
                             </Accordion>
                         </div>
                     </div>

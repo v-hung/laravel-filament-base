@@ -46,10 +46,7 @@ class ProductRepository
     {
         return Product::with('collections')
             ->where('status', ProductStatus::Active)
-            ->where(function ($q) use ($slug) {
-                $q->where('slug->vi', $slug)
-                    ->orWhere('slug->en', $slug);
-            })
+            ->whereSlug($slug)
             ->firstOrFail();
     }
 
@@ -97,7 +94,11 @@ class ProductRepository
             $query->whereHas('collections', function ($q) use ($params): void {
                 $q->where(function ($q2) use ($params): void {
                     foreach ($params->collections as $slug) {
-                        $q2->orWhere('slug->vi', $slug)->orWhere('slug->en', $slug);
+                        $q2->orWhere(function ($q3) use ($slug): void {
+                            foreach (config('app.available_locales') as $locale) {
+                                $q3->orWhere("slug->{$locale}", $slug);
+                            }
+                        });
                     }
                 });
             });

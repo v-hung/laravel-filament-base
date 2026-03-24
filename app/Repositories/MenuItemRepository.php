@@ -19,21 +19,28 @@ class MenuItemRepository
      */
     public function forFrontend(string $slug): array
     {
-        $menu = Menu::query()
-            ->where('slug', $slug)
-            ->where('status', CategoryStatus::Active)
-            ->first();
+        return cache()->rememberForever("menu.frontend.{$slug}", function () use ($slug) {
+            $menu = Menu::query()
+                ->where('slug', $slug)
+                ->where('status', CategoryStatus::Active)
+                ->first();
 
-        if (! $menu) {
-            return [];
-        }
+            if (! $menu) {
+                return [];
+            }
 
-        $allItems = $menu->items()
-            ->where('is_active', true)
-            ->orderBy('sort_order')
-            ->get();
+            $allItems = $menu->items()
+                ->where('is_active', true)
+                ->orderBy('sort_order')
+                ->get();
 
-        return $this->buildTree($allItems);
+            return $this->buildTree($allItems);
+        });
+    }
+
+    public static function clearFrontendCache(string $slug): void
+    {
+        cache()->forget("menu.frontend.{$slug}");
     }
 
     /**

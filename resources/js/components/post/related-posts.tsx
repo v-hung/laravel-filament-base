@@ -5,15 +5,16 @@ import React from 'react';
 
 type RelatedPostsProps = {
     posts: Paginator<Post>;
-    title?: string;
-    description?: string;
+    data?: {
+        title?: string;
+        description?: string;
+    };
     className?: string;
 };
 
 const RelatedPosts = ({
     posts,
-    title = 'Tin tức khác',
-    description = 'Cập nhật các hoạt động sản xuất, tiến độ đơn hàng và thông tin xuất xưởng mới nhất từ nhà máy.',
+    data: { title, description } = {},
     className,
 }: RelatedPostsProps) => {
     return (

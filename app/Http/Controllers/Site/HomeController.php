@@ -32,14 +32,7 @@ class HomeController extends Controller
             'latestProducts' => $latestProducts,
             'pages' => $pages,
             'collections' => $collections,
-            'sections' => $this->pageRepository->getPageSectionsWithImages('home'),
-        ]);
-    }
-
-    public function partner()
-    {
-        return $this->render('site/partner', [
-            'sections' => $this->pageRepository->getPageSectionsWithImages('partner'),
+            'sections' => $this->pageRepository->getPageSections('home'),
         ]);
     }
 }

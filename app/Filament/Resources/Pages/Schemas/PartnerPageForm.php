@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Pages\Schemas;
 use App\Enums\ContentStatus;
 use App\Filament\Forms\Components\MediaPickerInline;
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Repeater\TableColumn;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -20,155 +21,170 @@ class PartnerPageForm
             Grid::make(3)->columnSpanFull()->schema([
                 // Main content (left, 2/3)
                 Grid::make(1)->columnSpan(2)->schema([
-                    Section::make('Banner Chính')
+                    Section::make(__('filament.pages.partner.sections.hero'))
                         ->statePath('sections.hero')
                         ->schema([
                             Grid::make(2)->schema([
                                 MediaPickerInline::make('image_id')
-                                    ->label('Ảnh Banner')
+                                    ->label(__('filament.fields.banner_image'))
                                     ->folderPath('pages/partner')
                                     ->acceptedFileTypes(['image/*']),
                                 Grid::make(1)->schema([
-                                    TextInput::make('title')->label('Tiêu đề')->maxLength(255),
-                                    Textarea::make('description')->label('Mô tả')->rows(3),
+                                    TextInput::make('title')->label(__('filament.fields.title'))->maxLength(255),
+                                    Textarea::make('description')->label(__('filament.fields.description'))->rows(3),
                                 ]),
                             ]),
                         ]),
 
-                    Section::make('Sự Đổi Mới')
+                    Section::make(__('filament.pages.partner.sections.innovation'))
                         ->statePath('sections.innovation')
                         ->schema([
                             Grid::make(2)->schema([
                                 MediaPickerInline::make('image_id')
-                                    ->label('Ảnh')
+                                    ->label(__('filament.fields.image'))
                                     ->folderPath('pages/partner')
                                     ->acceptedFileTypes(['image/*']),
                                 Grid::make(1)->schema([
-                                    TextInput::make('title')->label('Tiêu đề')->maxLength(255),
-                                    Textarea::make('description')->label('Mô tả')->rows(5),
+                                    TextInput::make('title')->label(__('filament.fields.title'))->maxLength(255),
+                                    Textarea::make('description')->label(__('filament.fields.description'))->rows(5),
                                 ]),
                             ]),
                         ]),
 
-                    Section::make('Thống Kê')
+                    Section::make(__('filament.pages.partner.sections.stats'))
                         ->statePath('sections.stats')
                         ->schema([
                             Repeater::make('items')
-                                ->label('Các Chỉ Số')
-                                ->schema([
-                                    Grid::make(3)->schema([
-                                        TextInput::make('value')->label('Giá trị (vd: 500+)')->maxLength(50),
-                                        TextInput::make('unit')->label('Đơn vị (vd: years)')->maxLength(50),
-                                        TextInput::make('label')->label('Nhãn mô tả')->maxLength(255),
-                                    ]),
+                                ->label(__('filament.pages.partner.repeaters.stats'))
+                                ->table([
+                                    TableColumn::make(__('filament.pages.partner.fields.stat_value')),
+                                    TableColumn::make(__('filament.pages.partner.fields.stat_unit')),
+                                    TableColumn::make(__('filament.pages.partner.fields.stat_label')),
                                 ])
-                                ->addActionLabel('Thêm chỉ số')
+                                ->schema([
+                                    TextInput::make('value')->label(__('filament.pages.partner.fields.stat_value'))->maxLength(50),
+                                    TextInput::make('unit')->label(__('filament.pages.partner.fields.stat_unit'))->maxLength(50),
+                                    TextInput::make('label')->label(__('filament.pages.partner.fields.stat_label'))->maxLength(255),
+                                ])
+                                ->maxItems(4)
+                                ->addActionLabel(__('filament.pages.partner.actions.add_stat'))
                                 ->columnSpanFull(),
                         ]),
 
-                    Section::make('Định Hướng Phát Triển')
+                    Section::make(__('filament.pages.partner.sections.direction'))
                         ->statePath('sections.direction')
                         ->schema([
                             Grid::make(2)->schema([
                                 MediaPickerInline::make('image_id')
-                                    ->label('Ảnh')
+                                    ->label(__('filament.fields.image'))
                                     ->folderPath('pages/partner')
                                     ->acceptedFileTypes(['image/*']),
                                 Grid::make(1)->schema([
-                                    TextInput::make('title')->label('Tiêu đề')->maxLength(255),
-                                    Textarea::make('description')->label('Mô tả')->rows(5),
+                                    TextInput::make('title')->label(__('filament.fields.title'))->maxLength(255),
+                                    Textarea::make('description')->label(__('filament.fields.description'))->rows(5),
                                 ]),
                             ]),
                         ]),
 
-                    Section::make('Giá Trị Cốt Lõi')
+                    Section::make(__('filament.pages.partner.sections.core_values'))
                         ->statePath('sections.core_values')
                         ->schema([
-                            TextInput::make('title')->label('Tiêu đề section')->maxLength(255),
+                            TextInput::make('title')->label(__('filament.pages.partner.fields.section_title'))->maxLength(255),
                             Repeater::make('values')
-                                ->label('Các Giá Trị')
+                                ->label(__('filament.pages.partner.repeaters.core_values'))
+                                ->table([
+                                    TableColumn::make(__('filament.fields.icon'))->width('40%'),
+                                    TableColumn::make(__('filament.fields.content')),
+                                ])
                                 ->schema([
                                     MediaPickerInline::make('image_id')
-                                        ->label('Icon / Hình ảnh')
-                                        ->folderPath('pages/partner')
+                                        ->label(__('filament.pages.partner.fields.icon_image'))
+                                        ->folderPath('pages/partner/icons')
+                                        ->compact()
                                         ->acceptedFileTypes(['image/*']),
-                                    TextInput::make('title')->label('Tiêu đề')->maxLength(255),
-                                    Textarea::make('description')->label('Mô tả')->rows(3),
+                                    Grid::make(1)->schema([
+                                        TextInput::make('title')->label(__('filament.fields.title'))->maxLength(255),
+                                        Textarea::make('description')->label(__('filament.fields.description'))->rows(2),
+                                    ]),
                                 ])
                                 ->maxItems(4)
-                                ->addActionLabel('Thêm giá trị')
+                                ->addActionLabel(__('filament.pages.partner.actions.add_value'))
                                 ->columnSpanFull(),
                         ]),
 
-                    Section::make('Thiết Kế & Phát Triển Sản Phẩm')
+                    Section::make(__('filament.pages.partner.sections.design'))
                         ->statePath('sections.design')
                         ->schema([
                             Grid::make(2)->schema([
                                 MediaPickerInline::make('image_id')
-                                    ->label('Ảnh')
+                                    ->label(__('filament.fields.image'))
                                     ->folderPath('pages/partner')
                                     ->acceptedFileTypes(['image/*']),
                                 Grid::make(1)->schema([
-                                    TextInput::make('title')->label('Tiêu đề')->maxLength(255),
-                                    Textarea::make('description')->label('Mô tả')->rows(5),
+                                    TextInput::make('title')->label(__('filament.fields.title'))->maxLength(255),
+                                    Textarea::make('description')->label(__('filament.fields.description'))->rows(5),
                                 ]),
                             ]),
                         ]),
 
-                    Section::make('Tinh Thần Cải Tiến')
+                    Section::make(__('filament.pages.partner.sections.improvement'))
                         ->statePath('sections.improvement')
                         ->schema([
                             Grid::make(2)->schema([
                                 MediaPickerInline::make('image_id')
-                                    ->label('Ảnh')
+                                    ->label(__('filament.fields.image'))
                                     ->folderPath('pages/partner')
                                     ->acceptedFileTypes(['image/*']),
                                 Grid::make(1)->schema([
-                                    TextInput::make('title')->label('Tiêu đề')->maxLength(255),
-                                    Textarea::make('description')->label('Mô tả')->rows(5),
-                                    TextInput::make('button_text')->label('Text nút')->maxLength(100),
+                                    TextInput::make('title')->label(__('filament.fields.title'))->maxLength(255),
+                                    Textarea::make('description')->label(__('filament.fields.description'))->rows(5),
                                 ]),
                             ]),
                         ]),
 
-                    Section::make('Vật Liệu Bền Vững')
+                    Section::make(__('filament.pages.partner.sections.materials'))
                         ->statePath('sections.materials')
                         ->schema([
                             Grid::make(2)->schema([
                                 MediaPickerInline::make('image_id')
-                                    ->label('Ảnh')
+                                    ->label(__('filament.fields.image'))
                                     ->folderPath('pages/partner')
                                     ->acceptedFileTypes(['image/*']),
                                 Grid::make(1)->schema([
-                                    TextInput::make('title')->label('Tiêu đề')->maxLength(255),
-                                    Textarea::make('description')->label('Mô tả')->rows(5),
+                                    TextInput::make('title')->label(__('filament.fields.title'))->maxLength(255),
+                                    Textarea::make('description')->label(__('filament.fields.description'))->rows(5),
                                 ]),
                             ]),
                         ]),
 
-                    Section::make('Quy Trình Sản Xuất Tuần Hoàn')
+                    Section::make(__('filament.pages.partner.sections.process'))
                         ->statePath('sections.process')
                         ->schema([
                             Grid::make(2)->schema([
                                 MediaPickerInline::make('image_id')
-                                    ->label('Ảnh')
+                                    ->label(__('filament.fields.image'))
                                     ->folderPath('pages/partner')
                                     ->acceptedFileTypes(['image/*']),
                                 Grid::make(1)->schema([
-                                    TextInput::make('title')->label('Tiêu đề')->maxLength(255),
-                                    Textarea::make('description')->label('Mô tả')->rows(5),
+                                    TextInput::make('title')->label(__('filament.fields.title'))->maxLength(255),
+                                    Textarea::make('description')->label(__('filament.fields.description'))->rows(5),
                                 ]),
                             ]),
                             Repeater::make('features')
-                                ->label('Các Tính Năng Quy Trình')
+                                ->label(__('filament.pages.partner.repeaters.process_features'))
+                                ->table([
+                                    TableColumn::make(__('filament.fields.icon'))->width('40%'),
+                                    TableColumn::make(__('filament.pages.partner.fields.feature_name')),
+                                ])
                                 ->schema([
                                     MediaPickerInline::make('image_id')
-                                        ->label('Icon / Hình ảnh')
-                                        ->folderPath('pages/partner')
+                                        ->label(__('filament.pages.partner.fields.icon_image'))
+                                        ->folderPath('pages/partner/icons')
+                                        ->compact()
                                         ->acceptedFileTypes(['image/*']),
-                                    TextInput::make('title')->label('Tên tính năng')->maxLength(255),
+                                    TextInput::make('title')->label(__('filament.pages.partner.fields.feature_name'))->maxLength(255),
                                 ])
-                                ->addActionLabel('Thêm tính năng')
+                                ->addActionLabel(__('filament.pages.partner.actions.add_feature'))
                                 ->columnSpanFull(),
                         ]),
                 ]),

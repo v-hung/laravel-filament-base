@@ -6,16 +6,24 @@ import Section from '@/components/shared/section';
 import Story from '@/components/shared/story';
 import Story2 from '@/components/shared/story2';
 import AppLayout from '@/layouts/app-layout';
+import { useTransValue, type Translatable } from '@/lib/utils/trans-value';
 import type { Media } from '@/types';
 
-type SectionData = {
+export type SectionData = {
     title?: string;
     description?: string;
     image?: Media;
 };
 
+export type TeamMember = {
+    name?: string;
+    role?: string;
+    image?: Media;
+    social_links?: Record<string, string>;
+};
+
 type AboutProps = {
-    sections?: {
+    sections?: Translatable<{
         hero?: SectionData;
         who_we_are?: SectionData;
         vision?: SectionData;
@@ -23,100 +31,95 @@ type AboutProps = {
         development?: SectionData;
         team?: {
             title?: string;
-            members?: { name?: string; role?: string; image?: Media; social_links?: { label?: string; url?: string }[] }[];
+            members?: TeamMember[];
         };
         core_values?: {
             title?: string;
             values?: { title?: string; description?: string }[];
         };
-    };
+    }>;
 };
 
 export default function About({ sections }: AboutProps) {
-    const hero = sections?.hero;
-    const whoWeAre = sections?.who_we_are;
-    const vision = sections?.vision;
-    const mission = sections?.mission;
-    const development = sections?.development;
-    const team = sections?.team;
-    const coreValues = sections?.core_values;
+    const tv = useTransValue();
+    const sectionsTrans = tv(sections);
 
-    const hasStories =
-        (whoWeAre?.description && whoWeAre?.image) ||
-        (vision?.description && vision?.image) ||
-        (mission?.description && mission?.image);
+    console.log({ sectionsTrans });
 
     return (
         <AppLayout>
             {/* Hero Section */}
-            {hero?.title && (
-                <HeroSection
-                    title={hero.title}
-                    description={hero.description}
-                    image={hero.image?.url}
-                />
-            )}
+            <HeroSection
+                title={sectionsTrans?.hero?.title ?? ''}
+                description={sectionsTrans?.hero?.description}
+                image={sectionsTrans?.hero?.image?.url}
+            />
 
-            {/* Company Overview, Vision, Mission Section */}
-            {hasStories && (
-                <Section>
-                    <Container className="flex flex-col gap-10 lg:gap-20">
-                        {whoWeAre?.description && whoWeAre?.image && (
-                            <Story
-                                title={whoWeAre.title}
-                                description={whoWeAre.description}
-                                image={whoWeAre.image.url}
-                            />
-                        )}
-                        {vision?.description && vision?.image && (
-                            <Story
-                                title={vision.title}
-                                description={vision.description}
-                                image={vision.image.url}
-                                reverse
-                            />
-                        )}
-                        {mission?.description && mission?.image && (
-                            <Story
-                                title={mission.title}
-                                description={mission.description}
-                                image={mission.image.url}
-                            />
-                        )}
-                    </Container>
-                </Section>
-            )}
+            {/* Company Overview */}
+            <Section>
+                <Container className="flex flex-col gap-10 lg:gap-20">
+                    <Story
+                        title={sectionsTrans?.who_we_are?.title}
+                        description={sectionsTrans?.who_we_are?.description}
+                        image={sectionsTrans?.who_we_are?.image?.url}
+                    />
+                </Container>
+            </Section>
+
+            {/* Vision */}
+            <Section>
+                <Container className="flex flex-col gap-10 lg:gap-20">
+                    <Story
+                        title={sectionsTrans?.vision?.title}
+                        description={sectionsTrans?.vision?.description}
+                        image={sectionsTrans?.vision?.image?.url}
+                        reverse
+                    />
+                </Container>
+            </Section>
+
+            {/* Mission Section */}
+            <Section>
+                <Container className="flex flex-col gap-10 lg:gap-20">
+                    <Story
+                        title={sectionsTrans?.mission?.title}
+                        description={sectionsTrans?.mission?.description}
+                        image={sectionsTrans?.mission?.image?.url}
+                    />
+                </Container>
+            </Section>
 
             {/* Team Carousel Section */}
-            {team?.members && team.members.length > 0 && (
-                <Section>
-                    <Container>
-                        <TeamCarousel title={team.title} members={team.members} />
-                    </Container>
-                </Section>
-            )}
+            <Section>
+                <Container>
+                    <TeamCarousel
+                        title={sectionsTrans?.team?.title}
+                        members={sectionsTrans?.team?.members}
+                    />
+                </Container>
+            </Section>
 
             {/* Core Values Section */}
-            {(coreValues?.title || (coreValues?.values && coreValues.values.length > 0)) && (
-                <Section>
-                    <Container>
-                        <CoreValues title={coreValues.title} values={coreValues.values} />
-                    </Container>
-                </Section>
-            )}
+            <Section>
+                <Container>
+                    <CoreValues
+                        title={sectionsTrans?.core_values?.title}
+                        values={sectionsTrans?.core_values?.values}
+                    />
+                </Container>
+            </Section>
 
             {/* Development Section */}
-            {development?.title && development?.description && development?.image && (
-                <Section className="mb-10 lg:mb-16">
-                    <Container>
-                        <Story2
-                            title={development.title}
-                            description={development.description}
-                            image={development.image.url}
-                        />
-                    </Container>
-                </Section>
-            )}
+
+            <Section className="mb-10 lg:mb-16">
+                <Container>
+                    <Story2
+                        title={sectionsTrans?.development?.title}
+                        description={sectionsTrans?.development?.description}
+                        image={sectionsTrans?.development?.image?.url}
+                    />
+                </Container>
+            </Section>
         </AppLayout>
     );
 }

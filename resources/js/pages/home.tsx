@@ -44,7 +44,11 @@ type HomeSections = {
     };
     inspiration?: {
         title?: string;
-        images?: { image?: Media }[];
+        images?: Media[];
+    };
+    post?: {
+        title?: string;
+        description?: string;
     };
 };
 
@@ -84,7 +88,7 @@ export default function Home({
 
             <Section className="mb-10 lg:mb-16">
                 <Container>
-                    <RelatedPosts posts={pages} />
+                    <RelatedPosts data={sectionsTrans?.post} posts={pages} />
                 </Container>
             </Section>
         </AppLayout>

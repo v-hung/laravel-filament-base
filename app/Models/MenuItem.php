@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Repositories\MenuItemRepository;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -16,6 +17,19 @@ class MenuItem extends Model
     public array $translatable = ['title'];
 
     protected $guarded = [];
+
+    protected static function booted(): void
+    {
+        $clearCache = function (self $item): void {
+            $slug = $item->menu?->slug;
+            if ($slug) {
+                MenuItemRepository::clearFrontendCache($slug);
+            }
+        };
+
+        static::saved($clearCache);
+        static::deleted($clearCache);
+    }
 
     protected function casts(): array
     {

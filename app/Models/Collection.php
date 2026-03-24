@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Concerns\HasTranslatableSlug;
 use App\Concerns\Media\HasMedia;
 use App\Enums\CategoryStatus;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -11,29 +12,29 @@ use Spatie\Translatable\HasTranslations;
 
 class Collection extends Model
 {
-	use HasMedia, HasTranslations;
+    use HasMedia, HasTranslatableSlug, HasTranslations;
 
-	public array $translatable = [
-		'title',
-		'slug',
-		'description',
-	];
+    public array $translatable = [
+        'title',
+        'slug',
+        'description',
+    ];
 
-	protected $guarded = [];
+    protected $guarded = [];
 
-	protected $casts = [
-		'status' => CategoryStatus::class,
-	];
+    protected $casts = [
+        'status' => CategoryStatus::class,
+    ];
 
-	protected $appends = ['image'];
+    protected $appends = ['image'];
 
-	public function posts(): BelongsToMany
-	{
-		return $this->belongsToMany(Product::class, 'product_collection');
-	}
+    public function posts(): BelongsToMany
+    {
+        return $this->belongsToMany(Product::class, 'product_collection');
+    }
 
-	public function image(): Attribute
-	{
-		return Attribute::get(fn() => $this->getFirstMedia('image')?->toMediaData());
-	}
+    public function image(): Attribute
+    {
+        return Attribute::get(fn () => $this->getFirstMedia('image')?->toMediaData());
+    }
 }

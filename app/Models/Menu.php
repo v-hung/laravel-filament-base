@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\CategoryStatus;
+use App\Repositories\MenuItemRepository;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -15,6 +16,14 @@ class Menu extends Model
     public array $translatable = ['name'];
 
     protected $guarded = [];
+
+    protected static function booted(): void
+    {
+        $clearCache = fn (self $menu) => MenuItemRepository::clearFrontendCache($menu->slug);
+
+        static::saved($clearCache);
+        static::deleted($clearCache);
+    }
 
     protected function casts(): array
     {

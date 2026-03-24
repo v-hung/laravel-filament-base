@@ -11,7 +11,47 @@ use Illuminate\Support\Collection;
 
 class PageRepository
 {
-    public function __construct(protected MediaRepository $mediaRepository) {}
+    /**
+     * Each resolver covers one relation type and handles BOTH the single (_id) and
+     * multiple (_ids) variants with a single shared batch fetch.
+     *
+     * Shape:
+     * [
+     *   'id_key'       => string|null,  // singular key  (e.g. 'image_id')
+     *   'ids_key'      => string|null,  // plural key    (e.g. 'image_ids')
+     *   'output_key'   => string|null,  // output for singular (e.g. 'image')
+     *   'output_keys'  => string|null,  // output for plural   (e.g. 'images')
+     *   'fetch'        => Closure(int[]) → Collection<int, mixed>,  // batch load keyed by id
+     *   'serialize'    => Closure(mixed) → mixed,                   // model → output value
+     * ]
+     *
+     * @var array<int, array{id_key: string|null, ids_key: string|null, output_key: string|null, output_keys: string|null, fetch: \Closure, serialize: \Closure}>
+     */
+    private array $resolvers;
+
+    public function __construct(
+        protected MediaRepository $mediaRepository,
+        protected CollectionRepository $collectionRepository,
+    ) {
+        $this->resolvers = [
+            [
+                'id_key' => 'image_id',
+                'ids_key' => 'image_ids',
+                'output_key' => 'image',
+                'output_keys' => 'images',
+                'fetch' => fn (array $ids) => $this->mediaRepository->getMediaByIds($ids)->keyBy('id'),
+                'serialize' => fn ($item) => $item->toMediaData(),
+            ],
+            [
+                'id_key' => 'collection_id',
+                'ids_key' => 'collection_ids',
+                'output_key' => 'collection',
+                'output_keys' => 'collections',
+                'fetch' => fn (array $ids) => $this->collectionRepository->getByIds($ids)->keyBy('id'),
+                'serialize' => fn ($item) => $item->toArray(),
+            ],
+        ];
+    }
 
     public function search(?SearchParams $params = null, ?array $excludeIds = []): LengthAwarePaginator
     {
@@ -40,22 +80,22 @@ class PageRepository
     {
         return Page::with('categories')
             ->where('status', ContentStatus::Published)
-            ->where(function ($q) use ($slug) {
-                $q->where('slug->vi', $slug)
-                    ->orWhere('slug->en', $slug);
-            })
+            ->whereSlug($slug)
             ->firstOrFail();
     }
 
     /**
-     * Find a page by its Vietnamese slug and return its sections with image_id resolved to image objects.
+     * Find a page by slug and return its sections with all relational IDs resolved to objects.
+     *
+     * Supported by default:
+     *   image_id → image, image_ids → images
+     *   collection_id → collection, collection_ids → collections
+     *
+     * To add a new relation type, register a new entry in $this->resolvers.
      */
-    public function getPageSectionsWithImages(string $slug): ?array
+    public function getPageSections(string $slug): ?array
     {
-        $page = Page::where(function ($q) use ($slug): void {
-            $q->where('slug->vi', $slug)
-                ->orWhere('slug->en', $slug);
-        })->first();
+        $page = Page::whereSlug($slug)->first();
 
         if (! $page) {
             return null;
@@ -63,47 +103,103 @@ class PageRepository
 
         $translations = $page->getTranslations('sections');
 
-        $allImageIds = [];
+        // Collect all IDs per resolver across all locales in a single pass.
+        $idsByResolver = array_fill_keys(array_keys($this->resolvers), []);
+
         foreach ($translations as $localeSections) {
             $sections = is_array($localeSections) ? $localeSections : [];
-            $allImageIds = array_merge($allImageIds, $this->collectImageIds($sections));
+            foreach ($this->resolvers as $index => $resolver) {
+                $idsByResolver[$index] = array_merge(
+                    $idsByResolver[$index],
+                    $this->collectIds($sections, $resolver)
+                );
+            }
         }
-        $mediaMap = $this->mediaRepository->getMediaByIds(
-            array_values(array_unique(array_filter($allImageIds)))
-        )->keyBy('id');
 
+        // Batch-fetch each relation type once, keyed by id.
+        $maps = [];
+        foreach ($this->resolvers as $index => $resolver) {
+            $ids = array_values(array_unique(array_filter($idsByResolver[$index])));
+            $maps[$index] = $ids ? ($resolver['fetch'])($ids) : collect();
+        }
+
+        // Resolve all locales.
         $result = [];
         foreach ($translations as $locale => $localeSections) {
             $sections = is_array($localeSections) ? $localeSections : [];
-            $result[$locale] = $this->resolveImages($sections, $mediaMap);
+            $result[$locale] = $this->resolveRelations($sections, $maps);
         }
 
         return $result;
     }
 
-    private function collectImageIds(array $data): array
+    /**
+     * Recursively collect all IDs (both singular and plural) for a resolver.
+     *
+     * @param  array{id_key: string|null, ids_key: string|null}  $resolver
+     * @return int[]
+     */
+    private function collectIds(array $data, array $resolver): array
     {
         $ids = [];
-        array_walk_recursive($data, function ($value, $key) use (&$ids): void {
-            if ($key === 'image_id' && is_int($value)) {
-                $ids[] = $value;
-            }
-        });
 
-        return array_values(array_unique(array_filter($ids)));
+        foreach ($data as $key => $value) {
+            if ($resolver['id_key'] && $key === $resolver['id_key'] && is_int($value)) {
+                $ids[] = $value;
+            } elseif ($resolver['ids_key'] && $key === $resolver['ids_key'] && is_array($value)) {
+                foreach ($value as $id) {
+                    if (is_int($id)) {
+                        $ids[] = $id;
+                    }
+                }
+            } elseif (is_array($value)) {
+                $ids = array_merge($ids, $this->collectIds($value, $resolver));
+            }
+        }
+
+        return $ids;
     }
 
-    private function resolveImages(array $data, Collection $mediaMap): array
+    /**
+     * Recursively replace relational ID keys with resolved objects.
+     *
+     * @param  array<int, Collection<int, mixed>>  $maps  Keyed by resolver index.
+     */
+    private function resolveRelations(array $data, array $maps): array
     {
         $result = [];
 
         foreach ($data as $key => $value) {
-            if ($key === 'image_id' && is_int($value)) {
-                $result['image'] = $mediaMap->get($value)?->toMediaData();
-            } elseif (is_array($value)) {
-                $result[$key] = $this->resolveImages($value, $mediaMap);
-            } else {
-                $result[$key] = $value;
+            $resolved = false;
+
+            foreach ($this->resolvers as $index => $resolver) {
+                $map = $maps[$index];
+
+                if ($resolver['id_key'] && $key === $resolver['id_key'] && is_int($value)) {
+                    $item = $map->get($value);
+                    $result[$resolver['output_key']] = $item ? ($resolver['serialize'])($item) : null;
+                    $resolved = true;
+                    break;
+                }
+
+                if ($resolver['ids_key'] && $key === $resolver['ids_key'] && is_array($value)) {
+                    $result[$resolver['output_keys']] = array_values(array_filter(
+                        array_map(
+                            fn ($id) => is_int($id) && ($item = $map->get($id))
+                                ? ($resolver['serialize'])($item)
+                                : null,
+                            $value
+                        )
+                    ));
+                    $resolved = true;
+                    break;
+                }
+            }
+
+            if (! $resolved) {
+                $result[$key] = is_array($value)
+                    ? $this->resolveRelations($value, $maps)
+                    : $value;
             }
         }
 

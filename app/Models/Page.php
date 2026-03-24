@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Concerns\HasTranslatableSlug;
 use App\Concerns\Media\HasMedia;
 use App\Enums\ContentStatus;
 use App\Enums\PageType;
@@ -11,7 +12,7 @@ use Spatie\Translatable\HasTranslations;
 
 class Page extends Model
 {
-    use HasMedia, HasTranslations;
+    use HasMedia, HasTranslatableSlug, HasTranslations;
 
     public array $translatable = [
         'title',

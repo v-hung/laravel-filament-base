@@ -1,8 +1,4 @@
-type StatItem = {
-    value?: string;
-    unit?: string;
-    label?: string;
-};
+import type { StatItem } from '@/pages/site/partner';
 
 type StatsProps = {
     items?: StatItem[];

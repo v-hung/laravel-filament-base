@@ -14,7 +14,7 @@ class OrdersTable
     {
         return $table
             ->columns([
-                TextColumn::make('code')->label(__('filament.fields.code')),
+                TextColumn::make('code')->label(__('filament.fields.order_code')),
                 TextColumn::make('name')->label(__('filament.fields.customer_name')),
                 TextColumn::make('total')->money('VND')->label(__('filament.fields.total')),
                 TextColumn::make('status')->label(__('filament.fields.status'))->badge(),

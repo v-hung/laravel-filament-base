@@ -4,8 +4,8 @@ import AppHead from '@/components/shared/app-head';
 import Container from '@/components/shared/container';
 import Pagination from '@/components/shared/pagination';
 import AppLayout from '@/layouts/app-layout';
-import type { Collection, Paginator, Product } from '@/types';
-import { useTransValue } from '@/lib/utils/trans-value';
+import type { Collection, Media, Paginator, Product } from '@/types';
+import { useTransValue, type Translatable } from '@/lib/utils/trans-value';
 import { useTranslation } from 'react-i18next';
 import Section from '@/components/shared/section';
 import {
@@ -14,12 +14,24 @@ import {
     CarouselItem,
 } from '@/components/ui/carousel';
 import CardCategory from '@/components/product/card-category';
+import Banner from '@/components/shared/banner';
+import { Link } from '@inertiajs/react';
+import { shop } from '@/routes';
 
 type ShopProps = {
     products: Paginator<Product>;
     featured_products: Paginator<Product>;
     collections: Paginator<Collection>;
     active_collection: Collection | null;
+    sections?: Translatable<{
+        hero?: { title?: string; image?: Media };
+        banners: {
+            title?: string;
+            description?: string;
+            image?: Media;
+            collection?: Collection;
+        }[];
+    }>;
 };
 
 export default function ShopIndex({
@@ -27,13 +39,16 @@ export default function ShopIndex({
     featured_products,
     collections,
     active_collection,
+    sections,
 }: ShopProps) {
     const { t } = useTranslation();
     const tv = useTransValue();
 
+    const sectionsTrans = tv(sections);
+
     return (
         <AppLayout>
-            <AppHead title={t('shop.title')} />
+            <AppHead title={sectionsTrans?.hero?.title} />
 
             {/* Hero Banner */}
             <Section className="pt-6 lg:pt-10">
@@ -42,16 +57,15 @@ export default function ShopIndex({
                     <img
                         src={
                             active_collection?.image?.url ||
-                            '/assets/images/banner/shop.jpg'
+                            sectionsTrans?.hero?.image?.url
                         }
-                        alt={t('shop.bannerAlt')}
                         className="h-full w-full object-cover"
                     />
                     <div className="absolute inset-0 flex items-center justify-center bg-black/40 px-5">
                         <h1 className="max-w-2xl text-center text-h-24-bold text-white lg:text-h-56-bold">
                             {active_collection
                                 ? tv(active_collection.title)
-                                : t('shop.bannerTitle')}
+                                : sectionsTrans?.hero?.title}
                         </h1>
                     </div>
                 </div>
@@ -122,7 +136,11 @@ export default function ShopIndex({
             </Section>
 
             {/* Featured Products */}
-            <Section className="mb-10 overflow-hidden lg:mb-16">
+            <Section
+                className={
+                    active_collection ? `mb-10 overflow-hidden lg:mb-16` : ''
+                }
+            >
                 <Container>
                     <div className="mb-12 flex items-center justify-between lg:mb-16">
                         <h2 className="text-h-32-bold text-duyang-black lg:text-h-40-bold">
@@ -156,6 +174,33 @@ export default function ShopIndex({
                     )}
                 </Container>
             </Section>
+
+            {/* Banner */}
+            {!active_collection ? (
+                <Section>
+                    <Container>
+                        <div className="grid grid-cols-1 lg:grid-cols-2">
+                            {sectionsTrans?.banners.map((banner) => (
+                                <Link
+                                    href={shop.url({
+                                        query: {
+                                            category: tv(
+                                                banner.collection?.slug,
+                                            ),
+                                        },
+                                    })}
+                                >
+                                    <Banner
+                                        image={banner.image?.url}
+                                        title={banner.title}
+                                        description={banner.description}
+                                    />
+                                </Link>
+                            ))}
+                        </div>
+                    </Container>
+                </Section>
+            ) : null}
         </AppLayout>
     );
 }

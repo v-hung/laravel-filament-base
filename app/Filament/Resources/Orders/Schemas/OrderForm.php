@@ -25,7 +25,7 @@ class OrderForm
                             ->schema([
                                 Grid::make(2)->schema([
                                     TextInput::make('code')
-                                        ->label(__('filament.fields.code'))
+                                        ->label(__('filament.fields.order_code'))
                                         ->required()
                                         ->maxLength(255),
                                     TextInput::make('name')

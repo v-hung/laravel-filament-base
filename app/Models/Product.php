@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Concerns\HasTranslatableSlug;
 use App\Concerns\Media\HasMedia;
 use App\Concerns\Media\MediaConversionDefinition;
 use App\Models\Product\ProductOption;
@@ -15,7 +16,7 @@ use Spatie\Translatable\HasTranslations;
 
 class Product extends Model
 {
-    use HasFactory, HasMedia, HasTranslations;
+    use HasFactory, HasMedia, HasTranslatableSlug, HasTranslations;
 
     public array $translatable = [
         'name',

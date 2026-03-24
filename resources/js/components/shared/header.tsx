@@ -35,7 +35,7 @@ type Language = {
 const LANGUAGES: Language[] = [
     { value: 'vi', label: 'VI', icon: Icons.Vi },
     { value: 'en', label: 'EN', icon: Icons.En },
-    { value: 'zh', label: 'ZH', icon: Icons.En },
+    { value: 'zh', label: 'ZH', icon: Icons.Zh },
 ];
 
 function resolveTitle(title: Record<string, string>, locale: string): string {

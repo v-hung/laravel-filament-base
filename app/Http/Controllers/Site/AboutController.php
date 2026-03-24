@@ -21,7 +21,7 @@ class AboutController extends Controller
 
         return $this->render('site/about', [
             'testimonials' => $testimonials,
-            'sections' => $this->pageRepository->getPageSectionsWithImages('about'),
+            'sections' => $this->pageRepository->getPageSections('about'),
         ]);
     }
 }

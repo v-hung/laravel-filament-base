@@ -1,14 +1,6 @@
-import type { Media } from '@/types';
+import type { ProcessFeature, SectionData } from '@/pages/site/partner';
 
-type ProcessFeature = {
-    title?: string;
-    image?: Media;
-};
-
-type ProcessProps = {
-    title?: string;
-    description?: string;
-    image?: Media;
+type ProcessProps = SectionData & {
     features?: ProcessFeature[];
 };
 
