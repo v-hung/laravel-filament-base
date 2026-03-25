@@ -175,8 +175,9 @@ php artisan optimize
 - Zip media
 
 ```
-cd storage/app/public/media
+pushd storage/app/public/media
 zip -r ../../../../media.zip .
+popd
 ```
 
 - UnZip media
@@ -194,5 +195,5 @@ zip -r deploy.zip . -x ".claude/*" ".ddev/*" ".git/*" ".github/*" ".vscode/*" "n
 - Without .env file
 
 ```
-zip -r deploy2.zip . -x ".env" ".claude/*" ".ddev/*" ".git/*" ".github/*" ".vscode/*" "node_modules/* "storage/logs/*" "storage/framework/cache/*" "bootstrap/cache/*"
+zip -r deploy.zip . -x ".env" ".claude/*" ".ddev/*" ".git/*" ".github/*" ".vscode/*" "node_modules/*" "storage/logs/*.log" "storage/framework/cache/*" "bootstrap/cache/*.php"
 ```

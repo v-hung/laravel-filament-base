@@ -40,6 +40,7 @@ function FooterSectionColumn({
                         <li key={item.id}>
                             <Component
                                 href={item.url || '#'}
+                                target={item.target}
                                 className="text-btn-14 text-duyang-grey-light transition-colors hover:text-duyang-white lg:text-btn-16"
                             >
                                 {tv(item.title)}
@@ -143,7 +144,7 @@ export const Footer: FC = () => {
                         <div className="hidden lg:block">
                             <BrandLogo white />
                         </div>
-                        <div className="flex flex-wrap gap-4 md:gap-8 lg:gap-12">
+                        <div className="flex flex-wrap justify-center gap-4 md:gap-8 lg:justify-normal lg:gap-12">
                             <p className="text-p-14- text-center text-duyang-white lg:text-p-16-semibold">
                                 {t('common.copyright', {
                                     year: new Date().getFullYear(),

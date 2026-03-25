@@ -1,14 +1,13 @@
 import RelatedPages from '@/components/page/related-pages';
-import RelatedPosts from '@/components/post/related-posts';
 import Container from '@/components/shared/container';
 import HeroSection from '@/components/shared/hero-section';
 import Section from '@/components/shared/section';
 import AppLayout from '@/layouts/app-layout';
-import { useFormat } from '@/lib/utils/date';
 import { useTransValue } from '@/lib/utils/trans-value';
 import type { Paginator } from '@/types';
 import type { Page } from '@/types/models/page';
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 type PageDetailProps = {
     page: Page;
@@ -16,7 +15,7 @@ type PageDetailProps = {
 };
 
 const PageDetail = ({ page, other_pages }: PageDetailProps) => {
-    const { format } = useFormat();
+    const { t } = useTranslation();
     const tv = useTransValue();
 
     const content = useMemo(() => {
@@ -44,7 +43,7 @@ const PageDetail = ({ page, other_pages }: PageDetailProps) => {
                         ></div>
                     ) : (
                         <p className="text-center text-duyang-grey">
-                            Không có nội dung
+                            {t('content.noContent')}
                         </p>
                     )}
                 </Container>

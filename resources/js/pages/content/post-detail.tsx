@@ -3,10 +3,10 @@ import Container from '@/components/shared/container';
 import HeroSection from '@/components/shared/hero-section';
 import Section from '@/components/shared/section';
 import AppLayout from '@/layouts/app-layout';
-import { useFormat } from '@/lib/utils/date';
 import { useTransValue } from '@/lib/utils/trans-value';
 import type { Paginator, Post } from '@/types';
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 type PostDetailProps = {
     post: Post;
@@ -14,7 +14,7 @@ type PostDetailProps = {
 };
 
 const PostDetail = ({ post, other_posts }: PostDetailProps) => {
-    const { format } = useFormat();
+    const { t } = useTranslation();
     const tv = useTransValue();
 
     const content = useMemo(() => {
@@ -42,7 +42,7 @@ const PostDetail = ({ post, other_posts }: PostDetailProps) => {
                         ></div>
                     ) : (
                         <p className="text-center text-duyang-grey">
-                            Không có nội dung
+                            {t('content.noContent')}
                         </p>
                     )}
                 </Container>

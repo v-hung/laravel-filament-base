@@ -32,11 +32,26 @@
         }
     },
     "shop": {
-        "allProducts": "Explore All Hanger Products",
-        "featuredProducts": "Most Loved Products by Customers",
-        "noCategories": "No categories available.",
-        "noProducts": "No products available.",
-        "noFeaturedProducts": "No featured products available."
+        "allProducts": "Explore all hanger products",
+        "featuredProducts": "Most loved products by customers",
+        "noCategories": "No categories.",
+        "noProducts": "No products.",
+        "noFeaturedProducts": "No featured products available.",
+        "descriptionUpdating": "Product description is being updated",
+        "technicalSpecs": "Technical specifications",
+        "features": "Features",
+        "policies": "Policies",
+        "technicalSpecsUpdating": "Technical specifications are being updated",
+        "featuresInfoUpdating": "Product features information is being updated",
+        "policiesUpdating": "Return and warranty policies are being updated",
+        "youMayLike": "You may also like",
+        "noRelatedProducts": "No related products."
+    },
+    "content": {
+        "noPosts": "No posts",
+        "noPages": "No pages",
+        "noContent": "No content",
+        "noOtherNews": "No other news"
     },
     "contact": {
         "title": "Contact Us",

@@ -54,7 +54,7 @@ class HandleInertiaRequests extends Middleware
 
                 return [
                     'header' => BaseResource::formatArray($repo->forFrontend('header')),
-                    'footer' => $repo->forFrontend('footer'),
+                    'footer' => BaseResource::formatArray($repo->forFrontend('footer')),
                 ];
             },
         ];

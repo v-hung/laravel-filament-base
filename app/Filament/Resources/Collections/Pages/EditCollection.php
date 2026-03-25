@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Collections\Pages;
 
+use App\Filament\Actions\AutoTranslateAction;
 use App\Filament\Resources\Collections\CollectionResource;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ViewAction;
@@ -19,7 +20,8 @@ class EditCollection extends EditRecord
     {
         return [
             LocaleSwitcher::make(),
-            ViewAction::make(),
+            // ViewAction::make(),
+            AutoTranslateAction::make(),
             DeleteAction::make(),
         ];
     }

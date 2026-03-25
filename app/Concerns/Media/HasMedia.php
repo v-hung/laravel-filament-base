@@ -43,7 +43,7 @@ trait HasMedia
 
         /** @var EloquentCollection<int, Media> $media */
         $media = $this->getRelation('media')
-            ->filter(fn(Media $item): bool => $item->pivot?->collection === $collection)
+            ->filter(fn (Media $item): bool => $item->pivot?->collection === $collection)
             ->values();
 
         // Get conversions from collection definition
@@ -100,6 +100,7 @@ trait HasMedia
             'collection' => $collection,
             'sort_order' => $sortOrder,
         ]);
+        $this->unsetRelation('media');
     }
 
     /**
@@ -108,6 +109,7 @@ trait HasMedia
     public function detachMedia(Media $media): void
     {
         $this->media()->detach($media->id);
+        $this->unsetRelation('media');
     }
 
     /**

@@ -2,6 +2,7 @@ import BlogListItem from '@/components/post/blog-list-item';
 import { cn } from '@/lib/utils/cn';
 import type { Paginator, Post } from '@/types';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 type RelatedPostsProps = {
     posts: Paginator<Post>;
@@ -17,6 +18,7 @@ const RelatedPosts = ({
     data: { title, description } = {},
     className,
 }: RelatedPostsProps) => {
+    const { t } = useTranslation();
     return (
         <div
             className={cn(
@@ -47,7 +49,7 @@ const RelatedPosts = ({
                     </div>
                 ) : (
                     <p className="text-p-16-regular text-duyang-grey">
-                        Không có tin tức nào khác.
+                        {t('content.noPosts')}
                     </p>
                 )}
             </div>

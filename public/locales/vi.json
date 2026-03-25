@@ -35,7 +35,22 @@
         "featuredProducts": "Sản phẩm được khách hàng yêu thích nhất",
         "noCategories": "Không có danh mục.",
         "noProducts": "Không có sản phẩm.",
-        "noFeaturedProducts": "Không có sản phẩm nổi bật."
+        "noFeaturedProducts": "Không có sản phẩm nổi bật.",
+        "descriptionUpdating": "Mô tả sản phẩm đang được cập nhập",
+        "technicalSpecs": "Thông số kỹ thuật",
+        "features": "Đặc trưng",
+        "policies": "Chính sách",
+        "technicalSpecsUpdating": "Thông số kỹ thuật đang được cập nhập",
+        "featuresInfoUpdating": "Thông tin đặc trưng sản phẩm đang được cập nhập",
+        "policiesUpdating": "Chính sách đổi trả và bảo hành đang được cập nhập",
+        "youMayLike": "Bạn cũng có thể thích",
+        "noRelatedProducts": "Không có sản phẩm liên quan."
+    },
+    "content": {
+        "noPosts": "Không có bài viết nào",
+        "noPages": "Không có trang nào",
+        "noContent": "Không có nội dung",
+        "noOtherNews": "Không có tin tức nào khác"
     },
     "contact": {
         "title": "Liên hệ",

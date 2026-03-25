@@ -42,7 +42,8 @@ i18n.use(languageDetector)
                 {
                     expirationTime: import.meta.env.DEV
                         ? 0
-                        : 7 * 24 * 60 * 60 * 1000, // 7 days
+                        : 7 * 24 * 60 * 60 * 1000, // 7 days,
+                    defaultVersion: __BUILD_TIME__,
                 },
                 {
                     loadPath: `/locales/{{lng}}.json?t=${

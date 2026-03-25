@@ -25,11 +25,45 @@ class MediaPicker extends Field
 
     protected bool $compact = false;
 
+    /**
+     * Per-request backup of field state, keyed by absolute state path.
+     * Used to restore state for new records during locale switches, since
+     * form->fill() replaces the entire Livewire data property and
+     * loadStateFromRelationships() is skipped when the record does not exist yet.
+     */
+    private static array $stateBackups = [];
+
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->dehydrated(false);
+
+        $this->beforeStateDehydrated(function (MediaPicker $component): void {
+            $statePath = $component->getStatePath();
+            $state = $component->getState();
+
+            if (! empty($state)) {
+                static::$stateBackups[$statePath] = $state;
+            } else {
+                unset(static::$stateBackups[$statePath]);
+            }
+        });
+
+        $this->afterStateHydrated(function (MediaPicker $component): void {
+            $statePath = $component->getStatePath();
+
+            if (! empty($component->getState())) {
+                unset(static::$stateBackups[$statePath]);
+
+                return;
+            }
+
+            if (isset(static::$stateBackups[$statePath])) {
+                $component->state(static::$stateBackups[$statePath]);
+                unset(static::$stateBackups[$statePath]);
+            }
+        });
 
         $this->loadStateFromRelationshipsUsing(function (MediaPicker $component, mixed $record): void {
             $collection = $component->getCollection();

@@ -12,6 +12,7 @@ import AppLayout from '@/layouts/app-layout';
 import { useTransValue } from '@/lib/utils/trans-value';
 import type { Paginator, Product } from '@/types';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 type ProductDetailProps = {
     product: Product;
@@ -20,6 +21,7 @@ type ProductDetailProps = {
 
 const ProductDetail = ({ product, related_products }: ProductDetailProps) => {
     const [activeImage, setActiveImage] = useState(0);
+    const { t } = useTranslation();
     const tv = useTransValue();
     const specifications = tv(product.specifications);
 
@@ -33,7 +35,7 @@ const ProductDetail = ({ product, related_products }: ProductDetailProps) => {
                     <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16">
                         {/* Images */}
                         <div className="flex flex-col gap-4">
-                            <div className="aspect-square overflow-hidden bg-duyang-white">
+                            <div className="aspect-square overflow-hidden rounded bg-duyang-white">
                                 <img
                                     src={product.images?.[activeImage].url}
                                     alt={
@@ -44,32 +46,42 @@ const ProductDetail = ({ product, related_products }: ProductDetailProps) => {
                                     className="h-full w-full object-cover"
                                 />
                             </div>
-                            <div className="grid grid-cols-4 gap-3">
-                                {product.images?.map((image, i) => (
-                                    <button
-                                        key={i}
-                                        onClick={() => setActiveImage(i)}
-                                        className={`aspect-square overflow-hidden bg-duyang-white outline-2 outline-offset-2 transition-all ${
-                                            activeImage === i
-                                                ? 'outline-duyang-black'
-                                                : 'outline-transparent'
-                                        }`}
-                                    >
-                                        <img
-                                            src={
-                                                image?.conversions?.['thumb']
-                                                    ?.url ?? image?.url
-                                            }
-                                            alt={
-                                                image?.custom_properties
-                                                    ?.alt_text ??
-                                                tv(product.name)
-                                            }
-                                            className="h-full w-full object-cover"
-                                        />
-                                    </button>
-                                ))}
-                            </div>
+                            <Carousel opts={{ align: 'start' }}>
+                                <CarouselContent className="-ml-2 lg:-ml-3">
+                                    {product.images?.map((image, i) => (
+                                        <CarouselItem
+                                            key={i}
+                                            className="basis-1/3 pl-2 lg:basis-1/4 lg:pl-3"
+                                        >
+                                            <button
+                                                key={i}
+                                                onClick={() =>
+                                                    setActiveImage(i)
+                                                }
+                                                className={`aspect-square overflow-hidden rounded border-2 bg-duyang-white transition-all ${
+                                                    activeImage === i
+                                                        ? ''
+                                                        : 'border-transparent'
+                                                }`}
+                                            >
+                                                <img
+                                                    src={
+                                                        image?.conversions?.[
+                                                            'thumb'
+                                                        ]?.url ?? image?.url
+                                                    }
+                                                    alt={
+                                                        image?.custom_properties
+                                                            ?.alt_text ??
+                                                        tv(product.name)
+                                                    }
+                                                    className="h-full w-full object-cover"
+                                                />
+                                            </button>
+                                        </CarouselItem>
+                                    ))}
+                                </CarouselContent>
+                            </Carousel>
                         </div>
 
                         {/* Info */}
@@ -80,7 +92,7 @@ const ProductDetail = ({ product, related_products }: ProductDetailProps) => {
 
                             <p className="text-p-16-regular text-duyang-grey">
                                 {tv(product.description) ||
-                                    'Không có mô tả nào cho sản phẩm này.'}
+                                    t('shop.descriptionUpdating')}
                             </p>
 
                             {/* Tabs */}
@@ -93,19 +105,19 @@ const ProductDetail = ({ product, related_products }: ProductDetailProps) => {
                                         value="specs"
                                         className="px-4 py-6 text-h-20-semibold"
                                     >
-                                        Thông Số Kỹ Thuật
+                                        {t('shop.technicalSpecs')}
                                     </TabsTrigger>
                                     <TabsTrigger
                                         value="features"
                                         className="px-4 py-6 text-h-20-semibold"
                                     >
-                                        Đặc trưng
+                                        {t('shop.features')}
                                     </TabsTrigger>
                                     <TabsTrigger
                                         value="policy"
                                         className="px-4 py-6 text-h-20-semibold"
                                     >
-                                        Chính sách
+                                        {t('shop.policies')}
                                     </TabsTrigger>
                                 </TabsList>
 
@@ -129,22 +141,20 @@ const ProductDetail = ({ product, related_products }: ProductDetailProps) => {
                                         </table>
                                     ) : (
                                         <p className="text-p-14-regular text-duyang-grey">
-                                            Thông số kỹ thuật sẽ được cập nhập
+                                            {t('shop.technicalSpecsUpdating')}
                                         </p>
                                     )}
                                 </TabsContent>
 
                                 <TabsContent value="features" className="mt-6">
                                     <p className="text-p-14-regular text-duyang-grey">
-                                        Thông tin đặc trưng sản phẩm sẽ được cập
-                                        nhật.
+                                        {t('shop.featuresInfoUpdating')}
                                     </p>
                                 </TabsContent>
 
                                 <TabsContent value="policy" className="mt-6">
                                     <p className="text-p-14-regular text-duyang-grey">
-                                        Chính sách đổi trả và bảo hành sẽ được
-                                        cập nhật.
+                                        {t('shop.policiesUpdating')}
                                     </p>
                                 </TabsContent>
                             </Tabs>
@@ -154,11 +164,11 @@ const ProductDetail = ({ product, related_products }: ProductDetailProps) => {
             </Section>
 
             {/* Related Products - Placeholder for future implementation */}
-            <Section>
+            <Section className="overflow-hidden">
                 <Container>
                     <div className="mb-12 flex items-center justify-between lg:mb-16">
                         <h2 className="text-h-32-bold text-duyang-black lg:text-h-40-bold">
-                            Bản cũng có thể thích
+                            {t('shop.youMayLike')}
                         </h2>
                     </div>
 
@@ -180,7 +190,7 @@ const ProductDetail = ({ product, related_products }: ProductDetailProps) => {
                         </Carousel>
                     ) : (
                         <p className="py-4 text-p-16-regular text-duyang-grey">
-                            Không có sản phẩm liên quan.
+                            {t('shop.noRelatedProducts')}
                         </p>
                     )}
                 </Container>

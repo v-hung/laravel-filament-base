@@ -19,7 +19,9 @@ class EditProduct extends EditRecord
     {
         return [
             LocaleSwitcher::make(),
-            AutoTranslateAction::make(),
+            AutoTranslateAction::make()
+                ->htmlFields(['content'])
+                ->jsonFields(['specifications']),
             DeleteAction::make(),
         ];
     }

@@ -51,7 +51,7 @@ const RelatedPages = ({
                     </div>
                 ) : (
                     <p className="text-p-16-regular text-duyang-grey">
-                        Không có tin tức nào khác.
+                        {t('content.noPages')}
                     </p>
                 )}
             </div>

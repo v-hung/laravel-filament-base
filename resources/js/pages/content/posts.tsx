@@ -5,12 +5,14 @@ import Pagination from '@/components/shared/pagination';
 import Section from '@/components/shared/section';
 import AppLayout from '@/layouts/app-layout';
 import type { Paginator, Post } from '@/types';
+import { useTranslation } from 'react-i18next';
 
 type PostsProps = {
     posts: Paginator<Post>;
 };
 
 const Posts = ({ posts }: PostsProps) => {
+    const { t } = useTranslation();
     return (
         <AppLayout>
             {/* Hero Section */}
@@ -31,16 +33,12 @@ const Posts = ({ posts }: PostsProps) => {
                         </div>
                     ) : (
                         <p className="py-4 text-p-16-regular text-duyang-grey">
-                            Không có bài viết nào.
+                            {t('content.noContent')}
                         </p>
                     )}
 
                     {/* Pagination */}
-                    <Pagination
-                        links={posts.links}
-                        lastPage={posts.last_page}
-                        className="mt-10"
-                    />
+                    <Pagination meta={posts.meta} className="mt-10" />
                 </Container>
             </Section>
         </AppLayout>

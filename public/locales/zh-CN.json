@@ -31,11 +31,26 @@
         }
     },
     "shop": {
-        "allProducts": "浏览所有衣架产品",
-        "featuredProducts": "客户最喜爱的产品",
-        "noCategories": "暂无分类。",
-        "noProducts": "暂无产品。",
-        "noFeaturedProducts": "暂无推荐产品。"
+        "allProducts": "探索所有衣架产品",
+        "featuredProducts": "顾客最喜爱的产品",
+        "noCategories": "没有分类。",
+        "noProducts": "没有产品。",
+        "noFeaturedProducts": "暂无推荐产品。",
+        "descriptionUpdating": "产品描述正在更新",
+        "technicalSpecs": "技术规格",
+        "features": "产品特性",
+        "policies": "政策",
+        "technicalSpecsUpdating": "技术规格正在更新",
+        "featuresInfoUpdating": "产品特性信息正在更新",
+        "policiesUpdating": "退换货及保修政策正在更新",
+        "youMayLike": "你可能也喜欢",
+        "noRelatedProducts": "没有相关产品。"
+    },
+    "content": {
+        "noPosts": "没有帖子",
+        "noPages": "没有页面",
+        "noContent": "没有内容",
+        "noOtherNews": "没有其他新闻"
     },
     "contact": {
         "title": "联系我们",

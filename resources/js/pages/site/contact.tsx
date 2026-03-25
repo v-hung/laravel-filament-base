@@ -282,7 +282,7 @@ export default function Contact({ sections }: ContactProps) {
                             className="h-75 w-full overflow-hidden lg:h-125 [&_iframe]:h-full! [&_iframe]:w-full!"
                             dangerouslySetInnerHTML={{
                                 __html: new DOMParser().parseFromString(
-                                    sectionsTrans.map.embed,
+                                    sectionsTrans.map.embed.replace(/\\"/g, '"'),
                                     'text/html',
                                 ).body.innerHTML,
                             }}

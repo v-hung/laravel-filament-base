@@ -34,10 +34,10 @@ class PageController extends Controller
                 ->toArray();
 
             return $this->render('content/page-detail', [
-                'page' => array_merge(
-                    (new BaseResource($page))->resolve(),
+                'page' => BaseResource::formatArray(array_merge(
+                    $page->toArray(),
                     ['content' => $renderedContent]
-                ),
+                )),
                 'other_pages' => BaseResource::collection($other_pages),
             ]);
         } catch (Throwable $e) {
