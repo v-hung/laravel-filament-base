@@ -63,8 +63,8 @@ class ProductController extends Controller
             );
 
             return $this->render('shop/product-detail', [
-                'product' => $product,
-                'related_products' => $related_products,
+                'product' => (new BaseResource($product))->resolve(),
+                'related_products' => BaseResource::collection($related_products),
             ]);
         } catch (Throwable $e) {
             $this->flash('toast', ['type' => 'error', 'message' => __('shop.product.not_found')]);

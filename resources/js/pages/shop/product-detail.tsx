@@ -122,21 +122,22 @@ const ProductDetail = ({ product, related_products }: ProductDetailProps) => {
                                 </TabsList>
 
                                 <TabsContent value="specs" className="mt-3">
-                                    {specifications?.length ? (
+                                    {specifications &&
+                                    Object.keys(specifications).length ? (
                                         <table className="w-full">
                                             <tbody>
-                                                {specifications.map(
-                                                    (row, i) => (
-                                                        <tr key={i}>
-                                                            <td className="w-1/3 py-3 text-p-14-semibold text-duyang-black">
-                                                                {row.key}
-                                                            </td>
-                                                            <td className="py-3 text-p-14-regular text-duyang-grey">
-                                                                {row.value}
-                                                            </td>
-                                                        </tr>
-                                                    ),
-                                                )}
+                                                {Object.entries(
+                                                    specifications,
+                                                ).map(([key, value]) => (
+                                                    <tr key={key}>
+                                                        <td className="py-3 pr-4 text-p-14-semibold text-duyang-black">
+                                                            {key}
+                                                        </td>
+                                                        <td className="py-3 text-p-14-regular text-duyang-grey">
+                                                            {value}
+                                                        </td>
+                                                    </tr>
+                                                ))}
                                             </tbody>
                                         </table>
                                     ) : (
