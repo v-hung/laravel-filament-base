@@ -72,6 +72,7 @@ return [
         'upload_to' => '上传到：',
         'files_selected' => '已选择 :count 个文件',
         'upload_files_btn' => '上传文件',
+        'uploading' => '上传中...',
         'click_to_upload' => '点击上传',
         'drag_and_drop' => '或拖拽文件到此处',
         'drop_here' => '将文件拖到这里',

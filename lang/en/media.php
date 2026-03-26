@@ -72,6 +72,7 @@ return [
         'upload_to' => 'Upload to:',
         'files_selected' => ':count file(s) selected',
         'upload_files_btn' => 'Upload Files',
+        'uploading' => 'Uploading...',
         'click_to_upload' => 'Click to upload',
         'drag_and_drop' => 'or drag and drop',
         'drop_here' => 'Drop files here',

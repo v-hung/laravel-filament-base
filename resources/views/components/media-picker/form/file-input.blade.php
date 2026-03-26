@@ -13,7 +13,17 @@
         </label>
     @endif
 
-    <div x-data="{ isDragging: false, dragCounter: 0 }" @dragenter.window.prevent="dragCounter++; isDragging = true"
+    <div x-data="{
+            isDragging: false,
+            dragCounter: 0,
+            isUploading: false,
+            uploadProgress: 0,
+        }"
+        @livewire-upload-start.window="isUploading = true; uploadProgress = 0"
+        @livewire-upload-finish.window="isUploading = false; uploadProgress = 0"
+        @livewire-upload-error.window="isUploading = false; uploadProgress = 0"
+        @livewire-upload-progress.window="uploadProgress = $event.detail.progress"
+        @dragenter.window.prevent="dragCounter++; isDragging = true"
         @dragleave.window="dragCounter--; if (dragCounter === 0) isDragging = false" @dragover.window.prevent
         @drop.window.prevent="
             dragCounter = 0;
@@ -28,8 +38,28 @@
             ?
             'border-primary-500 bg-primary-50 dark:bg-primary-900/20' :
             '{{ $error ? 'border-red-500 dark:border-red-500' : 'border-gray-300 dark:border-gray-600 hover:border-primary-400 dark:hover:border-primary-500' }} bg-white dark:bg-gray-800'"
-        class="border-2 border-dashed rounded-lg text-center transition-colors duration-150 h-44 flex items-center justify-center {{ $error ? 'border-red-500 dark:border-red-500' : 'border-gray-300 dark:border-gray-600' }} bg-white dark:bg-gray-800">
-        <label class="cursor-pointer w-full">
+        class="relative border-2 border-dashed rounded-lg text-center transition-colors duration-150 h-44 flex items-center justify-center {{ $error ? 'border-red-500 dark:border-red-500' : 'border-gray-300 dark:border-gray-600' }} bg-white dark:bg-gray-800">
+
+        {{-- Upload progress overlay --}}
+        <div x-show="isUploading" x-cloak
+            class="absolute inset-0 rounded-lg bg-white/90 dark:bg-gray-800/90 flex flex-col items-center justify-center gap-3 z-10">
+            <svg class="animate-spin h-8 w-8 text-primary-500" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <div class="w-48">
+                <div class="flex justify-between text-xs text-gray-600 dark:text-gray-400 mb-1">
+                    <span>{{ __('media.upload.uploading') }}</span>
+                    <span x-text="uploadProgress + '%'"></span>
+                </div>
+                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5">
+                    <div class="bg-primary-500 h-1.5 rounded-full transition-all duration-150"
+                        :style="'width: ' + uploadProgress + '%'"></div>
+                </div>
+            </div>
+        </div>
+
+        <label :class="isUploading ? 'pointer-events-none' : 'cursor-pointer'" class="w-full">
             <input type="file" id="{{ $name }}" name="{{ $name }}" accept="{{ $accept }}"
                 {{ $multiple ? 'multiple' : '' }} class="hidden" {{ $attributes }}>
             <div class="pointer-events-none">

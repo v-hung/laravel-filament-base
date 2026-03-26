@@ -72,6 +72,7 @@ return [
         'upload_to' => 'Tải lên:',
         'files_selected' => ':count tệp đã chọn',
         'upload_files_btn' => 'Tải lên tệp',
+        'uploading' => 'Đang tải lên...',
         'click_to_upload' => 'Nhấn để tải lên',
         'drag_and_drop' => 'hoặc kéo và thả',
         'drop_here' => 'Thả tệp vào đây',
