@@ -12,6 +12,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 
 class HomePageForm
@@ -25,7 +26,9 @@ class HomePageForm
     public static function sharedSectionPaths(): array
     {
         return [
+            'banner.source_type',
             'banner.image_id',
+            'banner.url',
             'about.image_id',
             'about.features.*.image_id',
             'banner2.image_id',
@@ -43,10 +46,22 @@ class HomePageForm
                     Section::make(__('filament.pages.home.sections.banner'))
                         ->statePath('sections.banner')
                         ->schema([
+                            Select::make('source_type')
+                                ->label(__('filament.pages.home.fields.banner_source_type'))
+                                ->options([
+                                    'media' => __('filament.pages.home.fields.banner_source_media'),
+                                    'link' => __('filament.pages.home.fields.banner_source_link'),
+                                ])
+                                ->default('media')
+                                ->live(),
                             MediaPickerInline::make('image_id')
                                 ->label(__('filament.fields.banner_image'))
                                 ->folderPath('pages/home')
-                                ->acceptedFileTypes(['image/*', 'video/*']),
+                                ->acceptedFileTypes(['image/*', 'video/*'])
+                                ->visible(fn (Get $get): bool => $get('source_type') !== 'link'),
+                            TextInput::make('url')
+                                ->label(__('filament.fields.link'))
+                                ->visible(fn (Get $get): bool => $get('source_type') === 'link'),
                         ]),
 
                     Section::make(__('filament.pages.home.sections.about'))

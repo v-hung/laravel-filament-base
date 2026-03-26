@@ -24,6 +24,8 @@ const ProductDetail = ({ product, related_products }: ProductDetailProps) => {
     const { t } = useTranslation();
     const tv = useTransValue();
     const specifications = tv(product.specifications);
+    const features = tv(product.features);
+    const policies = tv(product.policies);
 
     return (
         <AppLayout>
@@ -149,13 +151,13 @@ const ProductDetail = ({ product, related_products }: ProductDetailProps) => {
 
                                 <TabsContent value="features" className="mt-6">
                                     <p className="text-p-14-regular text-duyang-grey">
-                                        {t('shop.featuresInfoUpdating')}
+                                        {features || t('shop.featuresInfoUpdating')}
                                     </p>
                                 </TabsContent>
 
                                 <TabsContent value="policy" className="mt-6">
                                     <p className="text-p-14-regular text-duyang-grey">
-                                        {t('shop.policiesUpdating')}
+                                        {policies || t('shop.policiesUpdating')}
                                     </p>
                                 </TabsContent>
                             </Tabs>

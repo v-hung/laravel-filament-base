@@ -75,7 +75,7 @@ return [
         'click_to_upload' => '点击上传',
         'drag_and_drop' => '或拖拽文件到此处',
         'drop_here' => '将文件拖到这里',
-        'file_types' => '支持 PNG、JPG、GIF，最大 10MB',
+        'file_types' => '支持 PNG、JPG、GIF，最大 :maxMB',
     ],
 
     // Folder modals

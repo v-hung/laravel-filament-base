@@ -9,6 +9,8 @@ export type Product = {
     description: Translatable | null;
     content: Translatable | null;
     specifications: Translatable<Record<string, string>> | null;
+    features: Translatable | null;
+    policies: Translatable | null;
     images: Media[] | null;
     price: string | number;
     has_variant: boolean;

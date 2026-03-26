@@ -399,7 +399,7 @@ class MediaPickerModal extends Component
 
     public function uploadFiles(): void
     {
-        $rules = ['uploadedFiles.*' => ['required', 'file', 'max:10240']];
+        $rules = ['uploadedFiles.*' => ['required', 'file', 'max:'.config('media.max_upload_size')]];
 
         if ($this->mode === 'picker') {
             $rules['uploadedFiles.*'][] = function (string $_attribute, mixed $value, \Closure $fail): void {
@@ -546,7 +546,7 @@ class MediaPickerModal extends Component
     public function replaceMedia(): void
     {
         $this->validate([
-            'replacementFile' => 'required|file|max:10240',
+            'replacementFile' => 'required|file|max:'.config('media.max_upload_size'),
         ]);
 
         $media = $this->mediaRepository->getMediaById($this->detailMediaId);

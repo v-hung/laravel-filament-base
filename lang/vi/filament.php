@@ -186,6 +186,9 @@ return [
                 'label' => 'Nhãn',
                 'banner_photo' => 'Ảnh Banner',
                 'background_photo' => 'Ảnh nền',
+                'banner_source_type' => 'Loại nguồn',
+                'banner_source_media' => 'Media (Ảnh / Video)',
+                'banner_source_link' => 'Liên kết ngoài',
             ],
             'actions' => [
                 'add_item' => 'Thêm mục',

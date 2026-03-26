@@ -75,7 +75,7 @@ return [
         'click_to_upload' => 'Nhấn để tải lên',
         'drag_and_drop' => 'hoặc kéo và thả',
         'drop_here' => 'Thả tệp vào đây',
-        'file_types' => 'PNG, JPG, GIF tối đa 10MB',
+        'file_types' => 'PNG, JPG, GIF tối đa :maxMB',
     ],
 
     // Folder modals

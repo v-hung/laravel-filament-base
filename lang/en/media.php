@@ -75,7 +75,7 @@ return [
         'click_to_upload' => 'Click to upload',
         'drag_and_drop' => 'or drag and drop',
         'drop_here' => 'Drop files here',
-        'file_types' => 'PNG, JPG, GIF up to 10MB',
+        'file_types' => 'PNG, JPG, GIF up to :maxMB',
     ],
 
     // Folder modals

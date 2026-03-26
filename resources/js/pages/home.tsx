@@ -17,7 +17,9 @@ import RelatedPages from '@/components/page/related-pages';
 
 type HomeSections = {
     banner?: {
+        source_type?: 'media' | 'link';
         image?: Media;
+        url?: string;
     };
     about?: {
         image?: Media;

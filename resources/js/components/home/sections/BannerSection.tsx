@@ -2,6 +2,7 @@ import Container from '@/components/shared/container';
 import type { Media } from '@/types';
 import { type FC, useEffect, useRef, useState } from 'react';
 
+
 type VideoPlayerProps = {
     src: string;
 };
@@ -9,22 +10,16 @@ type VideoPlayerProps = {
 const VideoPlayer: FC<VideoPlayerProps> = ({ src }) => {
     const videoRef = useRef<HTMLVideoElement>(null);
     const [isMuted, setIsMuted] = useState(true);
-    const [isPlaying, setIsPlaying] = useState(false);
-    const [hasPlayed, setHasPlayed] = useState(false);
+    const [isPlaying, setIsPlaying] = useState(true);
 
     useEffect(() => {
         const video = videoRef.current;
         if (!video) return;
+        video.play().catch(() => {});
 
         const handleEnded = (): void => setIsPlaying(false);
-        const handlePlaying = (): void => setIsPlaying(true);
         video.addEventListener('ended', handleEnded);
-        video.addEventListener('playing', handlePlaying);
-
-        return () => {
-            video.removeEventListener('ended', handleEnded);
-            video.removeEventListener('playing', handlePlaying);
-        };
+        return () => video.removeEventListener('ended', handleEnded);
     }, []);
 
     const toggleMute = (): void => {
@@ -38,14 +33,9 @@ const VideoPlayer: FC<VideoPlayerProps> = ({ src }) => {
     const togglePlayPause = (): void => {
         const video = videoRef.current;
         if (!video) return;
-        if (video.paused) {
+        if (video.paused || video.ended) {
             video.play();
             setIsPlaying(true);
-            if (!hasPlayed) {
-                video.muted = false;
-                setIsMuted(false);
-                setHasPlayed(true);
-            }
         } else {
             video.pause();
             setIsPlaying(false);
@@ -59,30 +49,9 @@ const VideoPlayer: FC<VideoPlayerProps> = ({ src }) => {
                 src={src}
                 className="absolute top-0 left-0 h-full w-full object-cover"
                 muted
+                autoPlay
                 playsInline
             />
-            {!isPlaying && (
-                <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/30">
-                    <button
-                        onClick={togglePlayPause}
-                        className="flex h-20 w-20 cursor-pointer items-center justify-center rounded-full bg-white/20 text-white backdrop-blur-sm transition hover:bg-white/30"
-                        aria-label="Phat video"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="currentColor"
-                            className="h-10 w-10"
-                        >
-                            <path
-                                fillRule="evenodd"
-                                d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z"
-                                clipRule="evenodd"
-                            />
-                        </svg>
-                    </button>
-                </div>
-            )}
             <div className="absolute right-6 bottom-6 z-10 flex gap-2">
                 <button
                     onClick={toggleMute}
@@ -113,7 +82,7 @@ const VideoPlayer: FC<VideoPlayerProps> = ({ src }) => {
                 <button
                     onClick={togglePlayPause}
                     className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm transition hover:bg-black/70"
-                    aria-label={isPlaying ? 'Dung' : 'Phat'}
+                    aria-label={isPlaying ? 'Tam dung' : 'Phat lai'}
                 >
                     {isPlaying ? (
                         <svg
@@ -149,10 +118,31 @@ const VideoPlayer: FC<VideoPlayerProps> = ({ src }) => {
 };
 
 type BannerSectionProps = {
-    data?: { image?: Media };
+    data?: {
+        source_type?: 'media' | 'link';
+        image?: Media;
+        url?: string;
+    };
 };
 
 const BannerSection: FC<BannerSectionProps> = ({ data }) => {
+    const isLink = data?.source_type === 'link';
+
+    if (isLink) {
+        if (!data?.url) return null;
+
+        return (
+            <div className="relative h-[calc(100vh-var(--header-height))] w-full">
+                <iframe
+                    src={data.url.match(/src=["']?([^"'\s>]+)["']?/)?.[1] ?? ''}
+                    className="absolute top-0 left-0 h-full w-full border-0"
+                    allowFullScreen
+                />
+                <Container className="relative" />
+            </div>
+        );
+    }
+
     const media = data?.image;
 
     if (!media) return null;

@@ -186,6 +186,9 @@ return [
                 'label' => 'Label',
                 'banner_photo' => 'Banner Image',
                 'background_photo' => 'Background Image',
+                'banner_source_type' => 'Source Type',
+                'banner_source_media' => 'Media (Image / Video)',
+                'banner_source_link' => 'External Link',
             ],
             'actions' => [
                 'add_item' => 'Add Item',

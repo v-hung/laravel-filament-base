@@ -54,7 +54,7 @@
                     </span>
                 </p>
                 <p x-show="!isDragging" class="text-xs text-gray-500 dark:text-gray-400">
-                    {{ $slot->isNotEmpty() ? $slot : __('media.upload.file_types') }}
+                    {{ $slot->isNotEmpty() ? $slot : __('media.upload.file_types', ['max' => config('media.max_upload_size') / 1024]) }}
                 </p>
             </div>
         </label>
