@@ -34,7 +34,12 @@ function FooterSectionColumn({
             </h4>
             <ul className="flex flex-wrap gap-5 md:flex-col md:flex-nowrap">
                 {section.children.map((item) => {
-                    const Component = item.url ? Link : 'a';
+                    const isExternal =
+                        item.url?.startsWith('http') ||
+                        item.url?.startsWith('mailto:') ||
+                        item.url?.startsWith('tel:');
+
+                    const Component = isExternal ? 'a' : Link;
 
                     return (
                         <li key={item.id}>
@@ -109,6 +114,8 @@ export const Footer: FC = () => {
     const tv = useTransValue();
     const footerMenu = useMenuStore((state) => state.footerMenu);
     const siteName = useSettingStore((state) => state.shopSettings.site_name);
+
+    console.log({ footerMenu });
 
     return (
         <footer className="bg-duyang-black">

@@ -38,6 +38,7 @@ const PageDetail = ({ page, other_pages }: PageDetailProps) => {
                 <Container>
                     {content ? (
                         <div
+                            id="page-content"
                             className="flex flex-col gap-6 text-p-16-regular text-duyang-grey"
                             dangerouslySetInnerHTML={{ __html: content }}
                         ></div>

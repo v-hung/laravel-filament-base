@@ -282,7 +282,10 @@ export default function Contact({ sections }: ContactProps) {
                             className="h-75 w-full overflow-hidden lg:h-125 [&_iframe]:h-full! [&_iframe]:w-full!"
                             dangerouslySetInnerHTML={{
                                 __html: new DOMParser().parseFromString(
-                                    sectionsTrans.map.embed.replace(/\\"/g, '"'),
+                                    sectionsTrans.map.embed.replace(
+                                        /\\"/g,
+                                        '"',
+                                    ),
                                     'text/html',
                                 ).body.innerHTML,
                             }}
@@ -292,7 +295,7 @@ export default function Contact({ sections }: ContactProps) {
             )}
 
             {/* FAQ Section */}
-            <Section className="mb-10 lg:mb-16">
+            <Section id="faq" className="mb-10 lg:mb-16">
                 <Container>
                     <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-12 lg:gap-16">
                         {/* Left — Title & description */}

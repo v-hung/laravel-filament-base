@@ -8,6 +8,7 @@ use App\Filament\Forms\Components\MediaPicker;
 use App\Filament\Forms\Components\RichEditor\RichContentCustomBlocks\TwoColumnBlock;
 use App\Helpers\Filament\FormHelper;
 use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\RichEditor\TextColor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Grid;
@@ -15,7 +16,6 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
@@ -66,6 +66,14 @@ class PageForm
                                 RichEditor::make('content')
                                     ->label(FormHelper::localizedLabel(__('filament.fields.content')))
                                     ->extraInputAttributes(['style' => 'min-height: 20rem;'])
+                                    ->enableToolbarButtons(['textColor'])
+                                    ->textColors([
+                                        'black' => TextColor::make('Black', '#111111'),
+                                        'grey' => TextColor::make('Grey', '#565656'),
+                                        'grey-mid' => TextColor::make('Grey Mid', '#7A7A7A'),
+                                        'grey-light' => TextColor::make('Grey Light', '#9E9E9E'),
+                                        ...TextColor::getDefaults(),
+                                    ])
                                     ->customBlocks([
                                         TwoColumnBlock::withFolderPath('pages'),
                                     ]),
