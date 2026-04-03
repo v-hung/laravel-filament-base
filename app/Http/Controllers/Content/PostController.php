@@ -6,6 +6,7 @@ use App\Data\SearchParams;
 use App\Filament\Forms\Components\RichEditor\RichContentCustomBlocks\TwoColumnBlock;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BaseResource;
+use App\Repositories\PageRepository;
 use App\Repositories\PostRepository;
 use Filament\Forms\Components\RichEditor\RichContentRenderer;
 use Illuminate\Http\Request;
@@ -14,7 +15,8 @@ use Throwable;
 class PostController extends Controller
 {
     public function __construct(
-        protected PostRepository $postRepository
+        protected PostRepository $postRepository,
+        protected PageRepository $pageRepository
     ) {}
 
     /**
@@ -23,12 +25,13 @@ class PostController extends Controller
     public function index(Request $request)
     {
         $request = SearchParams::fromRequest($request);
-        $request->perPage = 9;
+        $request->perPage = 8;
 
-        $posts = $this->postRepository->search($request);
+        $posts = $this->pageRepository->search($request);
 
         return $this->render('content/posts', [
             'posts' => BaseResource::collection($posts),
+            'sections' => BaseResource::formatArray($this->pageRepository->getPageSections('posts')),
         ]);
     }
 

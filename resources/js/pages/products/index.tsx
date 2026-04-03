@@ -16,7 +16,7 @@ import {
 import CardCategory from '@/components/product/card-category';
 import Banner from '@/components/shared/banner';
 import { Link } from '@inertiajs/react';
-import { shop } from '@/routes';
+import { products as productsRoute } from '@/routes';
 
 type ShopProps = {
     products: Paginator<Product>;
@@ -179,7 +179,7 @@ export default function ShopIndex({
                             {sectionsTrans?.banners.map((banner, index) => (
                                 <Link
                                     key={index}
-                                    href={shop.url({
+                                    href={productsRoute.url({
                                         query: {
                                             category: tv(
                                                 banner.collection?.slug,

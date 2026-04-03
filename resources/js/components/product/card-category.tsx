@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils/cn';
 import { useTransValue } from '@/lib/utils/trans-value';
-import { shop } from '@/routes';
+import { products } from '@/routes';
 import type { Collection } from '@/types';
 import { Link } from '@inertiajs/react';
 import React from 'react';
@@ -16,7 +16,9 @@ const CardCategory: React.FC<CardCategoryProps> = (props) => {
     return (
         <div {...rest} className={cn('', className)}>
             <Link
-                href={shop.url({ query: { category: tv(collection.slug) } })}
+                href={products.url({
+                    query: { category: tv(collection.slug) },
+                })}
                 className="block"
             >
                 <div className="aspect-square overflow-hidden rounded bg-duyang-cream">

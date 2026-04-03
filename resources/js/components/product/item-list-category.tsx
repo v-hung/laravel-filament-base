@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils/cn';
 import { useTransValue } from '@/lib/utils/trans-value';
-import { shop } from '@/routes';
+import { products } from '@/routes';
 import type { Collection } from '@/types';
 import { Link } from '@inertiajs/react';
 import React from 'react';
@@ -47,7 +47,7 @@ const ItemListCategory: React.FC<ItemListCategoryProps> = (props) => {
                 )}
 
                 <Link
-                    href={shop.url({
+                    href={products.url({
                         query: { category: tv(collection.slug) },
                     })}
                     className="inline-flex items-center gap-2 border-b pt-2 pb-2 text-p-18-medium text-duyang-black transition-opacity hover:opacity-70"

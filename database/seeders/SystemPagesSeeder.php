@@ -29,8 +29,12 @@ class SystemPagesSeeder extends Seeder
                 'title' => ['vi' => 'Đối tác tin cậy', 'en' => 'Partner'],
             ],
             [
-                'slug' => ['vi' => 'shop', 'en' => 'shop'],
-                'title' => ['vi' => 'Sản phẩm', 'en' => 'Shop'],
+                'slug' => ['vi' => 'products', 'en' => 'products'],
+                'title' => ['vi' => 'Sản phẩm', 'en' => 'Products'],
+            ],
+            [
+                'slug' => ['vi' => 'posts', 'en' => 'posts'],
+                'title' => ['vi' => 'Tin tức', 'en' => 'Posts'],
             ],
         ];
 

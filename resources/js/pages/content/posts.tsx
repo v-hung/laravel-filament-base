@@ -1,25 +1,39 @@
+import PageItem from '@/components/page/page-item';
 import PostItem from '@/components/post/post-item';
 import Container from '@/components/shared/container';
 import HeroSection from '@/components/shared/hero-section';
 import Pagination from '@/components/shared/pagination';
 import Section from '@/components/shared/section';
 import AppLayout from '@/layouts/app-layout';
-import type { Paginator, Post } from '@/types';
+import { useTransValue, type Translatable } from '@/lib/utils/trans-value';
+import type { Media, Paginator, Post } from '@/types';
+import type { Page } from '@/types/models/page';
 import { useTranslation } from 'react-i18next';
 
 type PostsProps = {
-    posts: Paginator<Post>;
+    posts: Paginator<Page>;
+    sections: Translatable<{
+        hero?: {
+            title?: string;
+            description?: string;
+            image?: Media;
+        };
+    }>;
 };
 
-const Posts = ({ posts }: PostsProps) => {
+const Posts = ({ posts, sections }: PostsProps) => {
     const { t } = useTranslation();
+
+    const tv = useTransValue();
+    const sectionsTrans = tv(sections);
+
     return (
         <AppLayout>
             {/* Hero Section */}
             <HeroSection
-                title="Tin tức"
-                description="Cập nhật các hoạt động sản xuất, tiến độ đơn hàng và thông tin xuất xưởng mới nhất từ nhà máy."
-                image="/assets/images/banner/posts.jpg"
+                title={sectionsTrans?.hero?.title ?? ''}
+                description={sectionsTrans?.hero?.description}
+                image={sectionsTrans?.hero?.image?.url}
             />
 
             {/* Post List Section */}

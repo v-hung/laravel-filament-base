@@ -2,7 +2,7 @@ import LatestProductCard from '@/components/product/latest-product-card';
 import Container from '@/components/shared/container';
 import DuButton from '@/components/shared/du-button';
 import Section from '@/components/shared/section';
-import { shop } from '@/routes';
+import { products as productsRoute } from '@/routes';
 import type { Paginator, Product } from '@/types';
 import { Link } from '@inertiajs/react';
 import type { FC } from 'react';
@@ -26,7 +26,7 @@ const FeaturedSection: FC<FeaturedSectionProps> = ({ data, products }) => (
                         </p>
                     )}
                     <DuButton>
-                        <Link href={shop().url}>View All</Link>
+                        <Link href={productsRoute().url}>View All</Link>
                     </DuButton>
                 </div>
 

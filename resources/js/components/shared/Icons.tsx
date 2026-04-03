@@ -35,7 +35,7 @@ import Truck from '@/assets/icons/Truck.svg?react';
 import UserFocus from '@/assets/icons/UserFocus.svg?react';
 import XLogo from '@/assets/icons/XLogo.svg?react';
 import Vi from '@/assets/icons/countries/vi.svg?react';
-import En from '@/assets/icons/countries/en.svg?react';
+import Gb from '@/assets/icons/countries/gb.svg?react';
 import Jp from '@/assets/icons/countries/jp.svg?react';
 import Zh_CN from '@/assets/icons/countries/zh_CN.svg?react';
 
@@ -75,7 +75,7 @@ export const Icons = {
     UserFocus: createIcon(UserFocus),
     XLogo: createIcon(XLogo),
     Vi: createIcon(Vi),
-    En: createIcon(En),
+    En: createIcon(Gb),
     Jp: createIcon(Jp),
     Zh_CN: createIcon(Zh_CN),
 };

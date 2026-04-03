@@ -9,7 +9,8 @@ use App\Filament\Resources\Pages\Schemas\AboutPageForm;
 use App\Filament\Resources\Pages\Schemas\ContactPageForm;
 use App\Filament\Resources\Pages\Schemas\HomePageForm;
 use App\Filament\Resources\Pages\Schemas\PartnerPageForm;
-use App\Filament\Resources\Pages\Schemas\ShopPageForm;
+use App\Filament\Resources\Pages\Schemas\PostsPageForm;
+use App\Filament\Resources\Pages\Schemas\ProductsPageForm;
 use App\Models\Page;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ViewAction;
@@ -35,7 +36,8 @@ class EditPage extends EditRecord
         'about' => AboutPageForm::class,
         'contact' => ContactPageForm::class,
         'partner' => PartnerPageForm::class,
-        'shop' => ShopPageForm::class,
+        'products' => ProductsPageForm::class,
+        'posts' => PostsPageForm::class,
     ];
 
     public function form(Schema $schema): Schema
@@ -149,7 +151,7 @@ class EditPage extends EditRecord
                 ->jsonFields(['sections']),
             ViewAction::make(),
             DeleteAction::make()
-                ->hidden(fn () => $this->record->page_type === PageType::System),
+                ->hidden(fn() => $this->record->page_type === PageType::System),
         ];
     }
 }

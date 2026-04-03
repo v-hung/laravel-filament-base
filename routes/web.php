@@ -20,7 +20,7 @@ Route::post('/contact', [ContactController::class, 'store'])->name('contact.stor
 Route::get('/partner', [PartnerController::class, 'index'])->name('partner');
 
 // products
-Route::get('/shop', [ProductController::class, 'shop'])->name('shop');
+Route::get('/products', [ProductController::class, 'products'])->name('products');
 Route::get('/products/{product_slug}', [ProductController::class, 'detail'])->name('products.detail');
 
 // content
@@ -58,4 +58,4 @@ Route::get('/greeting/{locale}', function (string $locale) {
         ->cookie('locale', $locale, 60 * 24 * 365);
 })->name('lang.switch');
 
-require __DIR__.'/settings.php';
+require __DIR__ . '/settings.php';

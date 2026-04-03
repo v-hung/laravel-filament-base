@@ -73,16 +73,17 @@ class MenuForm
                                 label: __('filament.resources.page.plural_label'),
                                 modelClass: Page::class,
                                 titleField: 'title',
-                                urlResolver: fn (Page $record): string => match ($record->page_type) {
+                                urlResolver: fn(Page $record): string => match ($record->page_type) {
                                     PageType::System => match ((string) $record->slug) {
                                         'home' => '/',
                                         'about' => '/about',
                                         'contact' => '/contact',
                                         'partner' => '/partner',
-                                        'shop' => '/shop',
-                                        default => '/pages/'.$record->slug,
+                                        'products' => '/products',
+                                        'posts' => '/posts',
+                                        default => '/pages/' . $record->slug,
                                     },
-                                    default => '/pages/'.$record->slug,
+                                    default => '/pages/' . $record->slug,
                                 },
                                 icon: 'heroicon-o-document-text',
                             )
@@ -91,7 +92,7 @@ class MenuForm
                                 label: __('filament.resources.collection.plural_label'),
                                 modelClass: Collection::class,
                                 titleField: 'title',
-                                urlResolver: fn (Collection $record): string => '/shop?category='.$record->slug,
+                                urlResolver: fn(Collection $record): string => '/products?category=' . $record->slug,
                                 icon: 'heroicon-o-squares-2x2',
                             )
                             ->withModel(
@@ -99,7 +100,7 @@ class MenuForm
                                 label: __('filament.resources.product.plural_label'),
                                 modelClass: Product::class,
                                 titleField: 'name',
-                                urlResolver: fn (Product $record): string => '/products/'.$record->slug,
+                                urlResolver: fn(Product $record): string => '/products/' . $record->slug,
                                 icon: 'heroicon-o-shopping-bag',
                             ),
                     ]),

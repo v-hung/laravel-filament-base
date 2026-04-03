@@ -24,7 +24,7 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function shop(Request $request)
+    public function products(Request $request)
     {
         $params = ProductSearchParams::fromRequest($request);
 
@@ -40,12 +40,12 @@ class ProductController extends Controller
         $featured_products = $this->productRepository->search(new ProductSearchParams(['perPage' => 3, 'orderType' => ProductOrderType::FEATURED]));
         $collections = $this->collectionRepository->search(new SearchParams(['perPage' => 6]));
 
-        return $this->render('shop/index', [
+        return $this->render('products/index', [
             'products' => BaseResource::collection($products),
             'featured_products' => BaseResource::collection($featured_products),
             'collections' => BaseResource::collection($collections),
             'active_collection' => $activeCollection ? new BaseResource($activeCollection) : null,
-            'sections' => BaseResource::formatArray($this->pageRepository->getPageSections('shop')),
+            'sections' => BaseResource::formatArray($this->pageRepository->getPageSections('products')),
         ]);
     }
 
@@ -62,7 +62,7 @@ class ProductController extends Controller
                 [$product->id]
             );
 
-            return $this->render('shop/product-detail', [
+            return $this->render('products/product-detail', [
                 'product' => (new BaseResource($product))->resolve(),
                 'related_products' => BaseResource::collection($related_products),
             ]);
